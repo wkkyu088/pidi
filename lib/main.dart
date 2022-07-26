@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:flutter/services.dart';
 
 import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
@@ -33,34 +34,34 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Color mainColor = Color(0xFFDB7093);
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: const [
-          ListScreen(),
-          GalleryScreen(),
-          DetailScreen(),
-          HomeScreen(),
-          SettingScreen(),
-        ],
-        items: _navBarsItems(),
-        backgroundColor: kWhite,
-        // navBarStyle: NavBarStyle.style1,
-        // navBarStyle: NavBarStyle.style9,
-        // navBarStyle: NavBarStyle.style7,
-        // navBarStyle: NavBarStyle.style10,
-        // navBarStyle: NavBarStyle.style12,
-        // navBarStyle: NavBarStyle.style13,
-        // navBarStyle: NavBarStyle.style3,
-        navBarStyle: NavBarStyle.style6,
-      ),
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // 투명색
+    ));
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: const [
+        ListScreen(),
+        GalleryScreen(),
+        DetailScreen(),
+        HomeScreen(),
+        SettingScreen(),
+      ],
+      items: _navBarsItems(),
+      backgroundColor: kWhite,
+      navBarStyle: NavBarStyle.style15,
+      confineInSafeArea: true,
+      handleAndroidBackButtonPress: true,
+      resizeToAvoidBottomInset: true,
+      stateManagement: true,
+      hideNavigationBarWhenKeyboardShows: true,
+      decoration: NavBarDecoration(
+          border: Border(top: BorderSide(color: kUnderline, width: 0.5))),
     );
   }
 
@@ -68,32 +69,31 @@ class _MainPageState extends State<MainPage> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.view_stream_rounded),
-        title: ("List"),
-        activeColorPrimary: mainColor,
+        activeColorPrimary: kBlack,
         inactiveColorPrimary: kGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.dashboard_rounded),
-        title: ("Gallery"),
-        activeColorPrimary: mainColor,
+        activeColorPrimary: kBlack,
         inactiveColorPrimary: kGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.add_rounded),
-        title: ("Add"),
-        activeColorPrimary: mainColor,
+        icon: const Icon(
+          Icons.add_rounded,
+          size: 35,
+          color: Color(0xFFFAFAFA),
+        ),
+        activeColorPrimary: kBlack,
         inactiveColorPrimary: kGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.calendar_month_rounded),
-        title: ("Calendar"),
-        activeColorPrimary: mainColor,
+        icon: const Icon(Icons.today_rounded),
+        activeColorPrimary: kBlack,
         inactiveColorPrimary: kGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.settings_rounded),
-        title: ("Setting"),
-        activeColorPrimary: mainColor,
+        activeColorPrimary: kBlack,
         inactiveColorPrimary: kGrey,
       ),
     ];
