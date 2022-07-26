@@ -15,7 +15,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
         appBar: customAppBar('설정'),
         body: const Text(
-          'gallery screen',
+          'setting screen',
           style: TextStyle(fontFamily: "GowunDodum"),
         ));
   }

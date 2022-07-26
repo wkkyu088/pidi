@@ -13,10 +13,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar('갤러리 보기'),
-        body: const Center(
-            child: Text(
-          '갤러리 스크린',
-          style: TextStyle(fontSize: 40, fontFamily: 'GowunDodum'),
-        )));
+        body: const Text(
+          'gallery screen',
+          style: TextStyle(fontFamily: "GowunDodum"),
+        ));
   }
 }
