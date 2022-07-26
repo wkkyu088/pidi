@@ -5,11 +5,13 @@ import '../constants.dart';
 AppBar customAppBar(String title) {
   return AppBar(
     centerTitle: true,
-    leading: const Icon(Icons.arrow_back_rounded, color: Color(0xFF262626)),
+    actions: [
+      IconButton(
+          icon: const Icon(Icons.more_horiz_rounded),
+          color: kBlack,
+          onPressed: () {}),
+    ],
     title: Container(
-      child: Text(title,
-          style:
-              TextStyle(color: Color(0xFF262626), fontWeight: FontWeight.bold)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -20,10 +22,12 @@ AppBar customAppBar(String title) {
           ],
           colors: [
             kWhite,
-            Color(0xFFE7E6E6),
+            kUnderline,
           ],
         ),
       ),
+      child: Text(title,
+          style: TextStyle(color: kBlack, fontWeight: FontWeight.bold)),
     ),
     elevation: 0,
     backgroundColor: kWhite,
