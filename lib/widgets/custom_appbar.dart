@@ -7,7 +7,9 @@ AppBar customAppBar(String title) {
     centerTitle: true,
     leading: const Icon(Icons.arrow_back_rounded, color: Color(0xFF262626)),
     title: Container(
-      child: Text(title, style: TextStyle(color: Color(0xFF262626))),
+      child: Text(title,
+          style:
+              TextStyle(color: Color(0xFF262626), fontWeight: FontWeight.bold)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -18,7 +20,7 @@ AppBar customAppBar(String title) {
           ],
           colors: [
             kWhite,
-            Color.fromARGB(255, 200, 200, 200),
+            Color(0xFFE7E6E6),
           ],
         ),
       ),
