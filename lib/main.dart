@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:flutter/services.dart';
+import 'package:pidi/screens/splash_screen.dart';
 
 import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'GowunDodum'),
-      home: const MainPage(),
+      home: const SplashScreen(),
     );
   }
 }
