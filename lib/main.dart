@@ -48,9 +48,11 @@ class _MainPageState extends State<MainPage> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index != 2) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -84,40 +86,45 @@ class _MainPageState extends State<MainPage> {
             },
             child: const Icon(Icons.add_rounded, size: 32),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 2,
-            type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            currentIndex: _selectedIndex,
-            selectedItemColor: kBlack,
-            unselectedItemColor: kGrey,
-            onTap: _onItemTapped,
-            items: <BottomNavigationBarItem>[
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.view_stream_rounded),
-                label: 'ListView',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard_rounded),
-                label: 'GalleryView',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.add_rounded,
-                  color: kWhite,
+          bottomNavigationBar: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: BottomNavigationBar(
+              elevation: 2,
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              currentIndex: _selectedIndex,
+              selectedItemColor: kBlack,
+              unselectedItemColor: kGrey,
+              onTap: _onItemTapped,
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.view_stream_rounded),
+                  label: 'ListView',
                 ),
-                label: 'Add',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.today_rounded),
-                label: 'CalendarView',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.settings_rounded),
-                label: 'Settings',
-              ),
-            ],
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_rounded),
+                  label: 'GalleryView',
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.add_rounded,
+                      color: kWhite,
+                    ),
+                    label: ''),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.today_rounded),
+                  label: 'CalendarView',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.settings_rounded),
+                  label: 'Settings',
+                ),
+              ],
+            ),
           ),
         ));
   }

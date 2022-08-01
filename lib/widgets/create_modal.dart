@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 import '../constants.dart';
 
@@ -51,82 +50,6 @@ class _CreateModalState extends State<CreateModal> {
       padding: mediaQueryData.viewInsets,
       child: Stack(
         children: [
-          // Row(
-          //   children: [
-          //     Transform.translate(
-          //       offset: const Offset(55, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(60, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(65, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(70, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(75, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(80, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(85, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(90, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(95, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(100, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(105, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //     Transform.translate(
-          //       offset: const Offset(110, -10.0),
-          //       child: Transform.rotate(
-          //           angle: 45 * math.pi / 180,
-          //           child: Container(height: 20, width: 20, color: kWhite)),
-          //     ),
-          //   ],
-          // ),
           Container(
               width: 320,
               margin: EdgeInsets.only(
@@ -293,7 +216,6 @@ class _CreateModalState extends State<CreateModal> {
                   ),
                 ),
               )),
-          // Container(height: 20, width: 20, color: kWhite),
         ],
       ),
     );
