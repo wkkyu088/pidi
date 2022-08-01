@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:flutter/services.dart';
 import 'package:pidi/screens/splash_screen.dart';
 
@@ -9,6 +9,7 @@ import './screens/list_screen.dart';
 import './screens/setting_screen.dart';
 import './screens/home_screen.dart';
 import './constants.dart';
+import './widgets/create_modal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,68 +36,89 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    ListScreen(),
+    GalleryScreen(),
+    DetailScreen(),
+    HomeScreen(),
+    SettingScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // 투명색
-    ));
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: const [
-        ListScreen(),
-        GalleryScreen(),
-        DetailScreen(),
-        HomeScreen(),
-        SettingScreen(),
-      ],
-      items: _navBarsItems(),
-      backgroundColor: kWhite,
-      navBarStyle: NavBarStyle.style15,
-      confineInSafeArea: true,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      decoration: NavBarDecoration(
-          border: Border(top: BorderSide(color: kUnderline, width: 0.5))),
-    );
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.view_stream_rounded),
-        activeColorPrimary: kBlack,
-        inactiveColorPrimary: kGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.dashboard_rounded),
-        activeColorPrimary: kBlack,
-        inactiveColorPrimary: kGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(
-          Icons.add_rounded,
-          size: 35,
-          color: Color(0xFFFAFAFA),
-        ),
-        activeColorPrimary: kBlack,
-        inactiveColorPrimary: kGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.today_rounded),
-        activeColorPrimary: kBlack,
-        inactiveColorPrimary: kGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.settings_rounded),
-        activeColorPrimary: kBlack,
-        inactiveColorPrimary: kGrey,
-      ),
-    ];
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: kWhite,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: kWhite,
+        statusBarIconBrightness: Brightness.dark));
+    return Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: kWhite,
+        body: Scaffold(
+          body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: kBlack,
+            onPressed: () {
+              showModalBottomSheet(
+                constraints: BoxConstraints.loose(Size(
+                    MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height)),
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return const CreateModal();
+                },
+              );
+            },
+            child: const Icon(Icons.add_rounded, size: 32),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            elevation: 2,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            currentIndex: _selectedIndex,
+            selectedItemColor: kBlack,
+            unselectedItemColor: kGrey,
+            onTap: _onItemTapped,
+            items: <BottomNavigationBarItem>[
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.view_stream_rounded),
+                label: 'ListView',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard_rounded),
+                label: 'GalleryView',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add_rounded,
+                  color: kWhite,
+                ),
+                label: 'Add',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.today_rounded),
+                label: 'CalendarView',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.settings_rounded),
+                label: 'Settings',
+              ),
+            ],
+          ),
+        ));
   }
 }
