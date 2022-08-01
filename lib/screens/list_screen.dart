@@ -47,7 +47,7 @@ class _ListScreenState extends State<ListScreen> {
       );
     }
 
-    Widget _buildSuggestions() {
+    Widget _buildListView() {
       return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         itemCount: dates.length,
@@ -58,6 +58,6 @@ class _ListScreenState extends State<ListScreen> {
       );
     }
 
-    return Scaffold(appBar: customAppBar('리스트 보기'), body: _buildSuggestions());
+    return Scaffold(appBar: customAppBar('리스트 보기'), body: _buildListView());
   }
 }
