@@ -11,3 +11,9 @@ Color kGrey = const Color(0xFFBFBFBF);
 
 // appbar 타이틀 밑줄, border 등
 Color kUnderline = const Color(0xFFE7E6E6);
+
+// 포인트 컬러 (임시)
+Color kPoint = const Color(0xFFDB7093);
+
+// 캘린더 하단 배경
+Color kBackground = const Color(0xFFF2F2F2);
