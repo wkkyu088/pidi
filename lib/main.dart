@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
     GalleryScreen(),
     DetailScreen(),
     HomeScreen(),
-    SettingScreen(),
+    DetailScreen(),
   ];
 
   void _onItemTapped(int index) {
