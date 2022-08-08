@@ -1,0 +1,40 @@
+[
+  {
+    "title": "일리카페", 
+    "dateTime": "2022-07-06", 
+    "contents": "여기 커피 맛있어", 
+    "images": ["./assets/images/img0.jpg"]
+  },  
+  {
+    "title": "스타벅스", 
+    "dateTime": "2022-08-06", 
+    "contents": "이번 시즌 텀블러 이쁘더라", 
+    "images": ["./assets/images/img0.jpg",
+              "./assets/images/img1.jpg",
+              "./assets/images/img2.jpg"]
+  },
+  {
+    "title": "커피빈카페", 
+    "dateTime": "2022-07-08", 
+    "contents": "여기 헤이즐넛커피 맛있어", 
+    "images": ["./assets/images/img1.jpg",
+              "./assets/images/img2.jpg",
+              "./assets/images/img3.jpg",
+              "./assets/images/img4.jpg"]
+  },
+  {
+    "title": "투썸플레이스", 
+    "dateTime": "2022-07-06", 
+    "contents": "케이크 맛집으로 마케팅을 잘했어", 
+    "images": ["./assets/images/img0.jpg"]
+  },
+  {
+    "title": "탐앤탐스", 
+    "dateTime": "2022-07-06", 
+    "contents": "여기는 24시간이 많더라", 
+    "images": ["./assets/images/img0.jpg",
+              "./assets/images/img2.jpg",
+              "./assets/images/img3.jpg",
+              "./assets/images/img4.jpg"]
+  }
+]
