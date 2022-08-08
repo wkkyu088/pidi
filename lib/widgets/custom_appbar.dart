@@ -5,12 +5,6 @@ import '../constants.dart';
 AppBar customAppBar(String title) {
   return AppBar(
     centerTitle: true,
-    actions: [
-      IconButton(
-          icon: const Icon(Icons.more_horiz_rounded),
-          color: kBlack,
-          onPressed: () {}),
-    ],
     title: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
