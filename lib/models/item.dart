@@ -1,6 +1,11 @@
 class Item {
   String title = '';
-  DateTime dateTime = DateTime.now();
-  String contents = '';
+  String date = '';
+  String content = '';
   List<String> images = [];
+  Item(
+      {required this.title,
+      required this.date,
+      required this.content,
+      required this.images});
 }
