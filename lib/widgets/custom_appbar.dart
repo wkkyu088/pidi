@@ -27,7 +27,8 @@ AppBar customAppBar(String title) {
         ),
       ),
       child: Text(title,
-          style: TextStyle(color: kBlack, fontWeight: FontWeight.bold)),
+          style: TextStyle(
+              color: kBlack, fontWeight: FontWeight.bold, fontSize: kAppBar)),
     ),
     elevation: 0,
     backgroundColor: kWhite,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../widgets/custom_appbar.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _DetailScreenState extends State<DetailScreen> {
       padding: const EdgeInsets.only(right: 5.0),
       child: SizedBox(
         child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: kBorderRadius,
             child: Image.asset('./assets/images/img${images[i]}.jpg',
                 fit: BoxFit.fill)),
       ),
@@ -41,7 +40,6 @@ class _DetailScreenState extends State<DetailScreen> {
     String date = '2020-07-04';
     String titleValue = '디자인은 힘들다.';
     String contentValue = "일기를 쓸 공간이다.\n조금 허전하다.\n오늘의 일기 끝";
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -49,7 +47,8 @@ class _DetailScreenState extends State<DetailScreen> {
               icon: const Icon(Icons.arrow_back_rounded),
               color: kBlack,
               onPressed: () {}),
-          title: Text(date, style: TextStyle(color: kBlack)),
+          title:
+              Text(date, style: TextStyle(color: kBlack, fontSize: kContentM)),
           actions: [
             IconButton(
                 icon: const Icon(Icons.more_horiz_rounded),
@@ -62,27 +61,33 @@ class _DetailScreenState extends State<DetailScreen> {
         body: Container(
             padding: const EdgeInsets.only(left: 20.0, top: 5.0, right: 20.0),
             child: Column(children: [
-              Container(
+              Align(
                 alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [
-                      0.65,
-                      0.35,
-                    ],
-                    colors: [
-                      kWhite,
-                      kUnderline,
-                    ],
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: const [
+                        0.65,
+                        0.35,
+                      ],
+                      colors: [
+                        kWhite,
+                        kUnderline,
+                      ],
+                    ),
+                  ),
+                  child: Text(
+                    '제목: $titleValue',
+                    style: TextStyle(
+                        color: kBlack,
+                        fontWeight: FontWeight.bold,
+                        fontSize: kTitle),
                   ),
                 ),
-                child: Text('제목: $titleValue',
-                    style:
-                        TextStyle(color: kBlack, fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(flex: 1, child: _buildImages()),
               Expanded(
                 flex: 2,
@@ -90,8 +95,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     alignment: Alignment.topLeft,
                     padding: const EdgeInsets.only(top: 20),
                     child: Container(
-                        child: Text(contentValue, style: TextStyle(height: 2)),
-                        decoration: BoxDecoration())),
+                        decoration: const BoxDecoration(),
+                        child: Text(contentValue,
+                            style: TextStyle(height: 2, fontSize: kContentM)))),
               )
             ])));
   }

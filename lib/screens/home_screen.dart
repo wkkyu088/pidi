@@ -86,11 +86,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   daysOfWeekStyle: DaysOfWeekStyle(
                       weekdayStyle: TextStyle(
                           color: kBlack,
-                          fontSize: 15,
+                          fontSize: kContentM,
                           fontWeight: FontWeight.bold),
                       weekendStyle: TextStyle(
                           color: kPoint,
-                          fontSize: 15,
+                          fontSize: kContentM,
                           fontWeight: FontWeight.bold)),
                   headerStyle: HeaderStyle(
                     titleCentered: true,
@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         size: 26, color: kBlack),
                     titleTextStyle: TextStyle(
                         color: kBlack,
-                        fontSize: 18,
+                        fontSize: kTitle,
                         fontWeight: FontWeight.bold),
                   ),
                   calendarStyle: CalendarStyle(
@@ -109,9 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     cellMargin: const EdgeInsets.all(0.0),
                     tableBorder: TableBorder.symmetric(
                         inside: BorderSide(color: kUnderline, width: 0.4)),
-                    defaultTextStyle: TextStyle(color: kBlack, fontSize: 15),
+                    defaultTextStyle:
+                        TextStyle(color: kBlack, fontSize: kContentM),
                     defaultDecoration: const BoxDecoration(),
-                    weekendTextStyle: TextStyle(color: kPoint, fontSize: 15),
+                    weekendTextStyle:
+                        TextStyle(color: kPoint, fontSize: kContentM),
                     weekendDecoration: const BoxDecoration(),
                     todayTextStyle: const TextStyle(color: Colors.transparent),
                     todayDecoration: BoxDecoration(

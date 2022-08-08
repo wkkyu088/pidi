@@ -29,7 +29,7 @@ class _CreateModalState extends State<CreateModal> {
           width: 90,
           height: 90,
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(14.0),
+              borderRadius: kBorderRadiusL,
               child: Image.asset('./assets/images/img${images[i]}.jpg',
                   fit: BoxFit.fill)),
         ),
@@ -99,22 +99,20 @@ class _CreateModalState extends State<CreateModal> {
                                           cursorColor: kBlack,
                                           decoration: InputDecoration(
                                             hintText: "제목을 입력하세요",
+                                            hintStyle:
+                                                TextStyle(fontSize: kContentM),
                                             counterText: "",
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
                                                     horizontal: 10.0,
                                                     vertical: 10.0),
-                                            focusedBorder:
-                                                const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0)),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: kBorderRadiusS,
                                             ),
                                             enabledBorder: OutlineInputBorder(
                                               borderSide:
                                                   BorderSide(color: kGrey),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(8.0)),
+                                              borderRadius: kBorderRadiusS,
                                             ),
                                           )),
                                       Align(
@@ -126,7 +124,7 @@ class _CreateModalState extends State<CreateModal> {
                                             "${titleValue.length}/$maxTitleLength자",
                                             textAlign: TextAlign.right,
                                             style:
-                                                const TextStyle(fontSize: 12),
+                                                TextStyle(fontSize: kSubText),
                                           ),
                                         ),
                                       ),
@@ -145,22 +143,20 @@ class _CreateModalState extends State<CreateModal> {
                                           cursorColor: kBlack,
                                           decoration: InputDecoration(
                                             hintText: "내용을 입력하세요",
+                                            hintStyle:
+                                                TextStyle(fontSize: kContentM),
                                             counterText: "",
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
                                                     horizontal: 10.0,
                                                     vertical: 10.0),
-                                            focusedBorder:
-                                                const OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8.0)),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: kBorderRadiusS,
                                             ),
                                             enabledBorder: OutlineInputBorder(
                                               borderSide:
                                                   BorderSide(color: kGrey),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(8.0)),
+                                              borderRadius: kBorderRadiusS,
                                             ),
                                           )),
                                       Align(
@@ -172,7 +168,7 @@ class _CreateModalState extends State<CreateModal> {
                                             "${contentValue.length}/$maxContentLength자",
                                             textAlign: TextAlign.right,
                                             style:
-                                                const TextStyle(fontSize: 12),
+                                                TextStyle(fontSize: kSubText),
                                           ),
                                         ),
                                       ),
@@ -196,7 +192,7 @@ class _CreateModalState extends State<CreateModal> {
                                       child: Text("취소",
                                           style: TextStyle(
                                               color: kGrey,
-                                              fontSize: 18,
+                                              fontSize: kTitle,
                                               fontWeight: FontWeight.bold)))),
                               Expanded(
                                   child: TextButton(
@@ -208,7 +204,7 @@ class _CreateModalState extends State<CreateModal> {
                                       child: Text("저장",
                                           style: TextStyle(
                                               color: kBlack,
-                                              fontSize: 18,
+                                              fontSize: kTitle,
                                               fontWeight: FontWeight.bold)))),
                             ],
                           ))

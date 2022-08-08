@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Text('PiDi',
               style: TextStyle(
                   color: kBlack,
-                  fontSize: 60,
+                  fontSize: kSplash,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'GowunBatang')),
         ),

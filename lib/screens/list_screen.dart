@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pidi/constants.dart';
 
 import '../widgets/custom_appbar.dart';
+import '../constants.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -31,18 +33,18 @@ class _ListScreenState extends State<ListScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
               alignment: Alignment.centerLeft,
-              child: Text(dates[i], style: const TextStyle(fontSize: 14))),
+              child: Text(dates[i], style: TextStyle(fontSize: kContentS))),
           Container(
             alignment: Alignment.center,
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: kBorderRadius,
                 child: Image.asset('./assets/images/img${images[i]}.jpg')),
           ),
           Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
               alignment: Alignment.centerLeft,
-              child: Text(titles[i], style: const TextStyle(fontSize: 18))),
+              child: Text(titles[i], style: TextStyle(fontSize: kTitle))),
         ],
       );
     }
