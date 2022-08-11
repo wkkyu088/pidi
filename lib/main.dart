@@ -7,6 +7,7 @@ import 'package:pidi/screens/splash_screen.dart';
 import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
+import './screens/Wlist_screen.dart';
 import './screens/setting_screen.dart';
 import 'screens/home_screen.dart';
 import './constants.dart';
@@ -42,6 +43,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     ListScreen(),
+    WListScreen(),
     GalleryScreen(),
     DetailScreen(),
     HomeScreen(),
@@ -49,7 +51,7 @@ class _MainPageState extends State<MainPage> {
   ];
 
   void _onItemTapped(int index) {
-    if (index != 2) {
+    if (index != 3) {
       setState(() {
         _selectedIndex = index;
       });
@@ -102,6 +104,10 @@ class _MainPageState extends State<MainPage> {
               unselectedItemColor: kGrey,
               onTap: _onItemTapped,
               items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.view_stream_rounded),
+                  label: 'ListView',
+                ),
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.view_stream_rounded),
                   label: 'ListView',
