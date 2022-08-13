@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -35,21 +36,23 @@ class _ListScreenState extends State<ListScreen> {
         children: [
           ClipRRect(
               borderRadius: kBorderRadiusL,
-              child:
-                  Image.asset(posts[i].images[j].toString(), fit: BoxFit.fill)),
+              child: Image.asset(posts[i].images[j].toString(),
+                  fit: BoxFit.cover)),
           // 몇페이지인지 나타내기
-          Positioned(
-              bottom: 20,
-              child: AnimatedSmoothIndicator(
-                activeIndex: j,
-                count: posts[i].images.length,
-                effect: ScrollingDotsEffect(
-                  dotHeight: 10,
-                  dotWidth: 10,
-                  dotColor: kGrey,
-                  activeDotColor: kWhite,
-                ),
-              ))
+          posts[i].images.length != 1
+              ? Positioned(
+                  bottom: 20,
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: j,
+                    count: posts[i].images.length,
+                    effect: ScrollingDotsEffect(
+                      dotHeight: 8,
+                      dotWidth: 8,
+                      dotColor: kGrey,
+                      activeDotColor: kWhite,
+                    ),
+                  ))
+              : Container(),
         ],
       );
     }
@@ -73,18 +76,18 @@ class _ListScreenState extends State<ListScreen> {
             ],
           ),
           Container(
-              height: 400,
-              // width: (MediaQuery.of(context).size.width) * 0.7,
-              alignment: Alignment.center,
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
+            alignment: Alignment.center,
+            child: CarouselSlider.builder(
+                options: CarouselOptions(
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1.0,
+                  height: MediaQuery.of(context).size.width - 40,
+                ),
                 itemCount: posts[i].images.length,
-                itemBuilder: (context, j) {
-                  return postItem(i, j);
-                },
-              )),
+                itemBuilder: (context, itemidx, realidx) {
+                  return postItem(i, itemidx);
+                }),
+          ),
           Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
