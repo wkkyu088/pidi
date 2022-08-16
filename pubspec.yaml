@@ -87,6 +87,15 @@ flutter:
     - family: GowunBatang
       fonts:
         - asset: assets/fonts/GowunBatang-Regular.ttf
+    - family: GangwonSaeum
+      fonts:
+        - asset: assets/fonts/GangwonSaeum.ttf
+    - family: MapoPeacefull
+      fonts:
+        - asset: assets/fonts/MapoPeacefull.ttf
+    - family: NanumSquare
+      fonts:
+        - asset: assets/fonts/NanumSquareR.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
