@@ -1,6 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -16,43 +16,45 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  final _current = List.filled(posts.length, 0);
+
   @override
   Widget build(BuildContext context) {
-    // final List<String> dates = <String>[
-    //   '2022-07-25',
-    //   '2022-07-10',
-    //   '2022-07-02'
-    // ];
-    // final List<String> images = <String>['0', '1', '2'];
-    // final List<String> titles = <String>[
-    //   '사진 진짜 마음에 든다 너무 이뻐',
-    //   '구름이 양털같네',
-    //   '어떻게 구름이 하나도 없지?'
-    // ];
+    final double width = MediaQuery.of(context).size.width - 30;
 
     Widget postItem(i, j) {
       return Stack(
         alignment: Alignment.center,
         children: [
-          ClipRRect(
-              borderRadius: kBorderRadiusL,
-              child: Image.asset(posts[i].images[j].toString(),
-                  fit: BoxFit.cover)),
+          // 1:1 비율 이미지
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+            decoration: BoxDecoration(
+                borderRadius: kBorderRadius,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: Image.asset(posts[i].images[j].toString()).image,
+                )),
+          ),
+          // ClipRRect(
+          //     borderRadius: kBorderRadiusL,
+          //     child: Image.asset(posts[i].images[j].toString(),
+          //         fit: BoxFit.cover)),
           // 몇페이지인지 나타내기
-          posts[i].images.length != 1
-              ? Positioned(
-                  bottom: 20,
-                  child: AnimatedSmoothIndicator(
-                    activeIndex: j,
-                    count: posts[i].images.length,
-                    effect: ScrollingDotsEffect(
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      dotColor: kGrey,
-                      activeDotColor: kWhite,
-                    ),
-                  ))
-              : Container(),
+          // posts[i].images.length != 1
+          //     ? Positioned(
+          //         bottom: 20,
+          //         child: AnimatedSmoothIndicator(
+          //           activeIndex: j,
+          //           count: posts[i].images.length,
+          //           effect: ScrollingDotsEffect(
+          //             dotHeight: 8,
+          //             dotWidth: 8,
+          //             dotColor: kGrey,
+          //             activeDotColor: kWhite,
+          //           ),
+          //         ))
+          //     : Container(),
         ],
       );
     }
@@ -64,33 +66,63 @@ class _ListScreenState extends State<ListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 5.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
                   alignment: Alignment.centerLeft,
                   child: Text(posts[i].date,
                       style: TextStyle(fontSize: kContentS))),
               IconButton(
                   icon: const Icon(Icons.more_horiz_rounded),
+                  constraints: const BoxConstraints(),
                   color: kBlack,
                   onPressed: () {}),
             ],
           ),
-          Container(
-            alignment: Alignment.center,
-            child: CarouselSlider.builder(
-                options: CarouselOptions(
-                  enableInfiniteScroll: false,
-                  viewportFraction: 1.0,
-                  height: MediaQuery.of(context).size.width - 40,
-                ),
-                itemCount: posts[i].images.length,
-                itemBuilder: (context, itemidx, realidx) {
-                  return postItem(i, itemidx);
-                }),
+          Stack(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: CarouselSlider.builder(
+                    options: CarouselOptions(
+                      enableInfiniteScroll: false,
+                      viewportFraction: 1.0,
+                      height: width,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current[i] = index;
+                        });
+                      },
+                    ),
+                    itemCount: posts[i].images.length,
+                    itemBuilder: (context, itemidx, realidx) {
+                      return postItem(i, itemidx);
+                    }),
+              ),
+              posts[i].images.length != 1
+                  ? Container(
+                      width: width,
+                      height: width,
+                      alignment: Alignment.bottomRight,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 9, horizontal: 15),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.black.withOpacity(0.4)),
+                        child: Text(
+                            '${_current[i] + 1} / ${posts[i].images.length}',
+                            style: TextStyle(
+                                color: kWhite.withOpacity(0.8),
+                                fontSize: kContentS,
+                                fontWeight: FontWeight.bold)),
+                      ))
+                  : Container()
+            ],
           ),
           Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
               alignment: Alignment.centerLeft,
               child: Text(posts[i].title, style: TextStyle(fontSize: kTitle))),
         ],
@@ -101,7 +133,7 @@ class _ListScreenState extends State<ListScreen> {
       return ListView.separated(
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         itemCount: posts.length,
         itemBuilder: (context, i) {
           return item(i);
