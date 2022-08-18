@@ -43,6 +43,7 @@ class _MainPageState extends State<MainPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     ListScreen(),
     GalleryScreen(),
+    SettingScreen(), // 개수 맞추기 위해서 필요함
     HomeScreen(),
     SettingScreen(),
   ];

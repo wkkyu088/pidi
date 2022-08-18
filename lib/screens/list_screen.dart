@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pidi/screens/detail_screen.dart';
-import 'package:pidi/screens/modify_screen.dart';
+// import 'package:pidi/screens/modify_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -122,7 +122,39 @@ class _ListScreenState extends State<ListScreen> {
           Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
               alignment: Alignment.centerLeft,
-              child: Text(posts[i].title, style: TextStyle(fontSize: kTitle))),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      // decoration: BoxDecoration(
+                      //   gradient: LinearGradient(
+                      //     begin: Alignment.topCenter,
+                      //     end: Alignment.bottomCenter,
+                      //     stops: const [
+                      //       0.65,
+                      //       0.35,
+                      //     ],
+                      //     colors: [
+                      //       kWhite,
+                      //       kUnderline,
+                      //     ],
+                      //   ),
+                      // ),
+                      child: Text(
+                        posts[i].title,
+                        style: TextStyle(fontSize: kTitle),
+                      ),
+                    ),
+                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.only(top: 7),
+                  //   alignment: Alignment.centerLeft,
+                  //   child: Text(posts[i].content,
+                  //       style: TextStyle(fontSize: kContentM)),
+                  // ),
+                ],
+              )),
         ],
       );
     }
@@ -134,6 +166,10 @@ class _ListScreenState extends State<ListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         itemCount: posts.length,
         itemBuilder: (context, i) {
+          if (i == posts.length - 1) {
+            return Container(
+                padding: const EdgeInsets.only(bottom: 30), child: item(i));
+          }
           return item(i);
         },
         separatorBuilder: (context, i) => const Divider(),

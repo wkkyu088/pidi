@@ -32,7 +32,7 @@ double kSubText = 12;
 BorderRadius kBorderRadius = BorderRadius.circular(10.0);
 
 // images in create_modal
-BorderRadius kBorderRadiusL = BorderRadius.circular(14.0);
+BorderRadius kBorderRadiusL = BorderRadius.circular(20.0);
 
 // textField in create_modal
 BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
@@ -41,3 +41,4 @@ BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
 final List<bool> calendarViewRatio = [false, true];
 final List<bool> listViewRatio = [true, false];
 final List<bool> galleryViewColumn = [false, false, true];
+String fontFamily = 'GowunDodum';

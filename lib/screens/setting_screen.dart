@@ -13,11 +13,7 @@ class SettingScreen extends StatefulWidget {
 enum Fonts { gowundodum, gowunbatang, gangwon, mapo, nanum }
 
 class _SettingScreenState extends State<SettingScreen> {
-  // final List<bool> calendarViewRatio = [false, true];
-  // final List<bool> listViewRatio = [true, false];
-  // final List<bool> galleryViewColumn = [false, false, true];
   Fonts? nowFont = Fonts.gowundodum;
-  String fontFamily = 'GowunDodum';
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +47,7 @@ class _SettingScreenState extends State<SettingScreen> {
           // color: kWhite,
           // borderColor: Colors.transparent,
           // selectedBorderColor: Colors.transparent,
-          color: kBlack,
+          color: kGrey,
           fillColor: kBlack,
           borderColor: kBlack,
           selectedBorderColor: kBlack,
@@ -140,6 +136,8 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
         appBar: customAppBar('설정'),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()),
           child: Center(
             child: Column(
               children: [

@@ -1,5 +1,3 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -20,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appWidth = MediaQuery.of(context).size.width;
-    const double calendarHeight = 500; // 1:1 => 380, 3:4 => 500
+    // 1:1 => 380, 3:4 => 500
+    double calendarHeight = calendarViewRatio.indexOf(true) == 0 ? 380 : 500;
 
     final kToday = DateTime.now();
     final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
