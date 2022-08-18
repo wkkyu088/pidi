@@ -133,6 +133,22 @@ class _SettingScreenState extends State<SettingScreen> {
       );
     }
 
+    Widget fontSaveButton() {
+      return TextButton(
+          onPressed: () {},
+          style: TextButton.styleFrom(
+            primary: kUnderline,
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            backgroundColor: kBlack,
+            shape: RoundedRectangleBorder(
+              borderRadius: kBorderRadius,
+            ),
+          ),
+          child:
+              Text('적용', style: TextStyle(color: kWhite, fontSize: kContentM)));
+    }
+
     return Scaffold(
         appBar: customAppBar('설정'),
         body: SingleChildScrollView(
@@ -151,7 +167,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   color: kUnderline,
                   width: width,
                   height: 1,
-                  margin: const EdgeInsets.only(bottom: 30),
+                  margin: const EdgeInsets.only(bottom: 20),
                 ),
                 Container(
                   padding: const EdgeInsets.all(6),
@@ -161,15 +177,18 @@ class _SettingScreenState extends State<SettingScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20.0),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              '폰트 변경',
-                              style: TextStyle(
-                                  color: kBlack,
-                                  fontSize: kTitle,
-                                  fontWeight: FontWeight.bold),
-                            )),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '폰트 변경',
+                                style: TextStyle(
+                                    color: kBlack,
+                                    fontSize: kTitle,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              fontSaveButton()
+                            ]),
                       ),
                       Center(
                         child: Container(
