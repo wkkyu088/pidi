@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pidi/models/item.dart';
+import 'package:pidi/screens/modify_screen.dart';
 
 import '../constants.dart';
 
@@ -53,7 +54,12 @@ class DetailScreen extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.more_horiz_rounded),
                 color: kBlack,
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ModifyScreen(post: post)));
+                }),
           ],
           elevation: 0,
           backgroundColor: kWhite,
