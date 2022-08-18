@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:pidi/constants.dart';
+import 'package:pidi/models/test.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -13,6 +14,17 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
+  // posts에서 이미지 가져올 수 있도록 작성했는데 화면에 이미지가 안 나와서 주석처리
+  // List images = [];
+  // void getImages() {
+  //   for (int i = 0; i < posts.length; i++) {
+  //     for (int j = 0; j < posts[i].images.length; j++) {
+  //       images.add([posts[i].date, posts[i].images[j]]);
+  //       print(posts[i].images[j]);
+  //     }
+  //   }
+  // }
+
   final images = [
     ['2020-02-02', './assets/images/img0.jpg'],
     ['2020-02-02', './assets/images/img1.jpg'],
@@ -30,19 +42,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     ['2020-02-02', './assets/images/img3.jpg'],
     ['2020-02-02', './assets/images/img4.jpg'],
     ['2020-02-02', './assets/images/img0.jpg'],
-    ['2020-02-02', './assets/images/img1.jpg'],
-    ['2020-02-02', './assets/images/img2.jpg'],
-    ['2020-02-02', './assets/images/img3.jpg'],
-    ['2020-02-02', './assets/images/img4.jpg'],
-    ['2020-02-02', './assets/images/img1.jpg'],
-    ['2020-02-02', './assets/images/img2.jpg'],
-    ['2020-02-02', './assets/images/img3.jpg'],
-    ['2020-02-02', './assets/images/img4.jpg'],
-    ['2020-02-02', './assets/images/img0.jpg'],
-    ['2020-02-02', './assets/images/img1.jpg'],
-    ['2020-02-02', './assets/images/img2.jpg'],
-    ['2020-02-02', './assets/images/img3.jpg'],
-    ['2020-02-02', './assets/images/img4.jpg'],
+    ['2020-02-02', './assets/images/img1.jpg']
   ];
 
   @override
@@ -52,7 +52,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         body: Container(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
           child: MasonryGridView.count(
-            crossAxisCount: 3,
+            crossAxisCount: galleryViewColumn.indexOf(true) + 1,
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index) => Container(
               margin:

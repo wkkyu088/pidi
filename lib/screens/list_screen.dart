@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:pidi/screens/detail_screen.dart';
+import 'package:pidi/screens/modify_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -26,35 +27,25 @@ class _ListScreenState extends State<ListScreen> {
       return Stack(
         alignment: Alignment.center,
         children: [
-          // 1:1 비율 이미지
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-            decoration: BoxDecoration(
-                borderRadius: kBorderRadius,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: Image.asset(posts[i].images[j].toString()).image,
-                )),
-          ),
-          // ClipRRect(
-          //     borderRadius: kBorderRadiusL,
-          //     child: Image.asset(posts[i].images[j].toString(),
-          //         fit: BoxFit.cover)),
-          // 몇페이지인지 나타내기
-          // posts[i].images.length != 1
-          //     ? Positioned(
-          //         bottom: 20,
-          //         child: AnimatedSmoothIndicator(
-          //           activeIndex: j,
-          //           count: posts[i].images.length,
-          //           effect: ScrollingDotsEffect(
-          //             dotHeight: 8,
-          //             dotWidth: 8,
-          //             dotColor: kGrey,
-          //             activeDotColor: kWhite,
-          //           ),
-          //         ))
-          //     : Container(),
+          listViewRatio[0] == true
+              // 1:1 비율 이미지
+              ? Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                      borderRadius: kBorderRadius,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: Image.asset(posts[i].images[j].toString()).image,
+                      )),
+                )
+              : Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    fit: BoxFit.scaleDown,
+                    image: Image.asset(posts[i].images[j].toString()).image,
+                  )),
+                ),
         ],
       );
     }
@@ -75,7 +66,13 @@ class _ListScreenState extends State<ListScreen> {
                   icon: const Icon(Icons.more_horiz_rounded),
                   constraints: const BoxConstraints(),
                   color: kBlack,
-                  onPressed: () {}),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ModifyScreen(post: posts[i])));
+                  }),
             ],
           ),
           Stack(
@@ -117,7 +114,8 @@ class _ListScreenState extends State<ListScreen> {
                                 color: kWhite.withOpacity(0.8),
                                 fontSize: kContentS,
                                 fontWeight: FontWeight.bold)),
-                      ))
+                      ),
+                    )
                   : Container()
             ],
           ),

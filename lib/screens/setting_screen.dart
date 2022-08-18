@@ -13,9 +13,9 @@ class SettingScreen extends StatefulWidget {
 enum Fonts { gowundodum, gowunbatang, gangwon, mapo, nanum }
 
 class _SettingScreenState extends State<SettingScreen> {
-  final List<bool> calendarViewRatio = [false, true];
-  final List<bool> listViewRatio = [true, false];
-  final List<bool> galleryViewColumn = [false, false, true];
+  // final List<bool> calendarViewRatio = [false, true];
+  // final List<bool> listViewRatio = [true, false];
+  // final List<bool> galleryViewColumn = [false, false, true];
   Fonts? nowFont = Fonts.gowundodum;
   String fontFamily = 'GowunDodum';
 

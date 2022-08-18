@@ -36,3 +36,8 @@ BorderRadius kBorderRadiusL = BorderRadius.circular(14.0);
 
 // textField in create_modal
 BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
+
+// settings
+final List<bool> calendarViewRatio = [false, true];
+final List<bool> listViewRatio = [true, false];
+final List<bool> galleryViewColumn = [false, false, true];
