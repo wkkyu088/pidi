@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'package:pidi/models/item.dart';
+
 import '../constants.dart';
 
-class DetailScreen extends StatefulWidget {
-  const DetailScreen({Key? key}) : super(key: key);
-
-  @override
-  State<DetailScreen> createState() => _DetailScreenState();
-}
-
-class _DetailScreenState extends State<DetailScreen> {
-  final List<String> images = <String>['0', '1', '2', '3'];
+class DetailScreen extends StatelessWidget {
+  final Item post;
+  const DetailScreen({
+    Key? key,
+    required this.post,
+  }) : super(key: key);
 
   Widget item(i) {
     return Container(
@@ -19,8 +18,7 @@ class _DetailScreenState extends State<DetailScreen> {
       child: SizedBox(
         child: ClipRRect(
             borderRadius: kBorderRadius,
-            child: Image.asset('./assets/images/img${images[i]}.jpg',
-                fit: BoxFit.fill)),
+            child: Image.asset(post.images[i].toString(), fit: BoxFit.fill)),
       ),
     );
   }
@@ -28,7 +26,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget _buildImages() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: images.length,
+      itemCount: post.images.length,
       itemBuilder: (context, i) {
         return item(i);
       },
@@ -37,16 +35,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String date = '2020-07-04';
-    String titleValue = '디자인은 힘들다.';
-    String contentValue = "일기를 쓸 공간이다.\n조금 허전하다.\n오늘의 일기 끝";
+    String date = post.date;
+    String titleValue = post.title;
+    String contentValue = post.content;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded),
               color: kBlack,
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context).pop(context);
+              }),
           title:
               Text(date, style: TextStyle(color: kBlack, fontSize: kContentM)),
           actions: [

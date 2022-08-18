@@ -71,7 +71,7 @@ class _ListScreenState extends State<ListScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ModifyScreen(post: posts[i])));
+                                DetailScreen(post: posts[i])));
                   }),
             ],
           ),
