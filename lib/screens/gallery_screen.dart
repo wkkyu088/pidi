@@ -61,7 +61,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           child: MasonryGridView.count(
             physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics()),
-            crossAxisCount: galleryViewColumn.indexOf(true) + 1,
+            crossAxisCount: galleryViewSetting.indexOf(true) + 1,
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index) => Container(
               margin:

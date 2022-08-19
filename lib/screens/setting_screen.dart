@@ -23,7 +23,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
     Widget buttonItem(w, s, listValue) {
       return Container(
-          // color: listValue ? kBlack : const Color(0xFFD9D9D9),
           width: width / w - 8,
           alignment: Alignment.center,
           child: Text(s, style: TextStyle(fontSize: kTitle)));
@@ -44,9 +43,6 @@ class _SettingScreenState extends State<SettingScreen> {
             });
           },
           selectedColor: kWhite,
-          // color: kWhite,
-          // borderColor: Colors.transparent,
-          // selectedBorderColor: Colors.transparent,
           color: kGrey,
           fillColor: kBlack,
           borderColor: kBlack,
@@ -72,17 +68,21 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Row(children: [
+                Text(
                   title,
                   style: TextStyle(
                       color: kBlack,
                       fontSize: kTitle,
                       fontWeight: FontWeight.bold),
                 ),
-              ),
+                IconButton(
+                    constraints: const BoxConstraints(),
+                    onPressed: () {},
+                    icon: Icon(Icons.help_outline_rounded,
+                        size: 19, color: kGrey))
+              ]),
             ),
             customToggleButton(selectList, children)
           ],
@@ -158,11 +158,11 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Column(
               children: [
                 settingItem(
-                    140.0, '캘린더보기 비율', calendarViewRatio, ['1:1 비율', '3:4 비율']),
+                    140.0, '캘린더보기', calendarViewSetting, ['1:1 비율', '3:4 비율']),
                 settingItem(
-                    140.0, '리스트보기 비율', listViewRatio, ['1:1 비율', '원본 비율']),
+                    140.0, '리스트보기', listViewSetting, ['전체 보기', '제목만 보기']),
                 settingItem(
-                    140.0, '갤러리보기 단수', galleryViewColumn, ['1단', '2단', '3단']),
+                    140.0, '갤러리보기', galleryViewSetting, ['1단', '2단', '3단']),
                 Container(
                   color: kUnderline,
                   width: width,

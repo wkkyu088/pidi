@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appWidth = MediaQuery.of(context).size.width;
     // 1:1 => 380, 3:4 => 500
-    double calendarHeight = calendarViewRatio.indexOf(true) == 0 ? 380 : 500;
+    double calendarHeight = calendarViewSetting.indexOf(true) == 0 ? 380 : 500;
 
     final kToday = DateTime.now();
     final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
