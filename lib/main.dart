@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:pidi/screens/splash_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
@@ -13,7 +12,7 @@ import './constants.dart';
 import './widgets/create_modal.dart';
 
 void main() {
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +24,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'GowunDodum'),
       home: const SplashScreen(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', 'KR'),
+      ],
     );
   }
 }
