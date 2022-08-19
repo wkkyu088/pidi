@@ -27,27 +27,50 @@ class _ListScreenState extends State<ListScreen> {
       return Stack(
         alignment: Alignment.center,
         children: [
-          listViewRatio[0] == true
-              // 1:1 비율 이미지
-              ? Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: BoxDecoration(
-                      borderRadius: kBorderRadius,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: Image.asset(posts[i].images[j].toString()).image,
-                      )),
-                )
-              : Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.scaleDown,
-                    image: Image.asset(posts[i].images[j].toString()).image,
-                  )),
-                ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+            decoration: BoxDecoration(
+                borderRadius: kBorderRadius,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: Image.asset(posts[i].images[j].toString()).image,
+                )),
+          )
         ],
       );
+    }
+
+    Widget moreText(i) {
+      return TextButton(
+          style: TextButton.styleFrom(
+            primary: kGrey,
+            minimumSize: Size.zero,
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailScreen(post: posts[i])));
+          },
+          child: Text('더보기', style: TextStyle(color: kGrey)));
+    }
+
+    Widget multilineText(i) {
+      List strList = posts[i].content.split('\n');
+      if (strList.length > 3) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(strList.sublist(0, 3).join('\n'),
+                style: TextStyle(fontSize: kContentM)),
+            moreText(i)
+          ],
+        );
+      } else {
+        return Text(posts[i].content, style: TextStyle(fontSize: kContentM));
+      }
     }
 
     Widget item(i) {
@@ -120,39 +143,50 @@ class _ListScreenState extends State<ListScreen> {
             ],
           ),
           Container(
+              color: kWhite,
+              width: width,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
               alignment: Alignment.centerLeft,
               child: Column(
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: Container(
-                      // decoration: BoxDecoration(
-                      //   gradient: LinearGradient(
-                      //     begin: Alignment.topCenter,
-                      //     end: Alignment.bottomCenter,
-                      //     stops: const [
-                      //       0.65,
-                      //       0.35,
-                      //     ],
-                      //     colors: [
-                      //       kWhite,
-                      //       kUnderline,
-                      //     ],
-                      //   ),
-                      // ),
-                      child: Text(
-                        posts[i].title,
-                        style: TextStyle(fontSize: kTitle),
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: listViewSetting[0] == true
+                              ? BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    stops: const [
+                                      0.65,
+                                      0.35,
+                                    ],
+                                    colors: [
+                                      kWhite,
+                                      kUnderline,
+                                    ],
+                                  ),
+                                )
+                              : const BoxDecoration(),
+                          child: Text(
+                            posts[i].title,
+                            style: TextStyle(fontSize: kTitle),
+                          ),
+                        ),
+                        listViewSetting[1] == true ? moreText(i) : Container()
+                      ],
                     ),
                   ),
-                  // Container(
-                  //   padding: const EdgeInsets.only(top: 7),
-                  //   alignment: Alignment.centerLeft,
-                  //   child: Text(posts[i].content,
-                  //       style: TextStyle(fontSize: kContentM)),
-                  // ),
+                  listViewSetting[0] == true
+                      ? Container(
+                          padding: const EdgeInsets.only(top: 7),
+                          alignment: Alignment.centerLeft,
+                          child: multilineText(i),
+                        )
+                      : Container()
                 ],
               )),
         ],

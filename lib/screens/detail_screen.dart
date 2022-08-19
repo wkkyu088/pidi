@@ -95,15 +95,22 @@ class DetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Expanded(flex: 1, child: _buildImages()),
+              const SizedBox(height: 10),
               Expanded(
                 flex: 2,
-                child: Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Container(
-                        decoration: const BoxDecoration(),
-                        child: Text(contentValue,
-                            style: TextStyle(height: 2, fontSize: kContentM)))),
+                child: RawScrollbar(
+                  thumbColor: kUnderline,
+                  radius: const Radius.circular(20),
+                  child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics()),
+                      child: Container(
+                          alignment: Alignment.topLeft,
+                          decoration: const BoxDecoration(),
+                          child: Text(contentValue,
+                              style:
+                                  TextStyle(height: 2, fontSize: kContentM)))),
+                ),
               )
             ])));
   }
