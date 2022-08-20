@@ -78,6 +78,11 @@ class ModifyScreen extends StatelessWidget {
         title: post.title,
         content: post.content,
         images: post.images);
+    var title_controller = TextEditingController();
+    title_controller.text = post.title;
+
+    var contents_controller = TextEditingController();
+    contents_controller.text = post.content;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,7 +102,7 @@ class ModifyScreen extends StatelessWidget {
         actions: [
           // 아이콘 변경
           IconButton(
-              icon: const Icon(Icons.save_alt_rounded),
+              icon: const Icon(Icons.check_rounded),
               color: kBlack,
               onPressed: () {
                 showDialog(
@@ -107,7 +112,7 @@ class ModifyScreen extends StatelessWidget {
                     context: context);
               }),
           IconButton(
-              icon: const Icon(Icons.delete_forever_rounded),
+              icon: const Icon(Icons.delete_rounded),
               color: kBlack,
               onPressed: () {
                 showDialog(
@@ -141,11 +146,11 @@ class ModifyScreen extends StatelessWidget {
                 //       ),
                 //     ),
                 child: TextField(
+                  controller: title_controller,
                   onChanged: (text) {
                     rePost.title = text;
                   },
                   decoration: InputDecoration(
-                    hintText: post.title,
                     border: InputBorder.none,
                   ),
                   style: TextStyle(
@@ -165,11 +170,11 @@ class ModifyScreen extends StatelessWidget {
                   child: Container(
                       decoration: const BoxDecoration(),
                       child: TextField(
+                          controller: contents_controller,
                           onChanged: (text) {
                             rePost.content = text;
                           },
                           decoration: InputDecoration(
-                            hintText: post.content,
                             border: InputBorder.none,
                           ),
                           style: TextStyle(height: 2, fontSize: kContentM)))),
