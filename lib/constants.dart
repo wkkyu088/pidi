@@ -43,3 +43,8 @@ final List<bool> listViewSetting = [true, false];
 final List<bool> galleryViewSetting = [false, false, true];
 final List<bool> datePickerSetting = [true, false];
 String fontFamily = 'GowunDodum';
+
+// calendar day setting
+final kToday = DateTime.now();
+final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
+final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);

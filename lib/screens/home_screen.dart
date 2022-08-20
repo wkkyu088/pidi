@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:pidi/screens/detail_screen.dart';
 
 import '../constants.dart';
+import 'package:pidi/models/test.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,27 +20,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double appWidth = MediaQuery.of(context).size.width;
-    // 1:1 => 380, 3:4 => 500
-    double calendarHeight = calendarViewSetting.indexOf(true) == 0 ? 380 : 500;
-
-    final kToday = DateTime.now();
-    final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
-    final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
+    // 1:1 => appWidth / 7 * 5 + 100
+    // 3:4 => appWidth / 7 * 1.3 * 5 + 100
+    double calendarHeight = calendarViewSetting.indexOf(true) == 0
+        ? appWidth / 7 * 5 + 100
+        : appWidth / 7 * 1.3 * 5 + 100;
 
     void onTodayButtonTap() {
-      setState(() => _focusedDay = DateTime.now());
+      setState(() {
+        _selectedDay = DateTime.now();
+        _focusedDay = DateTime.now();
+      });
     }
 
     return Padding(
       padding: EdgeInsets.only(top: statusBarHeight),
       child: Stack(
         children: [
+          // 언더라인
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              width: 90,
+              width: 96,
               height: 30,
-              margin: const EdgeInsets.only(top: 15.0),
+              margin: const EdgeInsets.only(top: 17.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -57,10 +62,169 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Column(
             children: [
+              // 캘린더
               Container(
                 margin: const EdgeInsets.only(bottom: 20.0),
                 height: calendarHeight,
                 child: TableCalendar(
+                  calendarBuilders: CalendarBuilders(
+                    // 특정한 날 설정
+                    prioritizedBuilder: (context, day, focusedDay) {
+                      // post가 있는 날
+                      for (int i = 0; i < posts.length; i++) {
+                        if (day.year ==
+                                int.parse(posts[i].date.substring(0, 4)) &&
+                            day.month ==
+                                int.parse(posts[i].date.substring(5, 7)) &&
+                            day.day == int.parse(posts[i].date.substring(8))) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedDay = day;
+                                _focusedDay = day;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DetailScreen(post: posts[i])));
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: day == _selectedDay
+                                            ? Border.all(
+                                                color: kBlack, width: 2.5)
+                                            : day.year == kToday.year &&
+                                                    day.month == kToday.month &&
+                                                    day.day == kToday.day
+                                                ? Border.all(
+                                                    color: kPoint, width: 2.5)
+                                                : const Border(),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(posts[i]
+                                                .images[0]
+                                                .toString())))),
+                                // 사진 여러개인 것 개수 표시
+                                posts[i].images.length > 1
+                                    ? Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Container(
+                                            width: 18,
+                                            height: 18,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.black.withOpacity(0.4),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                posts[i]
+                                                    .images
+                                                    .length
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: kSubText,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: kWhite),
+                                              ),
+                                            )),
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                          );
+                        }
+                      }
+                      // 토요일
+                      if (day.weekday == DateTime.saturday &&
+                          kToday.difference(day).inDays >= 0) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              border: day == _selectedDay
+                                  ? Border.all(color: kBlack, width: 2.5)
+                                  : day.year == kToday.year &&
+                                          day.month == kToday.month &&
+                                          day.day == kToday.day
+                                      ? Border.all(color: kPoint, width: 2.5)
+                                      : const Border()),
+                          alignment: Alignment.center,
+                          child: Text(day.day.toString(),
+                              style: TextStyle(
+                                  fontSize: kContentM,
+                                  color: const Color(0xFF567DC2))),
+                        );
+                      }
+                      // 일요일
+                      else if (day.weekday == DateTime.sunday &&
+                          kToday.difference(day).inDays >= 0) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: day == _selectedDay
+                                ? Border.all(color: kBlack, width: 2.5)
+                                : day.year == kToday.year &&
+                                        day.month == kToday.month &&
+                                        day.day == kToday.day
+                                    ? Border.all(color: kPoint, width: 2.5)
+                                    : const Border(),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(day.day.toString(),
+                              style: TextStyle(
+                                  fontSize: kContentM,
+                                  color: const Color(0xFFE75959))),
+                        );
+                      }
+                      return null;
+                    },
+                    // 오늘 설정
+                    todayBuilder: (context, day, focusedDay) {
+                      return Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: kPoint, width: 2.5)),
+                        child: Text(day.day.toString(),
+                            style:
+                                TextStyle(fontSize: kContentM, color: kBlack)),
+                      );
+                    },
+                    // 선택한 날 설정
+                    selectedBuilder: (context, day, focusedDay) {
+                      return Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: kBlack, width: 2.5)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          day.day.toString(),
+                          style: TextStyle(color: kBlack, fontSize: kContentM),
+                        ),
+                      );
+                    },
+                    // 요일 이름 설정
+                    dowBuilder: (context, day) {
+                      if (day.weekday == DateTime.saturday) {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: Text('토',
+                              style: TextStyle(
+                                  fontSize: kContentM,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF567DC2))),
+                        );
+                      } else if (day.weekday == DateTime.sunday) {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: Text('일',
+                              style: TextStyle(
+                                  fontSize: kContentM,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFFE75959))),
+                        );
+                      }
+                      return null;
+                    },
+                  ),
                   shouldFillViewport: true,
                   locale: 'ko-KR',
                   firstDay: kFirstDay,
@@ -83,24 +247,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   daysOfWeekHeight: 28,
                   daysOfWeekStyle: DaysOfWeekStyle(
-                      weekdayStyle: TextStyle(
-                          color: kBlack,
-                          fontSize: kContentM,
-                          fontWeight: FontWeight.bold),
-                      weekendStyle: TextStyle(
-                          color: kPoint,
-                          fontSize: kContentM,
-                          fontWeight: FontWeight.bold)),
+                    weekdayStyle: TextStyle(
+                        color: kBlack,
+                        fontSize: kContentM,
+                        fontWeight: FontWeight.bold),
+                  ),
                   headerStyle: HeaderStyle(
                     titleCentered: true,
                     formatButtonVisible: false,
                     leftChevronIcon: Icon(Icons.chevron_left_rounded,
-                        size: 26, color: kBlack),
+                        size: 30, color: kBlack),
+                    leftChevronPadding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     rightChevronIcon: Icon(Icons.chevron_right_rounded,
-                        size: 26, color: kBlack),
+                        size: 30, color: kBlack),
+                    rightChevronPadding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     titleTextStyle: TextStyle(
                         color: kBlack,
-                        fontSize: kTitle,
+                        fontSize: kTitle + 2,
                         fontWeight: FontWeight.bold),
                   ),
                   calendarStyle: CalendarStyle(
@@ -111,23 +276,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     defaultTextStyle:
                         TextStyle(color: kBlack, fontSize: kContentM),
                     defaultDecoration: const BoxDecoration(),
-                    weekendTextStyle:
-                        TextStyle(color: kPoint, fontSize: kContentM),
-                    weekendDecoration: const BoxDecoration(),
-                    todayTextStyle: const TextStyle(color: Colors.transparent),
-                    todayDecoration: BoxDecoration(
-                        image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('./assets/images/img0.jpg')),
-                        border: Border.all(color: kPoint, width: 2.5)),
-                    selectedDecoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(color: kBlack, width: 2.5),
-                    ),
-                    disabledDecoration: const BoxDecoration(),
                   ),
                 ),
               ),
+              // 하단 배경
               SizedBox(
                   width: appWidth,
                   child: const Image(
@@ -135,17 +287,59 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(child: Container(color: kBackground))
             ],
           ),
-          Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                margin: const EdgeInsets.only(top: 10.0, left: 120.0),
-                child: IconButton(
-                    onPressed: () {
-                      onTodayButtonTap();
-                    },
-                    icon: Icon(Icons.calendar_today_rounded,
-                        size: 22, color: kPoint)),
-              ))
+          // 오늘로 돌아가는 버튼
+          Container(
+              alignment: Alignment.topRight,
+              // 1. [오늘] 버튼
+              margin: const EdgeInsets.only(top: 22, right: 50),
+              child: TextButton(
+                  onPressed: () {
+                    onTodayButtonTap();
+                  },
+                  style: TextButton.styleFrom(
+                    primary: kBlack.withOpacity(0.5),
+                    side: BorderSide(color: kBlack, width: 1.5),
+                    shape: RoundedRectangleBorder(borderRadius: kBorderRadiusL),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                    minimumSize: Size.zero,
+                  ),
+                  child: Text(
+                    '오늘',
+                    style: TextStyle(
+                        color: kBlack,
+                        fontSize: kSubText + 1,
+                        fontWeight: FontWeight.bold),
+                  ))
+              // 2. 아이콘 버튼
+              // margin: const EdgeInsets.only(top: 10, right: 40),
+              // child: IconButton(
+              //     onPressed: () {
+              //       onTodayButtonTap();
+              //     },
+              //     icon: Icon(Icons.event_available_rounded,
+              //         size: 24, color: kBlack)),
+              // 3. 날짜(숫자) 버튼
+              // margin: const EdgeInsets.only(top: 9, right: 40),
+              // child: OutlinedButton(
+              //   style: OutlinedButton.styleFrom(
+              //     primary: kBlack.withOpacity(0.5),
+              //     side: BorderSide(color: kBlack, width: 1.5),
+              //     shape: RoundedRectangleBorder(borderRadius: kBorderRadiusS),
+              //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
+              //     minimumSize: Size.zero,
+              //   ),
+              //   onPressed: () {
+              //     onTodayButtonTap();
+              //   },
+              //   child: Text(kToday.day.toString(),
+              //       style: TextStyle(
+              //           color: kBlack,
+              //           fontSize: kContentS,
+              //           fontWeight: FontWeight.bold)),
+              // ),
+              )
         ],
       ),
     );
