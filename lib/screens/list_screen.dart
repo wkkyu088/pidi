@@ -23,20 +23,65 @@ class _ListScreenState extends State<ListScreen> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width - 30;
 
-    Widget postItem(i, j) {
-      return Stack(
-        alignment: Alignment.center,
+    Widget imageDialog(i, j) {
+      return Column(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5.0),
-            decoration: BoxDecoration(
-                borderRadius: kBorderRadius,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: Image.asset(posts[i].images[j].toString()).image,
-                )),
-          )
+            width: 40,
+            height: 50,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(top: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.close_rounded,
+                size: 30,
+                color: kWhite,
+              ),
+            ),
+          ),
+          Expanded(
+            child: CarouselSlider.builder(
+                options: CarouselOptions(
+                  enableInfiniteScroll: false,
+                  disableCenter: true,
+                  viewportFraction: 1.0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current[i] = index;
+                    });
+                  },
+                ),
+                itemCount: posts[i].images.length,
+                itemBuilder: (context, j, realidx) {
+                  return Image.asset(posts[i].images[j].toString());
+                }),
+          ),
         ],
+      );
+    }
+
+    Widget postItem(i, j) {
+      return GestureDetector(
+        onTap: () {
+          showDialog(
+              barrierColor: Colors.black.withOpacity(0.8),
+              context: context,
+              builder: (BuildContext context) {
+                return imageDialog(i, j);
+              });
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: BoxDecoration(
+              borderRadius: kBorderRadius,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: Image.asset(posts[i].images[j].toString()).image,
+              )),
+        ),
       );
     }
 
@@ -134,7 +179,7 @@ class _ListScreenState extends State<ListScreen> {
                         child: Text(
                             '${_current[i] + 1} / ${posts[i].images.length}',
                             style: TextStyle(
-                                color: kWhite.withOpacity(0.8),
+                                color: kWhite.withOpacity(0.9),
                                 fontSize: kContentS,
                                 fontWeight: FontWeight.bold)),
                       ),
