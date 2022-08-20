@@ -79,7 +79,7 @@ class ModifyScreen extends StatelessWidget {
         content: post.content,
         images: post.images);
     var title_controller = TextEditingController();
-    title_controller.text = post.title;
+    title_controller.text = '제목: ' + post.title;
 
     var contents_controller = TextEditingController();
     contents_controller.text = post.content;
