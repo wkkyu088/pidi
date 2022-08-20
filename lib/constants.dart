@@ -41,4 +41,5 @@ BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
 final List<bool> calendarViewSetting = [false, true];
 final List<bool> listViewSetting = [true, false];
 final List<bool> galleryViewSetting = [false, false, true];
+final List<bool> datePickerSetting = [true, false];
 String fontFamily = 'GowunDodum';
