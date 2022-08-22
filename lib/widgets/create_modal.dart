@@ -146,7 +146,6 @@ class _CreateModalState extends State<CreateModal> {
             maxLines: maxLines,
             maxLength: maxLength,
             onChanged: onChange,
-            cursorColor: kBlack,
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(fontSize: kContentM, color: kGrey),

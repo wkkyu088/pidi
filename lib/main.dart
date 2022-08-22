@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:pidi/screens/splash_screen.dart';
 import 'package:pidi/screens/test_screen.dart';
 
@@ -32,7 +30,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'GowunDodum'),
+      theme: ThemeData(
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: kBlack,
+          onPrimary: kBlack,
+          secondary: kGrey,
+          onSecondary: kGrey,
+          error: kPoint,
+          onError: kPoint,
+          background: kWhite,
+          onBackground: kWhite,
+          surface: kBlack,
+          onSurface: kBlack,
+        ),
+        fontFamily: 'GowunDodum',
+        textSelectionTheme: TextSelectionThemeData(
+            cursorColor: kBlack,
+            selectionHandleColor: kBlack,
+            selectionColor: kGrey.withOpacity(0.5)),
+      ),
       home: const SplashScreen(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -101,7 +118,7 @@ class _MainPageState extends State<MainPage> {
                 },
               );
             },
-            child: const Icon(Icons.add_rounded, size: 32),
+            child: Icon(Icons.add_rounded, size: 32, color: kWhite),
           ),
           bottomNavigationBar: Theme(
             data: ThemeData(
