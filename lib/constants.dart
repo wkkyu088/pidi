@@ -42,6 +42,7 @@ final List<bool> calendarViewSetting = [false, true];
 final List<bool> listViewSetting = [true, false];
 final List<bool> galleryViewSetting = [false, false, true];
 final List<bool> datePickerSetting = [true, false];
+final List<bool> startingDayofWeekSetting = [true, false];
 String fontFamily = 'GowunDodum';
 
 // calendar day setting
