@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import '../constants.dart';
 
@@ -25,61 +27,111 @@ class _CreateModalState extends State<CreateModal> {
   DateTime dateTime = DateTime.now();
   final DatePickerController _controller = DatePickerController();
 
+  final ImagePicker picker = ImagePicker();
+  List<XFile?> _pickedImages = [];
+
+  Future getImage(ImageSource imageSource) async {
+    final List<XFile>? images = await picker.pickMultiImage();
+    if (images != null) {
+      setState(() {
+        if (images.length > 5) {
+          _pickedImages = images.sublist(0, 5);
+          showDialog(
+              context: context,
+              barrierColor: Colors.transparent,
+              builder: (BuildContext context) {
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.pop(context);
+                });
+
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: kBorderRadiusL),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  insetPadding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.8),
+                  elevation: 0,
+                  backgroundColor: kWhite,
+                  content: Builder(
+                    builder: (context) {
+                      return Container(
+                          width: 100,
+                          height: 20,
+                          alignment: Alignment.center,
+                          child: Text(
+                            '최대 5장까지 등록 가능합니다.',
+                            style:
+                                TextStyle(color: kBlack, fontSize: kContentM),
+                          ));
+                    },
+                  ),
+                );
+              });
+        } else {
+          _pickedImages = images;
+        }
+      });
+    }
+  }
+
+  Widget uploadImage(onPressed) {
+    return SizedBox(
+      width: 80,
+      height: 80,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          primary: kGrey,
+          shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
+          side: BorderSide(color: kGrey),
+        ),
+        child: Icon(
+          Icons.add_rounded,
+          color: kGrey,
+          size: 26,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<String> images = <String>['0', '1'];
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
-
-    Widget uploadImage() {
-      return SizedBox(
-        width: 80,
-        height: 80,
-        child: OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            primary: kGrey,
-            shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
-            side: BorderSide(color: kGrey),
-          ),
-          child: Icon(
-            Icons.add_rounded,
-            color: kGrey,
-            size: 26,
-          ),
-        ),
-      );
-    }
 
     Widget item(i) {
       return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(right: 6.0),
         child: SizedBox(
-          width: 80,
-          height: 80,
-          child: ClipRRect(
-              borderRadius: kBorderRadius,
-              child: Image.asset('./assets/images/img${images[i]}.jpg',
-                  fit: BoxFit.cover)),
-        ),
+            width: 80,
+            height: 80,
+            child: Container(
+              decoration: i <= _pickedImages.length - 1
+                  ? BoxDecoration(
+                      borderRadius: kBorderRadius,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: FileImage(File(_pickedImages[i]!.path))))
+                  : null,
+            )),
       );
     }
 
-    Widget _buildImages() {
-      if (images.isEmpty) {
-        return Align(alignment: Alignment.centerLeft, child: uploadImage());
+    Widget _buildImages(onPressed) {
+      if (_pickedImages.isEmpty) {
+        return Align(
+            alignment: Alignment.centerLeft, child: uploadImage(onPressed));
       }
       return ListView.builder(
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
         scrollDirection: Axis.horizontal,
-        itemCount: images.length,
+        itemCount: _pickedImages.length,
         itemBuilder: (context, i) {
-          if (i == images.length - 1) {
+          if (i == _pickedImages.length - 1) {
             return Row(
               children: [
                 item(i),
-                images.length == 5 ? Container() : uploadImage()
+                _pickedImages.length >= 5 ? Container() : uploadImage(onPressed)
               ],
             );
           }
@@ -297,9 +349,12 @@ class _CreateModalState extends State<CreateModal> {
                                 ))
                             // 1-2. 슬라이더형
                             : Container(
-                                height: 55,
+                                height: 60,
+                                // color: kPoint,
                                 margin:
                                     const EdgeInsets.only(top: 13, bottom: 4),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2),
                                 child: DatePicker(
                                   DateTime.now()
                                       .subtract(const Duration(days: 31)),
@@ -325,7 +380,11 @@ class _CreateModalState extends State<CreateModal> {
                                 ),
                               ),
                         // 2. 이미지 리스트
-                        SizedBox(height: 90, child: _buildImages()),
+                        SizedBox(
+                            height: 90,
+                            child: _buildImages(() {
+                              getImage(ImageSource.gallery);
+                            })),
                         // 3. 텍스트 필드
                         SizedBox(
                             height: 256,
@@ -362,7 +421,7 @@ class _CreateModalState extends State<CreateModal> {
                                 }),
                                 customTextButton('저장', kBlack, () {})
                               ],
-                            ))
+                            )),
                       ],
                     ),
                   ),
