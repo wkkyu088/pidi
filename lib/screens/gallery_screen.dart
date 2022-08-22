@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,14 +19,27 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  final Stream<QuerySnapshot> posts =
-      FirebaseFirestore.instance.collection('posts').snapshots();
+  var db = FirebaseFirestore.instance.collection('posts');
   List galleryList = [];
+
+  List<String> getImages(DocumentSnapshot<Map<String, dynamic>> value) {
+    // 값도 잘 전달됨 확인
+    print('in');
+    print(value['images']);
+    List<String> imgList = [];
+    for (int i = 0; i < value['images'].length(); i++) {
+      print(value['images'][i]);
+      imgList.add(value['images'][i].toString());
+    }
+    print('out');
+    print(imgList);
+    return imgList;
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: posts,
+        stream: db.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Wrong");
@@ -53,17 +68,43 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         vertical: 5.0, horizontal: 5.0),
                     child: GestureDetector(
                       onTap: () async {
-                        Item detailPost = Item(
-                            title: "투썸플레이스",
-                            date: "2022-08-10",
-                            content: "케이크 맛집으로 마케팅을 잘했어\n케이크 맛집",
-                            images: ["./assets/images/img4.jpg"]);
+                        // value를 통해 해당 id doc 접근 완료
+                        var detail = await db
+                            .doc(galleryList[index][0])
+                            .get()
+                            .then((value) {
+                          return Item(
+                              title: value['title'],
+                              date: value['date'],
+                              content: value['content'],
+                              images: [
+                                "https://firebasestorage.googleapis.com/v0/b/pidi-b580e.appspot.com/o/img1.jpg?alt=media&token=93fca8ea-f813-4a58-ba78-13337ea1f538"
+                              ]);
+
+                          // Error: NoSuchMethodError: 'call'
+                          // Dynamic call of object has no instance method 'call'.
+                          // Receiver: 4
+                          // Arguments: []
+                          // images: getImages(value));
+
+                          // Error: Expected a value of type 'List<String>', but got one of type 'List<dynamic>'
+                          // images: value['images']
+                          //     .map((e) => e.toString())
+                          //     .toList());
+                        });
+                        print(detail);
+                        // Item detailPost = Item.fromJson(detail);
+                        // Item(
+                        //     title: "투썸플레이스",
+                        //     date: "2022-08-10",
+                        //     content: "케이크 맛집으로 마케팅을 잘했어\n케이크 맛집",
+                        //     images: ["./assets/images/img4.jpg"]);
 
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    TestDetailScreen(post: detailPost)));
+                                    TestDetailScreen(post: detail)));
                       },
                       child: Stack(
                         children: <Widget>[
