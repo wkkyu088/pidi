@@ -23,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // 1:1 => appWidth / 7 * 5 + 100
     // 3:4 => appWidth / 7 * 1.3 * 5 + 100
     double calendarHeight = calendarViewSetting.indexOf(true) == 0
-        ? appWidth / 7 * 5 + 100
-        : appWidth / 7 * 1.3 * 5 + 100;
+        ? appWidth / 7 * 5 + 160
+        : appWidth / 7 * 1.3 * 5 + 160;
 
     void onTodayButtonTap() {
       setState(() {
@@ -67,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: const EdgeInsets.only(bottom: 20.0),
                 height: calendarHeight,
                 child: TableCalendar(
+                  sixWeekMonthsEnforced: true,
                   calendarBuilders: CalendarBuilders(
                     // 특정한 날 설정
                     prioritizedBuilder: (context, day, focusedDay) {
@@ -244,7 +245,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPageChanged: (focusedDay) {
                     _focusedDay = focusedDay;
                   },
-                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  startingDayOfWeek: startingDayofWeekSetting[0] == true
+                      ? StartingDayOfWeek.sunday
+                      : StartingDayOfWeek.monday,
                   daysOfWeekHeight: 28,
                   daysOfWeekStyle: DaysOfWeekStyle(
                     weekdayStyle: TextStyle(
@@ -311,35 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: kBlack,
                         fontSize: kSubText + 1,
                         fontWeight: FontWeight.bold),
-                  ))
-              // 2. 아이콘 버튼
-              // margin: const EdgeInsets.only(top: 10, right: 40),
-              // child: IconButton(
-              //     onPressed: () {
-              //       onTodayButtonTap();
-              //     },
-              //     icon: Icon(Icons.event_available_rounded,
-              //         size: 24, color: kBlack)),
-              // 3. 날짜(숫자) 버튼
-              // margin: const EdgeInsets.only(top: 9, right: 40),
-              // child: OutlinedButton(
-              //   style: OutlinedButton.styleFrom(
-              //     primary: kBlack.withOpacity(0.5),
-              //     side: BorderSide(color: kBlack, width: 1.5),
-              //     shape: RoundedRectangleBorder(borderRadius: kBorderRadiusS),
-              //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
-              //     minimumSize: Size.zero,
-              //   ),
-              //   onPressed: () {
-              //     onTodayButtonTap();
-              //   },
-              //   child: Text(kToday.day.toString(),
-              //       style: TextStyle(
-              //           color: kBlack,
-              //           fontSize: kContentS,
-              //           fontWeight: FontWeight.bold)),
-              // ),
-              )
+                  )))
         ],
       ),
     );

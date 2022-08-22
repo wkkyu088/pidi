@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pidi/screens/detail_screen.dart';
-// import 'package:pidi/screens/modify_screen.dart';
+import 'package:pidi/screens/modify_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -45,6 +45,7 @@ class _ListScreenState extends State<ListScreen> {
           Expanded(
             child: CarouselSlider.builder(
                 options: CarouselOptions(
+                  initialPage: j,
                   enableInfiniteScroll: false,
                   disableCenter: true,
                   viewportFraction: 1.0,
@@ -55,8 +56,8 @@ class _ListScreenState extends State<ListScreen> {
                   },
                 ),
                 itemCount: posts[i].images.length,
-                itemBuilder: (context, j, realidx) {
-                  return Image.asset(posts[i].images[j].toString());
+                itemBuilder: (context, itemIndex, realidx) {
+                  return Image.asset(posts[i].images[itemIndex].toString());
                 }),
           ),
         ],
