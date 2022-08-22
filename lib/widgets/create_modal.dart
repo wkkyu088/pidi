@@ -143,8 +143,9 @@ class _CreateModalState extends State<CreateModal> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (_selectedValue != DateTime.now()) {
-        _controller
-            .animateToDate(_selectedValue.subtract(const Duration(days: 3)));
+        _controller.animateToDate(
+            _selectedValue.subtract(const Duration(days: 3)),
+            duration: const Duration(milliseconds: 100));
       }
     });
 
@@ -301,7 +302,7 @@ class _CreateModalState extends State<CreateModal> {
                                     const EdgeInsets.only(top: 13, bottom: 4),
                                 child: DatePicker(
                                   DateTime.now()
-                                      .subtract(const Duration(days: 365)),
+                                      .subtract(const Duration(days: 31)),
                                   width: 36,
                                   controller: _controller,
                                   initialSelectedDate: DateTime.now(),
@@ -314,7 +315,7 @@ class _CreateModalState extends State<CreateModal> {
                                       fontWeight: FontWeight.bold,
                                       color: kGrey),
                                   dayTextStyle: const TextStyle(fontSize: 0),
-                                  daysCount: 366,
+                                  daysCount: 32,
                                   onDateChange: (date) {
                                     setState(() {
                                       _selectedValue = date;
