@@ -47,6 +47,7 @@ dependencies:
   date_picker_timeline: ^1.2.3
   flutter_rounded_date_picker: ^3.0.1
   image_picker: ^0.8.5+3
+  dropdown_button2: ^1.7.2
 
 dev_dependencies:
   flutter_test:
