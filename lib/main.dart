@@ -1,17 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+// import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:flutter/services.dart';
-import 'package:pidi/screens/splash_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:pidi/screens/splash_screen.dart';
+import 'package:pidi/screens/test_screen.dart';
 
 import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
 import './screens/setting_screen.dart';
+import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import './constants.dart';
 import './widgets/create_modal.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
