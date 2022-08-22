@@ -43,23 +43,28 @@ class DetailScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
-              color: kBlack,
-              onPressed: () {
-                Navigator.of(context).pop(context);
-              }),
+            icon: const Icon(Icons.arrow_back_rounded),
+            color: kBlack,
+            onPressed: () {
+              Navigator.of(context).pop(context);
+            },
+            tooltip: '뒤로가기',
+          ),
           title:
               Text(date, style: TextStyle(color: kBlack, fontSize: kContentM)),
           actions: [
             IconButton(
-                icon: const Icon(Icons.more_horiz_rounded),
-                color: kBlack,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ModifyScreen(post: post)));
-                }),
+              icon: const Icon(Icons.edit_rounded),
+              color: kBlack,
+              iconSize: 20,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ModifyScreen(post: post)));
+              },
+              tooltip: '수정',
+            ),
           ],
           elevation: 0,
           backgroundColor: kWhite,
