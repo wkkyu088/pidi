@@ -15,9 +15,6 @@ class CreateModal extends StatefulWidget {
 }
 
 class _CreateModalState extends State<CreateModal> {
-  double mainWidth = 320.0;
-  double mainHeight = datePickerSetting[0] == true ? 470 : 450;
-
   final int maxTitleLength = 20;
   final int maxContentLength = 200;
   String titleValue = "";
@@ -75,8 +72,8 @@ class _CreateModalState extends State<CreateModal> {
 
   Widget uploadImage(onPressed) {
     return SizedBox(
-      width: 80,
-      height: 80,
+      width: 75,
+      height: 75,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
@@ -96,14 +93,19 @@ class _CreateModalState extends State<CreateModal> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
+    double w = mediaQueryData.size.width * 0.8;
+    double mainWidth = datePickerSetting[0] == true ? w : w - 5;
+    double h = mediaQueryData.size.height * 0.6;
+    double mainHeight = datePickerSetting[0] == true ? h : h - 30;
+    final keyboardHeight = mediaQueryData.viewInsets.bottom;
 
     Widget item(i) {
       return Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(right: 6.0),
         child: SizedBox(
-            width: 80,
-            height: 80,
+            width: 75,
+            height: 75,
             child: Container(
               decoration: i <= _pickedImages.length - 1
                   ? BoxDecoration(
@@ -151,7 +153,7 @@ class _CreateModalState extends State<CreateModal> {
               hintStyle: TextStyle(fontSize: kContentM, color: kGrey),
               counterText: "",
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
               focusedBorder: OutlineInputBorder(
                 borderRadius: kBorderRadiusS,
               ),
@@ -159,23 +161,9 @@ class _CreateModalState extends State<CreateModal> {
                 borderSide: BorderSide(color: kGrey),
                 borderRadius: kBorderRadiusS,
               ),
+              suffix: Text('${value.length}/$maxLength자',
+                  style: TextStyle(fontSize: kSubText)),
             )),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Container(
-            width: 80,
-            height: maxLines == 1 ? 50 : 176,
-            padding: const EdgeInsets.all(10),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                "${value.length}/$maxLength자",
-                textAlign: TextAlign.right,
-                style: TextStyle(fontSize: kSubText),
-              ),
-            ),
-          ),
-        ),
       ]);
     }
 
@@ -200,233 +188,235 @@ class _CreateModalState extends State<CreateModal> {
       }
     });
 
-    return Center(
-      child: Padding(
-        padding: mediaQueryData.viewInsets,
-        child: Stack(
-          children: [
-            SizedBox(
-                width: mainWidth,
-                child: const Image(
-                    image: AssetImage('./assets/images/topper.png'))),
-            Container(
-                width: mainWidth,
-                height: mainHeight + 40,
-                alignment: Alignment.bottomCenter,
-                child: const Image(
-                    image: AssetImage('./assets/images/footer.png'))),
-            // 0. 배경 컨테이너
-            Container(
-                width: mainWidth,
-                height: mainHeight,
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                decoration: const BoxDecoration(color: Colors.white),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      children: [
-                        // 1. 데이트 피커
-                        datePickerSetting[1] == true
-                            // 1-1. 캘린더 팝업형
-                            ? Container(
-                                height: 45,
-                                margin: const EdgeInsets.only(top: 5),
-                                child: TextButton(
-                                  onPressed: (() async {
-                                    DateTime? newDateTime =
-                                        await showRoundedDatePicker(
-                                            context: context,
-                                            height: 400,
-                                            borderRadius: 10,
-                                            theme: ThemeData(
-                                                primaryColor: kBackground,
-                                                fontFamily: 'GowunDodum'),
-                                            styleDatePicker:
-                                                MaterialRoundedDatePickerStyle(
-                                              textStyleDayButton: TextStyle(
-                                                  fontSize: 18, color: kBlack),
-                                              textStyleYearButton: TextStyle(
-                                                  fontSize: 15, color: kBlack),
-                                              textStyleDayHeader: TextStyle(
-                                                  fontSize: 16, color: kBlack),
-                                              textStyleCurrentDayOnCalendar:
-                                                  TextStyle(
-                                                      fontSize: 16,
-                                                      color: kPoint,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                              textStyleDayOnCalendar: TextStyle(
-                                                  fontSize: 16, color: kBlack),
-                                              textStyleDayOnCalendarSelected:
-                                                  const TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                              textStyleDayOnCalendarDisabled:
-                                                  TextStyle(
-                                                      fontSize: 18,
-                                                      color: kBlack
-                                                          .withOpacity(0.1)),
-                                              textStyleMonthYearHeader:
-                                                  TextStyle(
-                                                      fontSize: 18,
-                                                      color: kBlack,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                              paddingDatePicker:
-                                                  const EdgeInsets.all(10),
-                                              paddingMonthHeader:
-                                                  const EdgeInsets.all(10),
-                                              paddingActionBar:
-                                                  const EdgeInsets.all(0),
-                                              paddingDateYearHeader:
-                                                  const EdgeInsets.all(15),
-                                              sizeArrow: 24,
-                                              colorArrowNext: kBlack,
-                                              colorArrowPrevious: kBlack,
-                                              marginLeftArrowPrevious: 8,
-                                              marginTopArrowPrevious: 8,
-                                              marginTopArrowNext: 8,
-                                              marginRightArrowNext: 16,
-                                              textStyleButtonAction: TextStyle(
-                                                  fontSize: 16, color: kBlack),
-                                              textStyleButtonPositive:
-                                                  TextStyle(
-                                                      fontSize: 16,
-                                                      color: kBlack,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                              textStyleButtonNegative:
-                                                  TextStyle(
-                                                      fontSize: 18,
-                                                      color: kBlack
-                                                          .withOpacity(0.5)),
-                                              decorationDateSelected:
-                                                  BoxDecoration(
-                                                      color: kBlack,
-                                                      shape: BoxShape.circle),
-                                              backgroundPicker: Colors.white,
-                                              backgroundActionBar: Colors.white,
-                                              backgroundHeaderMonth:
-                                                  Colors.white,
+    return Container(
+      margin: EdgeInsets.only(
+          bottom: keyboardHeight > 0
+              ? mediaQueryData.size.height * 0.15 + keyboardHeight * 0.4
+              : mediaQueryData.size.height * 0.15),
+      child: Stack(
+        children: [
+          SizedBox(
+              width: mainWidth,
+              child:
+                  const Image(image: AssetImage('./assets/images/topper.png'))),
+          Container(
+              width: mainWidth,
+              height: mainHeight + 40,
+              alignment: Alignment.bottomCenter,
+              child:
+                  const Image(image: AssetImage('./assets/images/footer.png'))),
+          // 0. 배경 컨테이너
+          Container(
+              width: mainWidth,
+              height: mainHeight,
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // 1. 데이트 피커
+                      datePickerSetting[1] == true
+                          // 1-1. 캘린더 팝업형
+                          ? Container(
+                              child: TextButton(
+                              onPressed: (() async {
+                                DateTime? newDateTime =
+                                    await showRoundedDatePicker(
+                                        context: context,
+                                        height:
+                                            mediaQueryData.size.height * 0.45,
+                                        initialDate: kToday,
+                                        firstDate: kFirstDay,
+                                        lastDate: kToday,
+                                        borderRadius: 10,
+                                        theme: ThemeData(
+                                            primaryColor: kBackground,
+                                            colorScheme: ColorScheme(
+                                              brightness: Brightness.light,
+                                              primary: kBlack,
+                                              onPrimary: kBlack,
+                                              secondary: kGrey,
+                                              onSecondary: kGrey,
+                                              error: kPoint,
+                                              onError: kPoint,
+                                              background: kWhite,
+                                              onBackground: kWhite,
+                                              surface: kBlack,
+                                              onSurface: kBlack,
                                             ),
-                                            styleYearPicker:
-                                                MaterialRoundedYearPickerStyle(
-                                              textStyleYear: TextStyle(
-                                                  fontSize: 16, color: kBlack),
-                                              textStyleYearSelected: TextStyle(
-                                                  fontSize: 20,
-                                                  color: kBlack,
+                                            fontFamily: 'GowunDodum'),
+                                        styleDatePicker:
+                                            MaterialRoundedDatePickerStyle(
+                                          textStyleDayButton: TextStyle(
+                                              fontSize: 16, color: kBlack),
+                                          textStyleYearButton: TextStyle(
+                                              fontSize: 13, color: kBlack),
+                                          textStyleDayHeader: TextStyle(
+                                              fontSize: 14, color: kBlack),
+                                          textStyleCurrentDayOnCalendar:
+                                              TextStyle(
+                                                  fontSize: 14,
+                                                  color: kPoint,
                                                   fontWeight: FontWeight.bold),
-                                              heightYearRow: 50,
-                                              backgroundPicker: Colors.white,
-                                            ));
-                                    if (newDateTime != null) {
-                                      setState(() {
-                                        dateTime = newDateTime;
-                                      });
-                                    }
-                                  }),
-                                  style: TextButton.styleFrom(primary: kGrey),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                          DateFormat('yyyy-MM-dd EE', 'ko-KR')
-                                              .format(dateTime),
-                                          style: TextStyle(
-                                              color: kBlack.withOpacity(0.8),
-                                              fontSize: kContentS + 1)),
-                                      const SizedBox(width: 3),
-                                      Icon(Icons.edit_rounded,
-                                          size: 15,
-                                          color: kBlack.withOpacity(0.6))
-                                    ],
-                                  ),
-                                ))
-                            // 1-2. 슬라이더형
-                            : Container(
-                                height: 60,
-                                // color: kPoint,
-                                margin:
-                                    const EdgeInsets.only(top: 13, bottom: 4),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 2),
-                                child: DatePicker(
-                                  DateTime.now()
-                                      .subtract(const Duration(days: 31)),
-                                  width: 36,
-                                  controller: _controller,
-                                  initialSelectedDate: DateTime.now(),
-                                  selectionColor: kBlack,
-                                  selectedTextColor: Colors.white,
-                                  monthTextStyle:
-                                      TextStyle(fontSize: 11, color: kGrey),
-                                  dateTextStyle: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: kGrey),
-                                  dayTextStyle: const TextStyle(fontSize: 0),
-                                  daysCount: 32,
-                                  onDateChange: (date) {
-                                    setState(() {
-                                      _selectedValue = date;
-                                    });
-                                  },
-                                  locale: 'ko-KR',
-                                ),
+                                          textStyleDayOnCalendar: TextStyle(
+                                              fontSize: 14, color: kBlack),
+                                          textStyleDayOnCalendarSelected:
+                                              const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                          textStyleDayOnCalendarDisabled:
+                                              TextStyle(
+                                                  fontSize: 16,
+                                                  color:
+                                                      kBlack.withOpacity(0.1)),
+                                          textStyleMonthYearHeader: TextStyle(
+                                              fontSize: 16,
+                                              color: kBlack,
+                                              fontWeight: FontWeight.bold),
+                                          paddingDatePicker:
+                                              const EdgeInsets.all(10),
+                                          paddingMonthHeader:
+                                              const EdgeInsets.all(10),
+                                          paddingActionBar:
+                                              const EdgeInsets.all(0),
+                                          paddingDateYearHeader:
+                                              const EdgeInsets.all(15),
+                                          sizeArrow: 24,
+                                          colorArrowNext: kBlack,
+                                          colorArrowPrevious: kBlack,
+                                          marginLeftArrowPrevious: 8,
+                                          marginTopArrowPrevious: 8,
+                                          marginTopArrowNext: 8,
+                                          marginRightArrowNext: 16,
+                                          textStyleButtonAction: TextStyle(
+                                              fontSize: 14, color: kBlack),
+                                          textStyleButtonPositive: TextStyle(
+                                              fontSize: 14,
+                                              color: kBlack,
+                                              fontWeight: FontWeight.bold),
+                                          textStyleButtonNegative: TextStyle(
+                                              fontSize: 16,
+                                              color: kBlack.withOpacity(0.5)),
+                                          decorationDateSelected: BoxDecoration(
+                                              color: kBlack,
+                                              shape: BoxShape.circle),
+                                          backgroundPicker: Colors.white,
+                                          backgroundActionBar: Colors.white,
+                                          backgroundHeaderMonth: Colors.white,
+                                        ),
+                                        styleYearPicker:
+                                            MaterialRoundedYearPickerStyle(
+                                          textStyleYear: TextStyle(
+                                              fontSize: 14, color: kBlack),
+                                          textStyleYearSelected: TextStyle(
+                                              fontSize: 18,
+                                              color: kBlack,
+                                              fontWeight: FontWeight.bold),
+                                          heightYearRow: 50,
+                                          backgroundPicker: Colors.white,
+                                        ));
+                                if (newDateTime != null) {
+                                  setState(() {
+                                    dateTime = newDateTime;
+                                  });
+                                }
+                              }),
+                              style: TextButton.styleFrom(primary: kGrey),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      DateFormat('yyyy-MM-dd EE', 'ko-KR')
+                                          .format(dateTime),
+                                      style: TextStyle(
+                                          color: kBlack.withOpacity(0.8),
+                                          fontSize: kContentS + 1)),
+                                  const SizedBox(width: 3),
+                                  Icon(Icons.edit_rounded,
+                                      size: 15, color: kBlack.withOpacity(0.6))
+                                ],
                               ),
-                        // 2. 이미지 리스트
-                        SizedBox(
-                            height: 90,
-                            child: _buildImages(() {
-                              getImage(ImageSource.gallery);
-                            })),
-                        // 3. 텍스트 필드
-                        SizedBox(
-                            height: 256,
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: customTextField(1, maxTitleLength,
-                                      titleValue, "제목을 입력하세요", (v) {
-                                    setState(() {
-                                      titleValue = v;
-                                    });
-                                  }),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  child: customTextField(7, maxContentLength,
-                                      contentValue, "내용을 입력하세요", (v) {
-                                    setState(() {
-                                      contentValue = v;
-                                    });
-                                  }),
-                                ),
-                              ],
-                            )),
-                        // 4. 텍스트 버튼
-                        SizedBox(
-                            height: 40,
-                            child: Row(
-                              children: [
-                                customTextButton('취소', kGrey, () {
-                                  Navigator.pop(context);
-                                }),
-                                customTextButton('저장', kBlack, () {})
-                              ],
-                            )),
-                      ],
-                    ),
+                            ))
+                          // 1-2. 슬라이더형
+                          : Container(
+                              height: 70,
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: DatePicker(
+                                DateTime.now()
+                                    .subtract(const Duration(days: 31)),
+                                width: 36,
+                                controller: _controller,
+                                initialSelectedDate: DateTime.now(),
+                                selectionColor: kBlack,
+                                selectedTextColor: Colors.white,
+                                monthTextStyle:
+                                    TextStyle(fontSize: 12, color: kGrey),
+                                dateTextStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: kGrey),
+                                dayTextStyle: const TextStyle(
+                                    fontSize: 0, color: Colors.transparent),
+                                daysCount: 32,
+                                onDateChange: (date) {
+                                  setState(() {
+                                    _selectedValue = date;
+                                  });
+                                },
+                                locale: 'ko-KR',
+                              ),
+                            ),
+                      // 2. 이미지 리스트
+                      Container(
+                          height: 85,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: _buildImages(() {
+                            getImage(ImageSource.gallery);
+                          })),
+                      // 3. 텍스트 필드
+                      Container(
+                        height: 50,
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: customTextField(
+                            1, maxTitleLength, titleValue, "제목을 입력하세요", (v) {
+                          setState(() {
+                            titleValue = v;
+                          });
+                        }),
+                      ),
+                      Container(
+                        height: 170,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: customTextField(
+                            7, maxContentLength, contentValue, "내용을 입력하세요",
+                            (v) {
+                          setState(() {
+                            contentValue = v;
+                          });
+                        }),
+                      ),
+                      // 4. 텍스트 버튼
+                      Container(
+                          height: 50,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children: [
+                              customTextButton('취소', kGrey, () {
+                                Navigator.pop(context);
+                              }),
+                              customTextButton('저장', kBlack, () {})
+                            ],
+                          )),
+                    ],
                   ),
-                )),
-          ],
-        ),
+                ),
+              )),
+        ],
       ),
     );
   }
