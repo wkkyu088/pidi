@@ -44,20 +44,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
           if (snapshot.hasError) {
             return Text("Wrong");
           }
-          //if (snapshot.connectionState == ConnectionState.waiting) {
-          //  return LoadingScreen());
-          //}
-          for (var doc in snapshot.data!.docs) {
-            for (int i = 0; i < doc['images'].length; i++) {
-              galleryList.add([doc.id, doc['date'], doc['images'][i]]);
+          if (snapshot.hasData) {
+            for (var doc in snapshot.data!.docs) {
+              for (int i = 0; i < doc['images'].length; i++) {
+                galleryList.add([doc.id, doc['date'], doc['images'][i]]);
+              }
             }
+          } else {
+            return CircularProgressIndicator(color: kGrey, strokeWidth: 2);
           }
 
           return Scaffold(
               appBar: customAppBar('갤러리 보기'),
               body: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
                 child: MasonryGridView.count(
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
@@ -114,6 +114,19 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             child: Image.network(
                               galleryList[index][2].toString(),
                               fit: BoxFit.contain,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(color: kWhite),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                            color: kGrey, strokeWidth: 2)));
+                              },
                             ),
                           ),
                           // 날짜 표시줄
