@@ -27,6 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: kWhite,
       body: Center(
         child: Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,

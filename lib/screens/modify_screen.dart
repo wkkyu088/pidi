@@ -8,10 +8,7 @@ import '../constants.dart';
 
 class ModifyScreen extends StatelessWidget {
   final Item post;
-  const ModifyScreen({
-    Key? key,
-    required this.post,
-  }) : super(key: key);
+  const ModifyScreen({Key? key, required this.post}) : super(key: key);
 
   Widget item(i) {
     return Container(
@@ -89,7 +86,7 @@ class ModifyScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
+            icon: const Icon(Icons.arrow_back_rounded, size: 22),
             color: kBlack,
             onPressed: () {
               showDialog(
@@ -109,7 +106,7 @@ class ModifyScreen extends StatelessWidget {
         actions: [
           // 아이콘 변경
           IconButton(
-              icon: const Icon(Icons.check_rounded),
+              icon: const Icon(Icons.check_rounded, size: 22),
               color: kBlack,
               onPressed: () {
                 showDialog(

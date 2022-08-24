@@ -20,12 +20,12 @@ Color kPoint = const Color(0xFFDB7093);
 Color kBackground = const Color(0xFFF2F2F2);
 
 // FontSize
-double kSplash = 60;
-double kAppBar = 20;
-double kTitle = 18;
-double kContentM = 16;
-double kContentS = 14;
-double kSubText = 12;
+double kSplash = 52;
+double kAppBar = 18;
+double kTitle = 16;
+double kContentM = 14;
+double kContentS = 12;
+double kSubText = 10;
 
 // BorderRdius
 // images in list_screen, gallery_screen, detail_screen

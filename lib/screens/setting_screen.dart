@@ -23,9 +23,10 @@ class _SettingScreenState extends State<SettingScreen> {
 
     Widget buttonItem(w, s, listValue) {
       return Container(
-          width: width / w - 8,
+          width: width / w - 2,
           alignment: Alignment.center,
-          child: Text(s, style: TextStyle(fontSize: kTitle)));
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(s, style: TextStyle(fontSize: kContentM + 1)));
     }
 
     Widget customToggleButton(selectList, children) {
@@ -42,12 +43,14 @@ class _SettingScreenState extends State<SettingScreen> {
               }
             });
           },
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          constraints: const BoxConstraints(),
           selectedColor: kWhite,
           color: kGrey,
           fillColor: kBlack,
           borderColor: kBlack,
           selectedBorderColor: kBlack,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: kBorderRadius,
           children: children.length != 3
               ? [
                   buttonItem(children.length, children[0], selectList[0]),
@@ -62,13 +65,12 @@ class _SettingScreenState extends State<SettingScreen> {
 
     Widget settingItem(title, selectList, children) {
       return Container(
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.only(bottom: 20),
         width: width,
-        height: 130.0,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
+              padding: const EdgeInsets.only(bottom: 5.0),
               child: Row(children: [
                 Text(
                   title,
@@ -81,7 +83,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     constraints: const BoxConstraints(),
                     onPressed: () {},
                     icon: Icon(Icons.help_outline_rounded,
-                        size: 19, color: kGrey))
+                        size: 18, color: kGrey))
               ]),
             ),
             customToggleButton(selectList, children)
@@ -93,7 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
     Widget radioItem(title, font, Fonts value, isSelected) {
       return SizedBox(
         width: width,
-        height: 50,
+        height: 45,
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
@@ -115,19 +117,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   )),
             ),
           ),
-          Transform.scale(
-            scale: 1.1,
-            child: Radio(
-              value: value,
-              groupValue: nowFont,
-              onChanged: (Fonts? value) {
-                setState(() {
-                  nowFont = value;
-                  fontFamily = font;
-                });
-              },
-              activeColor: kBlack,
-            ),
+          Radio(
+            value: value,
+            groupValue: nowFont,
+            onChanged: (Fonts? value) {
+              setState(() {
+                nowFont = value;
+                fontFamily = font;
+              });
+            },
+            activeColor: kBlack,
           )
         ]),
       );
@@ -167,11 +166,11 @@ class _SettingScreenState extends State<SettingScreen> {
                   color: kUnderline,
                   width: width,
                   height: 1,
-                  margin: const EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(top: 10, bottom: 20),
                 ),
                 Container(
                   padding: const EdgeInsets.all(6),
-                  margin: const EdgeInsets.only(bottom: 40),
+                  margin: const EdgeInsets.only(bottom: 35),
                   width: width,
                   child: Column(
                     children: [

@@ -29,6 +29,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme(
@@ -118,7 +124,7 @@ class _MainPageState extends State<MainPage> {
                 },
               );
             },
-            child: Icon(Icons.add_rounded, size: 32, color: kWhite),
+            child: Icon(Icons.add_rounded, size: 30, color: kWhite),
           ),
           bottomNavigationBar: Theme(
             data: ThemeData(
@@ -134,6 +140,7 @@ class _MainPageState extends State<MainPage> {
               selectedItemColor: kBlack,
               unselectedItemColor: kGrey,
               onTap: _onItemTapped,
+              iconSize: 22,
               items: <BottomNavigationBarItem>[
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.view_stream_rounded),

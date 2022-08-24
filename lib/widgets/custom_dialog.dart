@@ -8,7 +8,8 @@ AlertDialog customDialog(context, title, content, btn2, btn2Action) {
     actionsAlignment: MainAxisAlignment.spaceEvenly,
     title: Center(
       child: Text(title,
-          style: TextStyle(color: kBlack, fontWeight: FontWeight.bold)),
+          style: TextStyle(
+              color: kBlack, fontWeight: FontWeight.bold, fontSize: kAppBar)),
     ),
     content: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -16,7 +17,7 @@ AlertDialog customDialog(context, title, content, btn2, btn2Action) {
       children: [
         Text(
           content,
-          style: TextStyle(color: kBlack),
+          style: TextStyle(color: kBlack, fontSize: kTitle),
           textAlign: TextAlign.center,
         ),
       ],
@@ -32,7 +33,8 @@ AlertDialog customDialog(context, title, content, btn2, btn2Action) {
               primary: kGrey,
               side: BorderSide(color: kGrey),
               shape: RoundedRectangleBorder(borderRadius: kBorderRadius)),
-          child: Text('취소', style: TextStyle(color: kGrey)),
+          child:
+              Text('취소', style: TextStyle(color: kGrey, fontSize: kContentM)),
         ),
       ),
       SizedBox(
@@ -43,7 +45,8 @@ AlertDialog customDialog(context, title, content, btn2, btn2Action) {
               primary: kGrey,
               backgroundColor: kBlack,
               shape: RoundedRectangleBorder(borderRadius: kBorderRadius)),
-          child: Text(btn2, style: TextStyle(color: kWhite)),
+          child:
+              Text(btn2, style: TextStyle(color: kWhite, fontSize: kContentM)),
         ),
       ),
     ],

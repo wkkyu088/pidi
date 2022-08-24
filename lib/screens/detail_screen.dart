@@ -7,10 +7,7 @@ import '../constants.dart';
 
 class DetailScreen extends StatelessWidget {
   final Item post;
-  const DetailScreen({
-    Key? key,
-    required this.post,
-  }) : super(key: key);
+  const DetailScreen({Key? key, required this.post}) : super(key: key);
 
   Widget item(i) {
     return Container(
@@ -43,7 +40,10 @@ class DetailScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded),
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              size: 22,
+            ),
             color: kBlack,
             onPressed: () {
               Navigator.of(context).pop(context);
@@ -54,7 +54,10 @@ class DetailScreen extends StatelessWidget {
               Text(date, style: TextStyle(color: kBlack, fontSize: kContentM)),
           actions: [
             IconButton(
-              icon: const Icon(Icons.edit_rounded),
+              icon: const Icon(
+                Icons.edit_rounded,
+                size: 20,
+              ),
               color: kBlack,
               iconSize: 20,
               onPressed: () {

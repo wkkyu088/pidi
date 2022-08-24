@@ -28,22 +28,6 @@ class _ListScreenState extends State<ListScreen> {
     Widget imageDialog(i, j) {
       return Column(
         children: [
-          Container(
-            width: 40,
-            height: 50,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 10),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.close_rounded,
-                size: 30,
-                color: kWhite,
-              ),
-            ),
-          ),
           Expanded(
             child: CarouselSlider.builder(
                 options: CarouselOptions(
@@ -61,6 +45,22 @@ class _ListScreenState extends State<ListScreen> {
                 itemBuilder: (context, itemIndex, realidx) {
                   return Image.asset(posts[i].images[itemIndex].toString());
                 }),
+          ),
+          Container(
+            width: 40,
+            height: 50,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(bottom: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.close_rounded,
+                size: 30,
+                color: kWhite,
+              ),
+            ),
           ),
         ],
       );
@@ -102,7 +102,8 @@ class _ListScreenState extends State<ListScreen> {
                 MaterialPageRoute(
                     builder: (context) => DetailScreen(post: posts[i])));
           },
-          child: Text('더보기', style: TextStyle(color: kGrey)));
+          child:
+              Text('더보기', style: TextStyle(color: kGrey, fontSize: kContentS)));
     }
 
     Widget multilineText(i) {
@@ -129,10 +130,10 @@ class _ListScreenState extends State<ListScreen> {
           child: Icon(
             Icons.more_horiz_rounded,
             color: kBlack,
+            size: 22,
           ),
         ),
         customItemsIndexes: const [3],
-        customItemsHeight: 8,
         isDense: true,
         items: [
           DropdownMenuItem<MenuItem>(
@@ -144,13 +145,13 @@ class _ListScreenState extends State<ListScreen> {
             child: MenuItems.buildItem(MenuItems.firstItems[1]),
           ),
         ],
-        offset: const Offset(-50, 0),
+        offset: const Offset(-50, 5),
         onChanged: (value) {
           MenuItems.onChanged(context, value as MenuItem, i);
         },
-        itemHeight: 40,
-        itemPadding: const EdgeInsets.only(left: 16, right: 16),
-        dropdownWidth: 90,
+        itemHeight: 35,
+        itemPadding: const EdgeInsets.only(left: 15, right: 15),
+        dropdownWidth: 85,
         dropdownDecoration: BoxDecoration(
           borderRadius: kBorderRadius,
           color: kWhite,
@@ -167,7 +168,7 @@ class _ListScreenState extends State<ListScreen> {
             children: [
               Container(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                   alignment: Alignment.centerLeft,
                   child: Text(posts[i].date,
                       style: TextStyle(fontSize: kContentS))),
@@ -221,7 +222,7 @@ class _ListScreenState extends State<ListScreen> {
           Container(
               color: kWhite,
               width: width,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 7),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
               alignment: Alignment.centerLeft,
               child: Column(
                 children: [
