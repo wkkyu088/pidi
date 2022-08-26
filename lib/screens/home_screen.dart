@@ -110,12 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     // 특정한 날 설정
                     prioritizedBuilder: (context, day, focusedDay) {
                       // post가 있는 날
-                      for (int i = 0; i < posts.length; i++) {
+                      for (int i = 0; i < postList.length; i++) {
                         if (day.year ==
-                                int.parse(posts[i].date.substring(0, 4)) &&
+                                int.parse(postList[i].date.substring(0, 4)) &&
                             day.month ==
-                                int.parse(posts[i].date.substring(5, 7)) &&
-                            day.day == int.parse(posts[i].date.substring(8))) {
+                                int.parse(postList[i].date.substring(5, 7)) &&
+                            day.day ==
+                                int.parse(postList[i].date.substring(8))) {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
@@ -126,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          DetailScreen(post: posts[i])));
+                                          DetailScreen(post: postList[i])));
                             },
                             child: Stack(
                               children: [
@@ -143,11 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : const Border(),
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: AssetImage(posts[i]
+                                            image: AssetImage(postList[i]
                                                 .images[0]
                                                 .toString())))),
                                 // 사진 여러개인 것 개수 표시
-                                posts[i].images.length > 1
+                                postList[i].images.length > 1
                                     ? Align(
                                         alignment: Alignment.bottomRight,
                                         child: Container(
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                posts[i]
+                                                postList[i]
                                                     .images
                                                     .length
                                                     .toString(),

@@ -1,15 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pidi/screens/splash_screen.dart';
-import 'package:pidi/screens/test_screen.dart';
 
-import './screens/detail_screen.dart';
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
 import './screens/setting_screen.dart';
 import 'firebase_options.dart';
+import 'models/item.dart';
 import 'screens/home_screen.dart';
 import './constants.dart';
 import './widgets/create_modal.dart';
@@ -95,6 +95,14 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  List<String> getImages(List images) {
+    List<String> imgList = [];
+    for (int i = 0; i < images.length; i++) {
+      imgList.add(images[i].toString());
+    }
+    return imgList;
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -102,71 +110,94 @@ class _MainPageState extends State<MainPage> {
         systemNavigationBarIconBrightness: Brightness.dark,
         statusBarColor: kWhite,
         statusBarIconBrightness: Brightness.dark));
-    return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: kWhite,
-        body: Scaffold(
-          body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: kBlack,
-            onPressed: () {
-              showModalBottomSheet(
-                constraints: BoxConstraints.loose(Size(
-                    MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height)),
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Colors.transparent,
-                builder: (BuildContext context) {
-                  return const CreateModal();
-                },
-              );
-            },
-            child: Icon(Icons.add_rounded, size: 30, color: kWhite),
-          ),
-          bottomNavigationBar: Theme(
-            data: ThemeData(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: BottomNavigationBar(
-              elevation: 2,
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              currentIndex: _selectedIndex,
-              selectedItemColor: kBlack,
-              unselectedItemColor: kGrey,
-              onTap: _onItemTapped,
-              iconSize: 22,
-              items: <BottomNavigationBarItem>[
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.view_stream_rounded),
-                  label: 'ListView',
+
+    var db = FirebaseFirestore.instance.collection('posts');
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: db.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Wrong");
+          }
+          if (snapshot.hasData) {
+            for (var doc in snapshot.data!.docs) {
+              postList.add(Item(
+                  id: doc.id,
+                  title: doc['title'],
+                  date: doc['date'],
+                  content: doc['content'],
+                  images: getImages(doc['images'])));
+            }
+          } else {
+            return CircularProgressIndicator(color: kGrey, strokeWidth: 2);
+          }
+
+          return Scaffold(
+              key: _scaffoldKey,
+              backgroundColor: kWhite,
+              body: Scaffold(
+                body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: kBlack,
+                  onPressed: () {
+                    showModalBottomSheet(
+                      constraints: BoxConstraints.loose(Size(
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height)),
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        return const CreateModal();
+                      },
+                    );
+                  },
+                  child: Icon(Icons.add_rounded, size: 30, color: kWhite),
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard_rounded),
-                  label: 'GalleryView',
+                bottomNavigationBar: Theme(
+                  data: ThemeData(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                  ),
+                  child: BottomNavigationBar(
+                    elevation: 2,
+                    type: BottomNavigationBarType.fixed,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    currentIndex: _selectedIndex,
+                    selectedItemColor: kBlack,
+                    unselectedItemColor: kGrey,
+                    onTap: _onItemTapped,
+                    iconSize: 22,
+                    items: <BottomNavigationBarItem>[
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.view_stream_rounded),
+                        label: 'ListView',
+                      ),
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.dashboard_rounded),
+                        label: 'GalleryView',
+                      ),
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.add_rounded,
+                            color: kWhite,
+                          ),
+                          label: ''),
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.today_rounded),
+                        label: 'CalendarView',
+                      ),
+                      const BottomNavigationBarItem(
+                        icon: Icon(Icons.settings_rounded),
+                        label: 'Settings',
+                      ),
+                    ],
+                  ),
                 ),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.add_rounded,
-                      color: kWhite,
-                    ),
-                    label: ''),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.today_rounded),
-                  label: 'CalendarView',
-                ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.settings_rounded),
-                  label: 'Settings',
-                ),
-              ],
-            ),
-          ),
-        ));
+              ));
+        });
   }
 }

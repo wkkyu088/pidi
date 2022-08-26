@@ -72,6 +72,7 @@ class ModifyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Item rePost = Item(
+        id: post.id,
         date: post.date,
         title: post.title,
         content: post.content,

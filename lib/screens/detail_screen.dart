@@ -16,7 +16,7 @@ class DetailScreen extends StatelessWidget {
       child: SizedBox(
         child: ClipRRect(
             borderRadius: kBorderRadius,
-            child: Image.asset(post.images[i].toString(), fit: BoxFit.fill)),
+            child: Image.network(post.images[i].toString(), fit: BoxFit.fill)),
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'models/item.dart';
+
 // Colors
 // 배경색
 Color kWhite = const Color(0xFFFAFAFA);
@@ -49,3 +51,6 @@ String fontFamily = 'GowunDodum';
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
+
+// data
+var postList = [];

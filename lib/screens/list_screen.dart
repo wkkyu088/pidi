@@ -19,7 +19,7 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  final _current = List.filled(posts.length, 0);
+  final _current = List.filled(postList.length, 0);
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,10 @@ class _ListScreenState extends State<ListScreen> {
                     });
                   },
                 ),
-                itemCount: posts[i].images.length,
+                itemCount: postList[i].images.length,
                 itemBuilder: (context, itemIndex, realidx) {
-                  return Image.asset(posts[i].images[itemIndex].toString());
+                  return Image.network(
+                      postList[i].images[itemIndex].toString());
                 }),
           ),
           Container(
@@ -82,7 +83,7 @@ class _ListScreenState extends State<ListScreen> {
               borderRadius: kBorderRadius,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: Image.asset(posts[i].images[j].toString()).image,
+                image: Image.network(postList[i].images[j].toString()).image,
               )),
         ),
       );
@@ -100,14 +101,14 @@ class _ListScreenState extends State<ListScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailScreen(post: posts[i])));
+                    builder: (context) => DetailScreen(post: postList[i])));
           },
           child:
               Text('더보기', style: TextStyle(color: kGrey, fontSize: kContentS)));
     }
 
     Widget multilineText(i) {
-      List strList = posts[i].content.split('\n');
+      List strList = postList[i].content.split('\n');
       if (strList.length > 3) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +119,7 @@ class _ListScreenState extends State<ListScreen> {
           ],
         );
       } else {
-        return Text(posts[i].content, style: TextStyle(fontSize: kContentM));
+        return Text(postList[i].content, style: TextStyle(fontSize: kContentM));
       }
     }
 
@@ -170,7 +171,7 @@ class _ListScreenState extends State<ListScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                   alignment: Alignment.centerLeft,
-                  child: Text(posts[i].date,
+                  child: Text(postList[i].date,
                       style: TextStyle(fontSize: kContentS))),
               dropDownIcon(i)
             ],
@@ -190,12 +191,12 @@ class _ListScreenState extends State<ListScreen> {
                         });
                       },
                     ),
-                    itemCount: posts[i].images.length,
+                    itemCount: postList[i].images.length,
                     itemBuilder: (context, itemidx, realidx) {
                       return postItem(i, itemidx);
                     }),
               ),
-              posts[i].images.length != 1
+              postList[i].images.length != 1
                   ? Container(
                       width: width,
                       height: width,
@@ -209,7 +210,7 @@ class _ListScreenState extends State<ListScreen> {
                             borderRadius: BorderRadius.circular(20.0),
                             color: Colors.black.withOpacity(0.4)),
                         child: Text(
-                            '${_current[i] + 1} / ${posts[i].images.length}',
+                            '${_current[i] + 1} / ${postList[i].images.length}',
                             style: TextStyle(
                                 color: kWhite.withOpacity(0.9),
                                 fontSize: kContentS,
@@ -249,7 +250,7 @@ class _ListScreenState extends State<ListScreen> {
                                 )
                               : const BoxDecoration(),
                           child: Text(
-                            posts[i].title,
+                            postList[i].title,
                             style: TextStyle(fontSize: kTitle),
                           ),
                         ),
@@ -275,9 +276,9 @@ class _ListScreenState extends State<ListScreen> {
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        itemCount: posts.length,
+        itemCount: postList.length,
         itemBuilder: (context, i) {
-          if (i == posts.length - 1) {
+          if (i == postList.length - 1) {
             return Container(
                 padding: const EdgeInsets.only(bottom: 30), child: item(i));
           }
@@ -327,7 +328,7 @@ class MenuItems {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ModifyScreen(post: posts[i])));
+                  builder: (context) => ModifyScreen(post: postList[i])));
         }
         break;
       case MenuItems.delete:

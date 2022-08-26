@@ -1,34 +1,51 @@
 import 'package:pidi/models/item.dart';
 
-List<Item> posts = [
-  Item(title: "스타벅스", date: "2022-08-21", content: "이번 시즌 텀블러 이쁘더라", images: [
-    "./assets/images/img2.jpg",
-    "./assets/images/img1.jpg",
-    "./assets/images/img0.jpg",
-    "./assets/images/img5.jpg",
-  ]),
+List<Item> post = [
   Item(
+      id: 'id0',
+      title: "스타벅스",
+      date: "2022-08-21",
+      content: "이번 시즌 텀블러 이쁘더라",
+      images: [
+        "./assets/images/img2.jpg",
+        "./assets/images/img1.jpg",
+        "./assets/images/img0.jpg",
+        "./assets/images/img5.jpg",
+      ]),
+  Item(
+      id: 'id1',
       title: "투썸플레이스",
       date: "2022-08-10",
       content: "케이크 맛집으로 마케팅을 잘했어\n케이크 맛집",
       images: ["./assets/images/img4.jpg"]),
   Item(
+      id: 'id2',
       title: "일리카페",
       date: "2022-08-06",
       content: "여기 커피 맛있어",
       images: ["./assets/images/img0.jpg"]),
-  Item(title: "커피빈카페", date: "2022-07-21", content: "여기 헤이즐넛커피 맛있어", images: [
-    "./assets/images/img1.jpg",
-    "./assets/images/img2.jpg",
-    "./assets/images/img4.jpg"
-  ]),
-  Item(title: "탐앤탐스", date: "2022-07-06", content: "여기는 24시간이 많더라", images: [
-    "./assets/images/img3.jpg",
-    "./assets/images/img0.jpg",
-    "./assets/images/img2.jpg",
-    "./assets/images/img4.jpg"
-  ]),
-  Item(title: "드라마", date: "2022-06-02", content: """나도 한때는 그이의 손을 잡고
+  Item(
+      id: 'id3',
+      title: "커피빈카페",
+      date: "2022-07-21",
+      content: "여기 헤이즐넛커피 맛있어",
+      images: [
+        "./assets/images/img1.jpg",
+        "./assets/images/img2.jpg",
+        "./assets/images/img4.jpg"
+      ]),
+  Item(
+      id: 'id4',
+      title: "탐앤탐스",
+      date: "2022-07-06",
+      content: "여기는 24시간이 많더라",
+      images: [
+        "./assets/images/img3.jpg",
+        "./assets/images/img0.jpg",
+        "./assets/images/img2.jpg",
+        "./assets/images/img4.jpg"
+      ]),
+  Item(id: 'id5', title: "드라마", date: "2022-06-02", content: """나도 한때는 그이의 손을 잡고
 내가 온 세상 주인공이 된 듯
 꽃송이의 꽃잎 하나하나까지
 모두 날 위해 피어났지
