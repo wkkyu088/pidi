@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : const Border(),
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: AssetImage(postList[i]
+                                            image: NetworkImage(postList[i]
                                                 .images[0]
                                                 .toString())))),
                                 // 사진 여러개인 것 개수 표시
@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                   width: appWidth,
                   child: const Image(
-                      image: AssetImage('./assets/images/background.png'))),
+                      image: NetworkImage('./assets/images/background.png'))),
               Expanded(child: Container(color: kBackground))
             ],
           ),
