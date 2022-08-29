@@ -438,7 +438,7 @@ class _CreateModalState extends State<CreateModal> {
                                     .add({
                                   'title': titleValue,
                                   'content': contentValue,
-                                  'date': Timestamp.fromDate(DateTime.now()),
+                                  'date': Timestamp.fromDate(_selectedValue),
                                   'images': photoURL,
                                   'uid': 'user1'
                                 }).catchError((error) => debugPrint(
