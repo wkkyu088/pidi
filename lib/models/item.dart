@@ -1,9 +1,9 @@
 class Item {
   String id;
-  String title = '';
-  String date = '';
-  String content = '';
-  List<String> images = [];
+  String title;
+  DateTime date;
+  String content;
+  List<String> images;
   Item(
       {required this.id,
       required this.title,

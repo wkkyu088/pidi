@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/screens/modify_screen.dart';
@@ -33,7 +34,7 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String date = post.date;
+    String date = DateFormat('yyyy-MM-dd').format(post.date);
     String titleValue = post.title;
     String contentValue = post.content;
     return Scaffold(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/screens/list_screen.dart';
@@ -70,7 +71,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                   },
                   context: context);
             }),
-        title: Text(widget.post.date,
+        title: Text(DateFormat('yyyy-MM-dd').format(widget.post.date),
             style: TextStyle(color: kBlack, fontSize: kContentM)),
         actions: [
           // 아이콘 변경

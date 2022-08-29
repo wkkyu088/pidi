@@ -112,11 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   prioritizedBuilder: (context, day, focusedDay) {
                     // post가 있는 날
                     for (int i = 0; i < postList.length; i++) {
-                      if (day.year ==
-                              int.parse(postList[i].date.substring(0, 4)) &&
-                          day.month ==
-                              int.parse(postList[i].date.substring(5, 7)) &&
-                          day.day == int.parse(postList[i].date.substring(8))) {
+                      if (day.year == postList[i].date.year &&
+                          day.month == postList[i].date.month &&
+                          day.day == postList[i].date.day) {
                         return GestureDetector(
                           onTap: () {
                             setState(() {

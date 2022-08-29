@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'package:pidi/constants.dart';
 import 'package:pidi/screens/detail_screen.dart';
 import '../models/item.dart';
@@ -22,7 +23,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
   void getGalleryList() {
     for (var value in postList) {
       for (int i = 0; i < value.images.length; i++) {
-        galleryList.add([value.id, value.date, value.images[i]]);
+        galleryList.add([
+          value.id,
+          DateFormat('yyyy-MM-dd').format(value.date),
+          value.images[i]
+        ]);
       }
     }
     ;

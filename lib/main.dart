@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:pidi/screens/splash_screen.dart';
 
 import './screens/gallery_screen.dart';
@@ -81,7 +82,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     db = FirebaseFirestore.instance
-        .collection('posts')
+        .collection('Posts')
         .orderBy('date', descending: true);
     stream = db.snapshots();
   }
@@ -135,7 +136,7 @@ class _MainPageState extends State<MainPage> {
                 postList.add(Item(
                     id: doc.id,
                     title: doc['title'],
-                    date: doc['date'],
+                    date: doc['date'].toDate(),
                     content: doc['content'],
                     images: getImages(doc['images'])));
               }

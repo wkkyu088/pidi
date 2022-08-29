@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pidi/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pidi/screens/detail_screen.dart';
@@ -171,7 +172,7 @@ class _ListScreenState extends State<ListScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
                   alignment: Alignment.centerLeft,
-                  child: Text(postList[i].date,
+                  child: Text(DateFormat('yyyy-MM-dd').format(postList[i].date),
                       style: TextStyle(fontSize: kContentS))),
               dropDownIcon(i)
             ],
