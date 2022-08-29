@@ -57,7 +57,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
               child: GestureDetector(
                 onTap: () async {
                   // value를 통해 해당 id doc 접근 완료
-                  var detail = postList[index];
+                  var detail;
+                  for (int i = 0; i < postList.length; i++) {
+                    if (postList[i].id == galleryList[index][0]) {
+                      detail = postList[i];
+                    }
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
