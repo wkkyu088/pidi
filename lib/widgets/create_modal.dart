@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pidi/widgets/custom_dialog.dart';
 import 'dart:io';
 
 import '../constants.dart';
@@ -410,9 +413,61 @@ class _CreateModalState extends State<CreateModal> {
                               customTextButton('취소', kGrey, () {
                                 Navigator.pop(context);
                               }),
-                              customTextButton('저장', kBlack, () {})
+                              customTextButton('저장', kBlack, () async {
+                                List<String> photoURL = [];
+                                final ref = FirebaseStorage.instance.ref();
+
+                                // final ref = FirebaseStorage.instance
+                                //     .ref()
+                                //     .child('img10.jpg');
+                                // File file = File(_pickedImages[0]!.path);
+                                // await ref.putFile(file);
+                                // final url = await ref.getDownloadURL();
+
+                                for (int i = 0; i < _pickedImages.length; i++) {
+                                  final imgRef = ref.child(
+                                      'newImg-${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
+                                  File file = File(_pickedImages[i]!.path);
+                                  await imgRef.putFile(file);
+                                  final url = await imgRef.getDownloadURL();
+                                  photoURL.add(url);
+                                }
+
+                                FirebaseFirestore.instance
+                                    .collection('Posts')
+                                    .add({
+                                  'title': titleValue,
+                                  'content': contentValue,
+                                  'date': Timestamp.fromDate(DateTime.now()),
+                                  'images': photoURL,
+                                  'uid': 'user1'
+                                }).catchError((error) => debugPrint(
+                                        "Failed to add post: $error"));
+                                Navigator.pop(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return customDialog(
+                                          context, '저장', '내용을 저장했습니다.', '확인',
+                                          () {
+                                        Navigator.pop(context);
+                                      });
+                                    });
+                              })
                             ],
                           )),
+                      Column(
+                        children: [
+                          // Text(_selectedValue.toString(),
+                          //     style: TextStyle(fontSize: kSubText)),
+                          // Text(_pickedImages[0]!.path.toString(),
+                          //     style: TextStyle(fontSize: kSubText)),
+                          // Text(titleValue,
+                          //     style: TextStyle(fontSize: kSubText)),
+                          // Text(contentValue,
+                          //     style: TextStyle(fontSize: kSubText))
+                        ],
+                      )
                     ],
                   ),
                 ),
