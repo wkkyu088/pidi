@@ -83,8 +83,9 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     db = FirebaseFirestore.instance
         .collection('Posts')
-        .orderBy('date', descending: true);
-    stream = db.snapshots();
+        .where('uid', isEqualTo: userid);
+    var query = db.orderBy('date', descending: true);
+    stream = query.snapshots();
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -128,7 +129,8 @@ class _MainPageState extends State<MainPage> {
           if (dataflag) {
           } else {
             if (snapshot.hasError) {
-              return Text("Wrong");
+              print(snapshot.error.toString());
+              return Text('error');
             }
             if (snapshot.hasData) {
               postList = [];
