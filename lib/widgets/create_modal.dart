@@ -5,7 +5,7 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pidi/widgets/custom_dialog.dart';
+import 'package:pidi/widgets/toast_message.dart';
 import 'dart:io';
 
 import '../constants.dart';
@@ -22,9 +22,11 @@ class _CreateModalState extends State<CreateModal> {
   final int maxContentLength = 200;
   String titleValue = "";
   String contentValue = "";
+  bool isTodayDone = false;
+  DateTime recentDate = kToday;
 
-  DateTime _selectedValue = DateTime.now();
-  DateTime dateTime = DateTime.now();
+  DateTime _selectedValue = kToday;
+  DateTime dateTime = kToday;
   final DatePickerController _controller = DatePickerController();
 
   final ImagePicker picker = ImagePicker();
@@ -36,36 +38,7 @@ class _CreateModalState extends State<CreateModal> {
       setState(() {
         if (images.length > 5) {
           _pickedImages = images.sublist(0, 5);
-          showDialog(
-              context: context,
-              barrierColor: Colors.transparent,
-              builder: (BuildContext context) {
-                Future.delayed(const Duration(seconds: 2), () {
-                  Navigator.pop(context);
-                });
-
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(borderRadius: kBorderRadiusL),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                  insetPadding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.8),
-                  elevation: 0,
-                  backgroundColor: kWhite,
-                  content: Builder(
-                    builder: (context) {
-                      return Container(
-                          width: 100,
-                          height: 20,
-                          alignment: Alignment.center,
-                          child: Text(
-                            '최대 5장까지 등록 가능합니다.',
-                            style:
-                                TextStyle(color: kBlack, fontSize: kContentM),
-                          ));
-                    },
-                  ),
-                );
-              });
+          toastMessage(context, '최대 5장까지 등록 가능합니다.');
         } else {
           _pickedImages = images;
         }
@@ -101,6 +74,16 @@ class _CreateModalState extends State<CreateModal> {
     double h = mediaQueryData.size.height * 0.6;
     double mainHeight = datePickerSetting[0] == true ? h : h - 30;
     final keyboardHeight = mediaQueryData.viewInsets.bottom;
+
+    List<DateTime> deactivateDates = [];
+    for (var v in postList) {
+      deactivateDates.add(v.date);
+      if (kToday.difference(v.date).inDays == 0) {
+        setState(() {
+          isTodayDone = true;
+        });
+      }
+    }
 
     Widget item(i) {
       return Container(
@@ -237,6 +220,7 @@ class _CreateModalState extends State<CreateModal> {
                                         firstDate: kFirstDay,
                                         lastDate: kToday,
                                         borderRadius: 10,
+                                        listDateDisabled: deactivateDates,
                                         theme: ThemeData(
                                             primaryColor: kBackground,
                                             colorScheme: ColorScheme(
@@ -355,7 +339,8 @@ class _CreateModalState extends State<CreateModal> {
                                     .subtract(const Duration(days: 31)),
                                 width: 36,
                                 controller: _controller,
-                                initialSelectedDate: DateTime.now(),
+                                initialSelectedDate:
+                                    isTodayDone ? null : kToday,
                                 selectionColor: kBlack,
                                 selectedTextColor: Colors.white,
                                 monthTextStyle:
@@ -367,6 +352,8 @@ class _CreateModalState extends State<CreateModal> {
                                 dayTextStyle: const TextStyle(
                                     fontSize: 0, color: Colors.transparent),
                                 daysCount: 32,
+                                inactiveDates: deactivateDates,
+                                deactivatedColor: kUnderline,
                                 onDateChange: (date) {
                                   setState(() {
                                     _selectedValue = date;
@@ -414,45 +401,44 @@ class _CreateModalState extends State<CreateModal> {
                                 Navigator.pop(context);
                               }),
                               customTextButton('저장', kBlack, () async {
-                                List<String> photoURL = [];
-                                final ref = FirebaseStorage.instance.ref();
+                                if (isTodayDone && _selectedValue == kToday) {
+                                  toastMessage(context, '날짜는 반드시 선택해야합니다.');
+                                } else if (_pickedImages.isEmpty) {
+                                  toastMessage(context, '이미지는 1장 이상 등록해야합니다.');
+                                } else if (titleValue.isEmpty) {
+                                  toastMessage(context, '제목은 반드시 입력해야합니다.');
+                                } else if (contentValue.isEmpty) {
+                                  toastMessage(context, '내용은 반드시 입력해야합니다.');
+                                } else {
+                                  List<String> photoURL = [];
+                                  final ref = FirebaseStorage.instance.ref();
 
-                                // final ref = FirebaseStorage.instance
-                                //     .ref()
-                                //     .child('img10.jpg');
-                                // File file = File(_pickedImages[0]!.path);
-                                // await ref.putFile(file);
-                                // final url = await ref.getDownloadURL();
+                                  for (int i = 0;
+                                      i < _pickedImages.length;
+                                      i++) {
+                                    final imgRef = ref.child(
+                                        '${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
+                                    File file = File(_pickedImages[i]!.path);
+                                    await imgRef.putFile(file);
+                                    final url = await imgRef.getDownloadURL();
+                                    photoURL.add(url);
+                                  }
+                                  debugPrint('### 업로드 완료');
 
-                                for (int i = 0; i < _pickedImages.length; i++) {
-                                  final imgRef = ref.child(
-                                      'newImg-${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
-                                  File file = File(_pickedImages[i]!.path);
-                                  await imgRef.putFile(file);
-                                  final url = await imgRef.getDownloadURL();
-                                  photoURL.add(url);
+                                  FirebaseFirestore.instance
+                                      .collection('Posts')
+                                      .add({
+                                    'title': titleValue,
+                                    'content': contentValue,
+                                    'date': Timestamp.fromDate(_selectedValue),
+                                    'images': photoURL,
+                                    'uid': userid
+                                  }).catchError((error) => debugPrint(
+                                          "Failed to add post: $error"));
+                                  debugPrint('### 데이터 추가 완료');
+                                  Navigator.pop(context);
+                                  toastMessage(context, '저장을 완료했습니다.');
                                 }
-
-                                FirebaseFirestore.instance
-                                    .collection('Posts')
-                                    .add({
-                                  'title': titleValue,
-                                  'content': contentValue,
-                                  'date': Timestamp.fromDate(_selectedValue),
-                                  'images': photoURL,
-                                  'uid': 'user1'
-                                }).catchError((error) => debugPrint(
-                                        "Failed to add post: $error"));
-                                Navigator.pop(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return customDialog(
-                                          context, '저장', '내용을 저장했습니다.', '확인',
-                                          () {
-                                        Navigator.pop(context);
-                                      });
-                                    });
                               })
                             ],
                           )),
