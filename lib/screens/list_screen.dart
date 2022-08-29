@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pidi/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pidi/screens/detail_screen.dart';
-import 'package:pidi/screens/modify_screen.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 
 import '../widgets/custom_appbar.dart';
-import '../widgets/custom_dialog.dart';
 import '../constants.dart';
 
-import 'package:pidi/models/test.dart';
+import '../widgets/dropdown_button.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -124,44 +120,6 @@ class _ListScreenState extends State<ListScreen> {
       }
     }
 
-    Widget dropDownIcon(i) {
-      return DropdownButtonHideUnderline(
-          child: DropdownButton2(
-        customButton: Container(
-          padding: const EdgeInsets.all(5),
-          child: Icon(
-            Icons.more_horiz_rounded,
-            color: kBlack,
-            size: 22,
-          ),
-        ),
-        customItemsIndexes: const [3],
-        isDense: true,
-        items: [
-          DropdownMenuItem<MenuItem>(
-            value: MenuItems.firstItems[0],
-            child: MenuItems.buildItem(MenuItems.firstItems[0]),
-          ),
-          DropdownMenuItem<MenuItem>(
-            value: MenuItems.firstItems[1],
-            child: MenuItems.buildItem(MenuItems.firstItems[1]),
-          ),
-        ],
-        offset: const Offset(-50, 5),
-        onChanged: (value) {
-          MenuItems.onChanged(context, value as MenuItem, i);
-        },
-        itemHeight: 35,
-        itemPadding: const EdgeInsets.only(left: 15, right: 15),
-        dropdownWidth: 85,
-        dropdownDecoration: BoxDecoration(
-          borderRadius: kBorderRadius,
-          color: kWhite,
-        ),
-        dropdownElevation: 8,
-      ));
-    }
-
     Widget item(i) {
       return Column(
         children: [
@@ -174,7 +132,7 @@ class _ListScreenState extends State<ListScreen> {
                   alignment: Alignment.centerLeft,
                   child: Text(DateFormat('yyyy-MM-dd').format(postList[i].date),
                       style: TextStyle(fontSize: kContentS))),
-              dropDownIcon(i)
+              dropDownIcon(context, postList[i])
             ],
           ),
           Stack(
@@ -290,57 +248,5 @@ class _ListScreenState extends State<ListScreen> {
     }
 
     return Scaffold(appBar: customAppBar('리스트 보기'), body: _buildListView());
-  }
-}
-
-class MenuItem {
-  final String text;
-  final IconData icon;
-
-  const MenuItem({
-    required this.text,
-    required this.icon,
-  });
-}
-
-class MenuItems {
-  static const List<MenuItem> firstItems = [edit, delete];
-
-  static const edit = MenuItem(text: '수정', icon: Icons.edit_rounded);
-  static const delete = MenuItem(text: '삭제', icon: Icons.delete_rounded);
-
-  static Widget buildItem(MenuItem item) {
-    return Row(
-      children: [
-        Icon(item.icon, color: kBlack, size: 16),
-        const SizedBox(width: 6),
-        Text(
-          item.text,
-          style: TextStyle(color: kBlack, fontSize: kContentM),
-        ),
-      ],
-    );
-  }
-
-  static onChanged(BuildContext context, MenuItem item, i) {
-    switch (item) {
-      case MenuItems.edit:
-        {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ModifyScreen(post: postList[i])));
-        }
-        break;
-      case MenuItems.delete:
-        {
-          showDialog(
-              builder: (BuildContext context) {
-                return customDialog(context, '삭제', '정말 삭제하시겠습니까?', '확인', () {});
-              },
-              context: context);
-        }
-        break;
-    }
   }
 }

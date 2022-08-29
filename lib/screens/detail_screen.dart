@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
-import 'package:pidi/screens/modify_screen.dart';
+import 'package:pidi/widgets/dropdown_button.dart';
 
 import '../constants.dart';
 
@@ -54,21 +54,25 @@ class DetailScreen extends StatelessWidget {
           title:
               Text(date, style: TextStyle(color: kBlack, fontSize: kContentM)),
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.edit_rounded,
-                size: 20,
-              ),
-              color: kBlack,
-              iconSize: 20,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ModifyScreen(post: post)));
-              },
-              tooltip: '수정',
-            ),
+            // IconButton(
+            //   icon: const Icon(
+            //     Icons.edit_rounded,
+            //     size: 20,
+            //   ),
+            //   color: kBlack,
+            //   iconSize: 20,
+            //   onPressed: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => ModifyScreen(post: post)));
+            //   },
+            //   tooltip: '수정',
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: dropDownIcon(context, post),
+            )
           ],
           elevation: 0,
           backgroundColor: kWhite,
