@@ -76,6 +76,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  var db;
+  var stream;
+  @override
+  void initState() {
+    db = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('date', descending: true);
+    stream = db.snapshots();
+  }
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
@@ -111,27 +121,29 @@ class _MainPageState extends State<MainPage> {
         statusBarColor: kWhite,
         statusBarIconBrightness: Brightness.dark));
 
-    var db = FirebaseFirestore.instance.collection('posts');
-
     return StreamBuilder<QuerySnapshot>(
-        stream: db.snapshots(),
+        stream: stream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("Wrong");
-          }
-          if (snapshot.hasData) {
-            for (var doc in snapshot.data!.docs) {
-              postList.add(Item(
-                  id: doc.id,
-                  title: doc['title'],
-                  date: doc['date'],
-                  content: doc['content'],
-                  images: getImages(doc['images'])));
-            }
+          if (dataflag) {
           } else {
-            return CircularProgressIndicator(color: kGrey, strokeWidth: 2);
+            if (snapshot.hasError) {
+              return Text("Wrong");
+            }
+            if (snapshot.hasData) {
+              postList = [];
+              for (var doc in snapshot.data!.docs) {
+                postList.add(Item(
+                    id: doc.id,
+                    title: doc['title'],
+                    date: doc['date'],
+                    content: doc['content'],
+                    images: getImages(doc['images'])));
+              }
+              dataflag = true;
+            } else {
+              return CircularProgressIndicator(color: kGrey, strokeWidth: 2);
+            }
           }
-
           return Scaffold(
               key: _scaffoldKey,
               backgroundColor: kWhite,
