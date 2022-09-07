@@ -239,14 +239,6 @@ class _ListScreenState extends State<ListScreen> {
     @override
     void initState() {
       super.initState();
-
-      scrollController.addListener(() {
-        if (scrollController.offset >=
-                scrollController.position.maxScrollExtent / 2 &&
-            !scrollController.position.outOfRange) {
-          last_doc = readMoreItems(last_doc);
-        }
-      });
     }
 
     @override
@@ -256,21 +248,33 @@ class _ListScreenState extends State<ListScreen> {
     }
 
     Widget _buildListView() {
-      return ListView.separated(
-        controller: scrollController,
-        physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()),
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        itemCount: postList.length,
-        itemBuilder: (context, i) {
-          if (i == postList.length - 1) {
-            return Container(
-                padding: const EdgeInsets.only(bottom: 30), child: item(i));
-          }
-          return item(i);
-        },
-        separatorBuilder: (context, i) => const Divider(),
-      );
+      return NotificationListener<ScrollNotification>(
+          onNotification: (scrollState) {
+            if (scrollState is ScrollEndNotification) {
+              last_doc = readMoreItems(last_doc);
+              Future.delayed(const Duration(milliseconds: 100), () {})
+                  .then((s) {
+                scrollController.animateTo(160,
+                    duration: Duration(milliseconds: 500), curve: Curves.ease);
+              });
+            }
+            return false;
+          },
+          child: ListView.separated(
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            itemCount: postList.length,
+            itemBuilder: (context, i) {
+              if (i == postList.length - 1) {
+                return Container(
+                    padding: const EdgeInsets.only(bottom: 30), child: item(i));
+              }
+              return item(i);
+            },
+            separatorBuilder: (context, i) => const Divider(),
+          ));
     }
 
     return Scaffold(appBar: customAppBar('리스트 보기'), body: _buildListView());

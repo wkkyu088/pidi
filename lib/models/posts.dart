@@ -54,8 +54,11 @@ Stream<QuerySnapshot> readItems() {
   return query.snapshots();
 }
 
-Future<QuerySnapshot<Map<String, dynamic>>> readMoreItems(lastDoc) {
-  return firestore.limit(10).startAfterDocument(lastDoc).get().then((value) {
+/*Another exception was thrown: Expected a value of type 'DocumentSnapshot<Object?>', but got one of type
+'_Future<QuerySnapshot<Map<String, dynamic>>>'*/
+DocumentSnapshot<Object?> readMoreItems(lastDoc) {
+  print('read More Items');
+  firestore.limit(10).startAfterDocument(lastDoc).get().then((value) {
     for (var doc in value.docs) {
       postList.add(Item(
           id: doc.id,
@@ -63,7 +66,8 @@ Future<QuerySnapshot<Map<String, dynamic>>> readMoreItems(lastDoc) {
           date: doc['date'].toDate(),
           content: doc['content'],
           images: getImages(doc['images'])));
+      lastDoc = doc;
     }
-    return lastDoc;
   });
+  return lastDoc;
 }
