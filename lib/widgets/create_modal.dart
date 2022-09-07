@@ -5,6 +5,7 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/widgets/toast_message.dart';
 import 'dart:io';
 
@@ -410,50 +411,41 @@ class _CreateModalState extends State<CreateModal> {
                                 } else if (contentValue.isEmpty) {
                                   toastMessage(context, '내용은 반드시 입력해야합니다.');
                                 } else {
-                                  List<String> photoURL = [];
-                                  final ref = FirebaseStorage.instance.ref();
-
-                                  for (int i = 0;
-                                      i < _pickedImages.length;
-                                      i++) {
-                                    final imgRef = ref.child(
-                                        '${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
-                                    File file = File(_pickedImages[i]!.path);
-                                    await imgRef.putFile(file);
-                                    final url = await imgRef.getDownloadURL();
-                                    photoURL.add(url);
-                                  }
-                                  debugPrint('### 업로드 완료');
-
-                                  FirebaseFirestore.instance
-                                      .collection('Posts')
-                                      .add({
-                                    'title': titleValue,
-                                    'content': contentValue,
-                                    'date': Timestamp.fromDate(_selectedValue),
-                                    'images': photoURL,
-                                    'uid': userid
-                                  }).catchError((error) => debugPrint(
-                                          "Failed to add post: $error"));
-                                  debugPrint('### 데이터 추가 완료');
+                                  createPost(
+                                    _pickedImages,
+                                    titleValue,
+                                    contentValue,
+                                    _selectedValue,
+                                    userid,
+                                  );
+                                  // List<String> photoURL = [];
+                                  // final ref = FirebaseStorage.instance.ref();
+                                  // for (int i = 0;
+                                  //     i < _pickedImages.length;
+                                  //     i++) {
+                                  //   final imgRef = ref.child(
+                                  //       '${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
+                                  //   File file = File(_pickedImages[i]!.path);
+                                  //   await imgRef.putFile(file);
+                                  //   final url = await imgRef.getDownloadURL();
+                                  //   photoURL.add(url);
+                                  // }
+                                  // debugPrint('### 업로드 완료');
+                                  // firestore.add({
+                                  //   'title': titleValue,
+                                  //   'content': contentValue,
+                                  //   'date': Timestamp.fromDate(_selectedValue),
+                                  //   'images': photoURL,
+                                  //   'uid': userid
+                                  // }).catchError((error) =>
+                                  //     debugPrint("Failed to add post: $error"));
+                                  // debugPrint('### 데이터 추가 완료');
                                   Navigator.pop(context);
                                   toastMessage(context, '저장을 완료했습니다.');
                                 }
                               })
                             ],
                           )),
-                      Column(
-                        children: [
-                          // Text(_selectedValue.toString(),
-                          //     style: TextStyle(fontSize: kSubText)),
-                          // Text(_pickedImages[0]!.path.toString(),
-                          //     style: TextStyle(fontSize: kSubText)),
-                          // Text(titleValue,
-                          //     style: TextStyle(fontSize: kSubText)),
-                          // Text(contentValue,
-                          //     style: TextStyle(fontSize: kSubText))
-                        ],
-                      )
                     ],
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/splash_screen.dart';
 
 import './screens/gallery_screen.dart';
@@ -81,9 +82,7 @@ class _MainPageState extends State<MainPage> {
   var stream;
   @override
   void initState() {
-    db = FirebaseFirestore.instance
-        .collection('Posts')
-        .where('uid', isEqualTo: userid);
+    db = firestore.where('uid', isEqualTo: userid);
     var query = db.orderBy('date', descending: true);
     stream = query.snapshots();
   }
@@ -144,7 +143,11 @@ class _MainPageState extends State<MainPage> {
               }
               dataflag = true;
             } else {
-              return CircularProgressIndicator(color: kGrey, strokeWidth: 2);
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: kWhite,
+              );
             }
           }
           return Scaffold(
