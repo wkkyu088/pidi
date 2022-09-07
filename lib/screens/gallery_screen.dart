@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:intl/intl.dart';
 import 'package:pidi/constants.dart';
 import 'package:pidi/screens/detail_screen.dart';
@@ -72,24 +74,27 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   children: <Widget>[
                     // 사진
                     ClipRRect(
-                      borderRadius: kBorderRadius,
-                      child: Image.network(
-                        galleryList[index][2].toString(),
-                        fit: BoxFit.contain,
-                        loadingBuilder: (BuildContext context, Widget child,
-                            ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Container(
-                              height: 150,
-                              decoration: BoxDecoration(color: kWhite),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                      color: kGrey, strokeWidth: 2)));
-                        },
-                      ),
-                    ),
+                        borderRadius: kBorderRadius,
+                        // child: Image.network(
+                        //   galleryList[index][2].toString(),
+                        //   fit: BoxFit.contain,
+                        //   // loadingBuilder: (BuildContext context, Widget child,
+                        //   //     ImageChunkEvent? loadingProgress) {
+                        //   //   if (loadingProgress == null) {
+                        //   //     return child;
+                        //   //   }
+                        //   //   return Container(
+                        //   //       height: 150,
+                        //   //       decoration: BoxDecoration(color: kWhite),
+                        //   //       child: Center(
+                        //   //           child: CircularProgressIndicator(
+                        //   //               color: kGrey, strokeWidth: 2)));
+                        //   // },
+                        // ),
+                        child: CachedNetworkImage(
+                            imageUrl: galleryList[index][2].toString(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error))),
                     // 날짜 표시줄
                     Center(
                         child: Container(

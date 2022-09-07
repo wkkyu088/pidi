@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:pidi/screens/detail_screen.dart';
@@ -129,21 +130,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           child: Stack(
                             children: [
-                              Container(
+                              CachedNetworkImage(
+                                imageUrl: postList[i].images[0].toString(),
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
                                   decoration: BoxDecoration(
-                                      border: day == _selectedDay
-                                          ? Border.all(color: kBlack, width: 2)
-                                          : day.year == kToday.year &&
-                                                  day.month == kToday.month &&
-                                                  day.day == kToday.day
-                                              ? Border.all(
-                                                  color: kPoint, width: 2)
-                                              : const Border(),
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(postList[i]
-                                              .images[0]
-                                              .toString())))),
+                                    border: day == _selectedDay
+                                        ? Border.all(color: kBlack, width: 2)
+                                        : day.year == kToday.year &&
+                                                day.month == kToday.month &&
+                                                day.day == kToday.day
+                                            ? Border.all(
+                                                color: kPoint, width: 2)
+                                            : const Border(),
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               // 사진 여러개인 것 개수 표시
                               postList[i].images.length > 1
                                   ? Align(

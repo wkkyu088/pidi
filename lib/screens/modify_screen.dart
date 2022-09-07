@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -7,6 +8,7 @@ import 'package:pidi/screens/list_screen.dart';
 import 'package:pidi/widgets/custom_dialog.dart';
 
 import '../constants.dart';
+import '../widgets/toast_message.dart';
 
 class ModifyScreen extends StatefulWidget {
   final Item post;
@@ -23,9 +25,12 @@ class _ModifyScreenState extends State<ModifyScreen> {
       padding: const EdgeInsets.only(right: 5.0),
       child: SizedBox(
         child: ClipRRect(
-            borderRadius: kBorderRadius,
-            child: Image.network(widget.post.images[i].toString(),
-                fit: BoxFit.fill)),
+          borderRadius: kBorderRadius,
+          child: CachedNetworkImage(
+              imageUrl: widget.post.images[i].toString(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.fill),
+        ),
       ),
     );
   }
@@ -89,6 +94,8 @@ class _ModifyScreenState extends State<ModifyScreen> {
                           title_controller.text,
                           contents_controller.text,
                         );
+                        Navigator.pop(context);
+                        toastMessage(context, '수정되었습니다.');
                       });
                     },
                     context: context);

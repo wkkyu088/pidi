@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -66,24 +67,26 @@ class _ListScreenState extends State<ListScreen> {
 
     Widget postItem(i, j) {
       return GestureDetector(
-        onTap: () {
-          showDialog(
-              barrierColor: Colors.black.withOpacity(0.8),
-              context: context,
-              builder: (BuildContext context) {
-                return imageDialog(i, j);
-              });
-        },
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: BoxDecoration(
-              borderRadius: kBorderRadius,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: Image.network(postList[i].images[j].toString()).image,
-              )),
-        ),
-      );
+          onTap: () {
+            showDialog(
+                barrierColor: Colors.black.withOpacity(0.8),
+                context: context,
+                builder: (BuildContext context) {
+                  return imageDialog(i, j);
+                });
+          },
+          child: CachedNetworkImage(
+            imageUrl: postList[i].images[j].toString(),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                borderRadius: kBorderRadius,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ));
     }
 
     Widget moreText(i) {

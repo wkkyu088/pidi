@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,8 +17,12 @@ class DetailScreen extends StatelessWidget {
       padding: const EdgeInsets.only(right: 5.0),
       child: SizedBox(
         child: ClipRRect(
-            borderRadius: kBorderRadius,
-            child: Image.network(post.images[i].toString(), fit: BoxFit.fill)),
+          borderRadius: kBorderRadius,
+          child: CachedNetworkImage(
+              imageUrl: post.images[i].toString(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.fill),
+        ),
       ),
     );
   }
