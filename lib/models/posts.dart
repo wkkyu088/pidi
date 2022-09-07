@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pidi/constants.dart';
 
 import 'item.dart';
 
@@ -37,4 +38,32 @@ void updatePost(id, title, content) {
 
 void deletePost(id) {
   firestore.doc(id).delete();
+}
+
+List<String> getImages(List images) {
+  List<String> imgList = [];
+  for (int i = 0; i < images.length; i++) {
+    imgList.add(images[i].toString());
+  }
+  return imgList;
+}
+
+Stream<QuerySnapshot> readItems() {
+  var query = firestore.where('uid', isEqualTo: userid).limit(3);
+  query = query.orderBy('date', descending: true);
+  return query.snapshots();
+}
+
+Future<QuerySnapshot<Map<String, dynamic>>> readMoreItems(lastDoc) {
+  return firestore.limit(10).startAfterDocument(lastDoc).get().then((value) {
+    for (var doc in value.docs) {
+      postList.add(Item(
+          id: doc.id,
+          title: doc['title'],
+          date: doc['date'].toDate(),
+          content: doc['content'],
+          images: getImages(doc['images'])));
+    }
+    return lastDoc;
+  });
 }

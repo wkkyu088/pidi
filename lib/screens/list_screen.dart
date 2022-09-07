@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/detail_screen.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -230,8 +231,30 @@ class _ListScreenState extends State<ListScreen> {
       );
     }
 
+    final scrollController = ScrollController();
+
+    @override
+    void initState() {
+      super.initState();
+
+      scrollController.addListener(() {
+        if (scrollController.offset >=
+                scrollController.position.maxScrollExtent / 2 &&
+            !scrollController.position.outOfRange) {
+          last_doc = readMoreItems(last_doc);
+        }
+      });
+    }
+
+    @override
+    void dispose() {
+      scrollController.dispose();
+      super.dispose();
+    }
+
     Widget _buildListView() {
       return ListView.separated(
+        controller: scrollController,
         physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics()),
         padding: const EdgeInsets.symmetric(horizontal: 15.0),

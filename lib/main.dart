@@ -140,6 +140,7 @@ class _MainPageState extends State<MainPage> {
                     date: doc['date'].toDate(),
                     content: doc['content'],
                     images: getImages(doc['images'])));
+                last_doc = doc;
               }
               dataflag = true;
             } else {
