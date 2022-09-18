@@ -78,15 +78,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  var db;
-  var stream;
-  @override
-  void initState() {
-    db = firestore.where('uid', isEqualTo: userid);
-    var query = db.orderBy('date', descending: true);
-    stream = query.snapshots();
-  }
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
@@ -123,7 +114,7 @@ class _MainPageState extends State<MainPage> {
         statusBarIconBrightness: Brightness.dark));
 
     return StreamBuilder<QuerySnapshot>(
-        stream: stream,
+        stream: readItems(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (dataflag) {
           } else {

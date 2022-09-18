@@ -151,8 +151,6 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
         appBar: customAppBar('설정'),
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
           child: Center(
             child: Column(
               children: [

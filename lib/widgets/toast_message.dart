@@ -7,9 +7,9 @@ toastMessage(context, msg) {
       context: context,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pop(context);
-        });
+        // Future.delayed(const Duration(seconds: 2), () {
+        //   Navigator.pop(context);
+        // });
 
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: kBorderRadiusL),

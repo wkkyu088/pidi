@@ -418,28 +418,6 @@ class _CreateModalState extends State<CreateModal> {
                                     _selectedValue,
                                     userid,
                                   );
-                                  // List<String> photoURL = [];
-                                  // final ref = FirebaseStorage.instance.ref();
-                                  // for (int i = 0;
-                                  //     i < _pickedImages.length;
-                                  //     i++) {
-                                  //   final imgRef = ref.child(
-                                  //       '${DateTime.now().millisecondsSinceEpoch}-$i.jpg');
-                                  //   File file = File(_pickedImages[i]!.path);
-                                  //   await imgRef.putFile(file);
-                                  //   final url = await imgRef.getDownloadURL();
-                                  //   photoURL.add(url);
-                                  // }
-                                  // debugPrint('### 업로드 완료');
-                                  // firestore.add({
-                                  //   'title': titleValue,
-                                  //   'content': contentValue,
-                                  //   'date': Timestamp.fromDate(_selectedValue),
-                                  //   'images': photoURL,
-                                  //   'uid': userid
-                                  // }).catchError((error) =>
-                                  //     debugPrint("Failed to add post: $error"));
-                                  // debugPrint('### 데이터 추가 완료');
                                   Navigator.pop(context);
                                   toastMessage(context, '저장을 완료했습니다.');
                                 }
