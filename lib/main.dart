@@ -113,101 +113,71 @@ class _MainPageState extends State<MainPage> {
         statusBarColor: kWhite,
         statusBarIconBrightness: Brightness.dark));
 
-    return StreamBuilder<QuerySnapshot>(
-        stream: readItems(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (dataflag) {
-          } else {
-            if (snapshot.hasError) {
-              print(snapshot.error.toString());
-              return Text('error');
-            }
-            if (snapshot.hasData) {
-              postList = [];
-              for (var doc in snapshot.data!.docs) {
-                postList.add(Item(
-                    id: doc.id,
-                    title: doc['title'],
-                    date: doc['date'].toDate(),
-                    content: doc['content'],
-                    images: getImages(doc['images'])));
-                last_doc = doc;
-              }
-              dataflag = true;
-            } else {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                color: kWhite,
+    return Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: kWhite,
+        body: Scaffold(
+          body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: kBlack,
+            onPressed: () {
+              showModalBottomSheet(
+                constraints: BoxConstraints.loose(Size(
+                    MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height)),
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return const CreateModal();
+                },
               );
-            }
-          }
-          return Scaffold(
-              key: _scaffoldKey,
-              backgroundColor: kWhite,
-              body: Scaffold(
-                body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                floatingActionButton: FloatingActionButton(
-                  backgroundColor: kBlack,
-                  onPressed: () {
-                    showModalBottomSheet(
-                      constraints: BoxConstraints.loose(Size(
-                          MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height)),
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) {
-                        return const CreateModal();
-                      },
-                    );
-                  },
-                  child: Icon(Icons.add_rounded, size: 30, color: kWhite),
+            },
+            child: Icon(Icons.add_rounded, size: 30, color: kWhite),
+          ),
+          bottomNavigationBar: Theme(
+            data: ThemeData(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: BottomNavigationBar(
+              elevation: 2,
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              currentIndex: _selectedIndex,
+              selectedItemColor: kBlack,
+              unselectedItemColor: kGrey,
+              onTap: _onItemTapped,
+              iconSize: 22,
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.view_stream_rounded),
+                  label: 'ListView',
                 ),
-                bottomNavigationBar: Theme(
-                  data: ThemeData(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                  ),
-                  child: BottomNavigationBar(
-                    elevation: 2,
-                    type: BottomNavigationBarType.fixed,
-                    showSelectedLabels: false,
-                    showUnselectedLabels: false,
-                    currentIndex: _selectedIndex,
-                    selectedItemColor: kBlack,
-                    unselectedItemColor: kGrey,
-                    onTap: _onItemTapped,
-                    iconSize: 22,
-                    items: <BottomNavigationBarItem>[
-                      const BottomNavigationBarItem(
-                        icon: Icon(Icons.view_stream_rounded),
-                        label: 'ListView',
-                      ),
-                      const BottomNavigationBarItem(
-                        icon: Icon(Icons.dashboard_rounded),
-                        label: 'GalleryView',
-                      ),
-                      BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.add_rounded,
-                            color: kWhite,
-                          ),
-                          label: ''),
-                      const BottomNavigationBarItem(
-                        icon: Icon(Icons.today_rounded),
-                        label: 'CalendarView',
-                      ),
-                      const BottomNavigationBarItem(
-                        icon: Icon(Icons.settings_rounded),
-                        label: 'Settings',
-                      ),
-                    ],
-                  ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_rounded),
+                  label: 'GalleryView',
                 ),
-              ));
-        });
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.add_rounded,
+                      color: kWhite,
+                    ),
+                    label: ''),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.today_rounded),
+                  label: 'CalendarView',
+                ),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.settings_rounded),
+                  label: 'Settings',
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
