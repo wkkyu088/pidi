@@ -1,17 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
-import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/splash_screen.dart';
+import 'package:pidi/test/list_test.dart';
 
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
 import './screens/setting_screen.dart';
 import 'firebase_options.dart';
-import 'models/item.dart';
 import 'screens/home_screen.dart';
 import './constants.dart';
 import './widgets/create_modal.dart';
@@ -83,6 +80,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     ListScreen(),
+    // ListScreenTest
     GalleryScreen(),
     SettingScreen(), // 개수 맞추기 위해서 필요함
     HomeScreen(),
@@ -95,14 +93,6 @@ class _MainPageState extends State<MainPage> {
         _selectedIndex = index;
       });
     }
-  }
-
-  List<String> getImages(List images) {
-    List<String> imgList = [];
-    for (int i = 0; i < images.length; i++) {
-      imgList.add(images[i].toString());
-    }
-    return imgList;
   }
 
   @override
