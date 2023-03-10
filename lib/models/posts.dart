@@ -60,27 +60,3 @@ List<String> getImages(List images) {
   }
   return imgList;
 }
-
-Stream<QuerySnapshot> readItems() {
-  var query = firestore.where('uid', isEqualTo: userid); // limit(3) 지워놓음
-  query = query.orderBy('date', descending: true);
-  return query.snapshots();
-}
-
-/*Another exception was thrown: Expected a value of type 'DocumentSnapshot<Object?>', but got one of type
-'_Future<QuerySnapshot<Map<String, dynamic>>>'*/
-DocumentSnapshot<Object?> readMoreItems(lastDoc) {
-  print('read More Items');
-  firestore.limit(10).startAfterDocument(lastDoc).get().then((value) {
-    for (var doc in value.docs) {
-      postList.add(Item(
-          id: doc.id,
-          title: doc['title'],
-          date: doc['date'].toDate(),
-          content: doc['content'],
-          images: getImages(doc['images'])));
-      lastDoc = doc;
-    }
-  });
-  return lastDoc;
-}
