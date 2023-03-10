@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pidi/screens/login_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -14,10 +15,12 @@ enum Fonts { gowundodum, gowunbatang, gangwon, mapo, nanum }
 
 class _SettingScreenState extends State<SettingScreen> {
   Fonts? nowFont = Fonts.gowundodum;
+  bool isLogged = false;
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width - 50;
+    const profileHeight = 200.0;
     String sampleText =
         '가나다라마바사아자차카타파하\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890 !@#\$%^&*().,';
 
@@ -154,6 +157,80 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Center(
             child: Column(
               children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: profileHeight,
+                      color: kBlack,
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: kUnderline,
+                            child: Icon(
+                              Icons.person_rounded,
+                              size: 50,
+                              color: kWhite,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          isLogged
+                              ? Text(
+                                  userid,
+                                  style: TextStyle(
+                                    fontSize: kAppBar,
+                                    fontWeight: FontWeight.bold,
+                                    color: kWhite,
+                                  ),
+                                )
+                              : TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LoginScreen()));
+                                  },
+                                  style: TextButton.styleFrom(
+                                    primary: kGrey,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    minimumSize: Size.zero,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '로그인하세요',
+                                        style: TextStyle(
+                                          fontSize: kAppBar,
+                                          fontWeight: FontWeight.bold,
+                                          color: kWhite,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        color: kWhite,
+                                        size: 20,
+                                      )
+                                    ],
+                                  )),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.only(
+                            top: profileHeight - 5, bottom: 15),
+                        child: const Image(
+                            image:
+                                AssetImage('./assets/images/background2.png'))),
+                  ],
+                ),
                 settingItem('리스트보기', listViewSetting, ['전체 보기', '제목만 보기']),
                 settingItem('갤러리보기', galleryViewSetting, ['1단', '2단', '3단']),
                 settingItem('데이트피커', datePickerSetting, ['슬라이드형', '캘린더형']),

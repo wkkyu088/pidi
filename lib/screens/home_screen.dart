@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Container(
           padding: EdgeInsets.only(top: statusBarHeight),
           width: appWidth,

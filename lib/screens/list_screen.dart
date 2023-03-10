@@ -20,108 +20,132 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
   final _current = List.filled(postList.length, 0);
 
+  Widget imageDialog(i, j) {
+    return Column(
+      children: [
+        Expanded(
+          child: CarouselSlider.builder(
+              options: CarouselOptions(
+                initialPage: j,
+                enableInfiniteScroll: false,
+                disableCenter: true,
+                viewportFraction: 1.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current[i] = index;
+                  });
+                },
+              ),
+              itemCount: postList[i].images.length,
+              itemBuilder: (context, itemIndex, realidx) {
+                return CachedNetworkImage(
+                  imageUrl: postList[i].images[itemIndex].toString(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                );
+              }),
+        ),
+        Container(
+          width: 40,
+          height: 50,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(bottom: 10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.close_rounded,
+              size: 30,
+              color: kWhite,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget postItem(i, j) {
+    return GestureDetector(
+        onTap: () {
+          showDialog(
+              barrierColor: Colors.black.withOpacity(0.8),
+              context: context,
+              builder: (BuildContext context) {
+                return imageDialog(i, j);
+              });
+        },
+        child: CachedNetworkImage(
+          imageUrl: postList[i].images[j].toString(),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              borderRadius: kBorderRadius,
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ));
+  }
+
+  Widget moreText(i) {
+    return TextButton(
+        style: TextButton.styleFrom(
+          primary: kGrey,
+          minimumSize: Size.zero,
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailScreen(post: postList[i])));
+        },
+        child:
+            Text('더보기', style: TextStyle(color: kGrey, fontSize: kContentS)));
+  }
+
+  Widget multilineText(i) {
+    List strList = postList[i].content.split('\n');
+    if (strList.length > 3) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(strList.sublist(0, 3).join('\n'),
+              style: TextStyle(fontSize: kContentM)),
+          moreText(i)
+        ],
+      );
+    } else {
+      return Text(postList[i].content, style: TextStyle(fontSize: kContentM));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width - 30;
+    final scrollController = ScrollController();
 
-    Widget imageDialog(i, j) {
-      return Column(
-        children: [
-          Expanded(
-            child: CarouselSlider.builder(
-                options: CarouselOptions(
-                  initialPage: j,
-                  enableInfiniteScroll: false,
-                  disableCenter: true,
-                  viewportFraction: 1.0,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current[i] = index;
-                    });
-                  },
-                ),
-                itemCount: postList[i].images.length,
-                itemBuilder: (context, itemIndex, realidx) {
-                  return Image.network(
-                      postList[i].images[itemIndex].toString());
-                }),
-          ),
-          Container(
-            width: 40,
-            height: 50,
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(bottom: 10),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.close_rounded,
-                size: 30,
-                color: kWhite,
-              ),
-            ),
-          ),
-        ],
-      );
+    @override
+    void initState() {
+      super.initState();
+      setState(() {});
+
+      scrollController.addListener(() {
+        print('scrolladdListener');
+        if (scrollController.offset >=
+                scrollController.position.maxScrollExtent / 2 &&
+            !scrollController.position.outOfRange) {
+          last_doc = readMoreItems(last_doc);
+        }
+      });
     }
 
-    Widget postItem(i, j) {
-      return GestureDetector(
-          onTap: () {
-            showDialog(
-                barrierColor: Colors.black.withOpacity(0.8),
-                context: context,
-                builder: (BuildContext context) {
-                  return imageDialog(i, j);
-                });
-          },
-          child: CachedNetworkImage(
-            imageUrl: postList[i].images[j].toString(),
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                borderRadius: kBorderRadius,
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ));
-    }
-
-    Widget moreText(i) {
-      return TextButton(
-          style: TextButton.styleFrom(
-            primary: kGrey,
-            minimumSize: Size.zero,
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailScreen(post: postList[i])));
-          },
-          child:
-              Text('더보기', style: TextStyle(color: kGrey, fontSize: kContentS)));
-    }
-
-    Widget multilineText(i) {
-      List strList = postList[i].content.split('\n');
-      if (strList.length > 3) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(strList.sublist(0, 3).join('\n'),
-                style: TextStyle(fontSize: kContentM)),
-            moreText(i)
-          ],
-        );
-      } else {
-        return Text(postList[i].content, style: TextStyle(fontSize: kContentM));
-      }
+    @override
+    void dispose() {
+      scrollController.dispose();
+      super.dispose();
     }
 
     Widget item(i) {
@@ -234,49 +258,30 @@ class _ListScreenState extends State<ListScreen> {
       );
     }
 
-    final scrollController = ScrollController();
-
-    @override
-    void initState() {
-      super.initState();
-    }
-
-    @override
-    void dispose() {
-      scrollController.dispose();
-      super.dispose();
-    }
-
     Widget _buildListView() {
-      return NotificationListener<ScrollNotification>(
-          onNotification: (scrollState) {
-            if (scrollState is ScrollEndNotification) {
-              last_doc = readMoreItems(last_doc);
-              Future.delayed(const Duration(milliseconds: 100), () {})
-                  .then((s) {
-                scrollController.animateTo(160,
-                    duration: Duration(milliseconds: 500), curve: Curves.ease);
-              });
-            }
-            return false;
-          },
-          child: ListView.separated(
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            itemCount: postList.length,
-            itemBuilder: (context, i) {
-              if (i == postList.length - 1) {
-                return Container(
-                    padding: const EdgeInsets.only(bottom: 30), child: item(i));
-              }
-              return item(i);
-            },
-            separatorBuilder: (context, i) => const Divider(),
-          ));
+      return ListView.separated(
+        controller: scrollController,
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        itemCount: postList.length,
+        itemBuilder: (context, i) {
+          if (i == postList.length - 1) {
+            return Container(
+                padding: const EdgeInsets.only(bottom: 30), child: item(i));
+          }
+          return item(i);
+        },
+        separatorBuilder: (context, i) => const Divider(),
+      );
     }
 
-    return Scaffold(appBar: customAppBar('리스트 보기'), body: _buildListView());
+    return Scaffold(
+        appBar: customAppBar('리스트 보기'),
+        body: RefreshIndicator(
+          onRefresh: () {
+            setState(() {});
+            return Future<void>.value();
+          },
+          child: _buildListView(),
+        ));
   }
 }
