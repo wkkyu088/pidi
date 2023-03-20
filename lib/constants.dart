@@ -56,4 +56,4 @@ final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 var postList = [];
 var dataflag = false;
 String userid = 'user1';
-var last_doc;
+var lastDoc;
