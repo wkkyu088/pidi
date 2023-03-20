@@ -20,7 +20,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width - 50;
-    const profileHeight = 200.0;
+    const profileHeight = 180.0;
     String sampleText =
         '가나다라마바사아자차카타파하\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890 !@#\$%^&*().,';
 
@@ -53,7 +53,7 @@ class _SettingScreenState extends State<SettingScreen> {
           fillColor: kBlack,
           borderColor: kBlack,
           selectedBorderColor: kBlack,
-          borderRadius: kBorderRadius,
+          borderRadius: kBorderRadiusS,
           children: children.length != 3
               ? [
                   buttonItem(children.length, children[0], selectList[0]),
@@ -68,12 +68,12 @@ class _SettingScreenState extends State<SettingScreen> {
 
     Widget settingItem(title, selectList, children) {
       return Container(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: 15),
         width: width,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
+              padding: const EdgeInsets.only(bottom: 2),
               child: Row(children: [
                 Text(
                   title,
@@ -86,7 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     constraints: const BoxConstraints(),
                     onPressed: () {},
                     icon: Icon(Icons.help_outline_rounded,
-                        size: 18, color: kGrey))
+                        size: kTitle, color: kGrey))
               ]),
             ),
             customToggleButton(selectList, children)
@@ -112,12 +112,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   fontFamily = font;
                 });
               },
-              child: Text(title,
-                  style: TextStyle(
-                    color: kBlack,
-                    fontFamily: font,
-                    fontSize: kTitle,
-                  )),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: kBlack,
+                  fontFamily: font,
+                  fontSize: font == fontList[2] ? 16 : 13,
+                ),
+              ),
             ),
           ),
           Radio(
@@ -137,14 +139,17 @@ class _SettingScreenState extends State<SettingScreen> {
 
     Widget fontSaveButton() {
       return TextButton(
-          onPressed: () {},
+          onPressed: () {
+            setState(() {});
+          },
           style: TextButton.styleFrom(
             primary: kUnderline,
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: kBlack,
+            minimumSize: const Size(0, 0),
             shape: RoundedRectangleBorder(
-              borderRadius: kBorderRadius,
+              borderRadius: kBorderRadiusS,
             ),
           ),
           child:
@@ -163,17 +168,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       width: MediaQuery.of(context).size.width,
                       height: profileHeight,
                       color: kBlack,
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            radius: 40,
+                            radius: 35,
                             backgroundColor: kUnderline,
                             child: Icon(
                               Icons.person_rounded,
-                              size: 50,
+                              size: 40,
                               color: kWhite,
                             ),
                           ),
@@ -182,7 +187,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               ? Text(
                                   userid,
                                   style: TextStyle(
-                                    fontSize: kAppBar,
+                                    fontSize: kTitle,
                                     fontWeight: FontWeight.bold,
                                     color: kWhite,
                                   ),
@@ -207,7 +212,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       Text(
                                         '로그인하세요',
                                         style: TextStyle(
-                                          fontSize: kAppBar,
+                                          fontSize: kTitle,
                                           fontWeight: FontWeight.bold,
                                           color: kWhite,
                                         ),
@@ -241,16 +246,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   color: kUnderline,
                   width: width,
                   height: 1,
-                  margin: const EdgeInsets.only(top: 10, bottom: 20),
+                  margin: const EdgeInsets.only(top: 8, bottom: 16),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(6),
-                  margin: const EdgeInsets.only(bottom: 35),
+                  padding: const EdgeInsets.all(0),
+                  margin: const EdgeInsets.only(bottom: 30),
                   width: width,
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
+                        padding: const EdgeInsets.only(bottom: 15.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -266,18 +271,20 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                       Center(
                         child: Container(
-                            margin: const EdgeInsets.only(top: 5, bottom: 20),
-                            width: width,
-                            height: 120,
-                            decoration: BoxDecoration(
-                                color: kBackground,
-                                borderRadius: kBorderRadius),
-                            alignment: Alignment.center,
-                            child: Text(sampleText,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: kContentM,
-                                    fontFamily: fontFamily))),
+                          margin: const EdgeInsets.only(top: 5, bottom: 20),
+                          width: width,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              color: kBackground, borderRadius: kBorderRadius),
+                          alignment: Alignment.center,
+                          child: Text(
+                            sampleText,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: fontFamily == fontList[2] ? 16 : 13,
+                                fontFamily: fontFamily),
+                          ),
+                        ),
                       ),
                       Column(
                         children: [

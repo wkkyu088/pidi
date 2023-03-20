@@ -83,7 +83,7 @@ class DetailScreen extends StatelessWidget {
           backgroundColor: kWhite,
         ),
         body: Container(
-            padding: const EdgeInsets.only(left: 20.0, top: 5.0, right: 20.0),
+            padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
             child: Column(children: [
               Align(
                 alignment: Alignment.centerLeft,
@@ -111,23 +111,29 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               Expanded(flex: 1, child: _buildImages()),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
               Expanded(
                 flex: 2,
                 child: RawScrollbar(
                   thumbColor: kUnderline,
                   radius: const Radius.circular(20),
                   child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      child: Container(
-                          alignment: Alignment.topLeft,
-                          decoration: const BoxDecoration(),
-                          child: Text(contentValue,
-                              style:
-                                  TextStyle(height: 2, fontSize: kContentM)))),
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      decoration: const BoxDecoration(),
+                      child: Text(
+                        contentValue,
+                        style: TextStyle(
+                          height: fontFamily == fontList[2] ? 1.2 : 1.6,
+                          fontSize: kContentM,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               )
             ])));

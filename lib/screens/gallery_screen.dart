@@ -51,13 +51,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
             return Future<void>.value();
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: MasonryGridView.count(
               crossAxisCount: galleryViewSetting.indexOf(true) + 1,
               itemCount: galleryList.length,
               itemBuilder: (BuildContext context, int index) => Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
                 child: GestureDetector(
                   onTap: () async {
                     // value를 통해 해당 id doc 접근 완료
@@ -100,9 +99,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       // 날짜 표시줄
                       Center(
                           child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 7.0),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                         padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 15.0),
+                            vertical: 4, horizontal: 14),
                         decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.4),
                             borderRadius: kBorderRadiusL),

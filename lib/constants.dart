@@ -23,18 +23,18 @@ Color kBackground = const Color(0xFFF2F2F2);
 
 // FontSize
 double kSplash = 52;
-double kAppBar = 18;
-double kTitle = 16;
-double kContentM = 14;
-double kContentS = 12;
-double kSubText = 10;
+double kAppBar = fontFamily == fontList[2] ? 20 : 17;
+double kTitle = fontFamily == fontList[2] ? 18 : 15;
+double kContentM = fontFamily == fontList[2] ? 16 : 13;
+double kContentS = fontFamily == fontList[2] ? 14 : 11;
+double kSubText = fontFamily == fontList[2] ? 12 : 9;
 
 // BorderRdius
+// images in create_modal
+BorderRadius kBorderRadiusL = BorderRadius.circular(18.0);
+
 // images in list_screen, gallery_screen, detail_screen
 BorderRadius kBorderRadius = BorderRadius.circular(10.0);
-
-// images in create_modal
-BorderRadius kBorderRadiusL = BorderRadius.circular(20.0);
 
 // textField in create_modal
 BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
@@ -45,7 +45,14 @@ final List<bool> listViewSetting = [true, false];
 final List<bool> galleryViewSetting = [false, false, true];
 final List<bool> datePickerSetting = [true, false];
 final List<bool> startingDayofWeekSetting = [true, false];
-String fontFamily = 'GowunDodum';
+List fontList = [
+  'GowunDodum',
+  'GowunBatang',
+  'GangwonSaeum',
+  'MapoPeacefull',
+  'NanumSquare'
+];
+String fontFamily = fontList[4];
 
 // calendar day setting
 final kToday = DateTime.now();

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           surface: kBlack,
           onSurface: kBlack,
         ),
-        fontFamily: 'GowunDodum',
+        fontFamily: fontFamily,
         textSelectionTheme: TextSelectionThemeData(
             cursorColor: kBlack,
             selectionHandleColor: kBlack,
@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    // ListScreen(),
+    //ListScreen(),
     ListScreenTest(),
     GalleryScreen(),
     SettingScreen(), // 개수 맞추기 위해서 필요함

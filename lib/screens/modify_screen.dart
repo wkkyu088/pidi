@@ -105,8 +105,9 @@ class _ModifyScreenState extends State<ModifyScreen> {
         backgroundColor: kWhite,
       ),
       body: Container(
-          padding: const EdgeInsets.only(left: 20.0, top: 5.0, right: 20.0),
-          child: Column(children: [
+        padding: const EdgeInsets.only(left: 15, top: 5, right: 15),
+        child: Column(
+          children: [
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -157,39 +158,44 @@ class _ModifyScreenState extends State<ModifyScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
             Expanded(flex: 1, child: _buildImages()),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Expanded(
               flex: 2,
               child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Container(
-                      decoration: const BoxDecoration(),
-                      child: RawScrollbar(
-                        thumbColor: kUnderline,
-                        radius: const Radius.circular(20),
-                        child: TextField(
-                            controller: contents_controller,
-                            autofocus: true,
-                            onChanged: (text) {
-                              rePost.content = text;
-                            },
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              isDense: true,
-                              isCollapsed: true,
-                              counterText: "",
-                            ),
-                            maxLines: 7,
-                            maxLength: 200,
-                            style: TextStyle(
-                              height: 2,
-                              fontSize: kContentM,
-                            )),
-                      ))),
+                alignment: Alignment.topLeft,
+                child: Container(
+                  decoration: const BoxDecoration(),
+                  child: RawScrollbar(
+                    thumbColor: kUnderline,
+                    radius: const Radius.circular(20),
+                    child: TextField(
+                      controller: contents_controller,
+                      autofocus: true,
+                      onChanged: (text) {
+                        rePost.content = text;
+                      },
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        isCollapsed: true,
+                        counterText: "",
+                      ),
+                      maxLines: 7,
+                      maxLength: 200,
+                      style: TextStyle(
+                        height: fontFamily == fontList[2] ? 1.2 : 1.6,
+                        fontSize: kContentM,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

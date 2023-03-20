@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     headerTitleBuilder: (context, day) {
                       return Center(
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const SizedBox(width: 70),
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Icon(
                                         Icons.refresh_rounded,
                                         color: kBlack,
-                                        size: 20,
+                                        size: 18,
                                       ),
                                     ),
                                     TextButton(
@@ -125,20 +126,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                         style: TextButton.styleFrom(
                                           primary: kBlack.withOpacity(0.5),
                                           side: BorderSide(
-                                              color: kBlack, width: 1.5),
+                                              color: kBlack, width: 1.2),
                                           shape: RoundedRectangleBorder(
                                               borderRadius: kBorderRadiusL),
                                           tapTargetSize:
                                               MaterialTapTargetSize.shrinkWrap,
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 3, horizontal: 8),
+                                              vertical: 2, horizontal: 8),
                                           minimumSize: Size.zero,
                                         ),
                                         child: Text(
                                           '오늘',
                                           style: TextStyle(
                                               color: kBlack,
-                                              fontSize: kSubText + 1,
+                                              fontSize: kContentS,
                                               fontWeight: FontWeight.bold),
                                         )),
                                   ],

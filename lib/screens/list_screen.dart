@@ -113,8 +113,8 @@ class _ListScreenState extends State<ListScreen> {
               MaterialPageRoute(
                   builder: (context) => DetailScreen(post: postList[i])));
         },
-        child:
-            Text('더보기', style: TextStyle(color: kGrey, fontSize: kContentS)));
+        child: Text('더보기',
+            style: TextStyle(color: Colors.grey, fontSize: kContentS)));
   }
 
   Widget multilineText(i) {
@@ -140,11 +140,10 @@ class _ListScreenState extends State<ListScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 alignment: Alignment.centerLeft,
                 child: Text(DateFormat('yyyy-MM-dd').format(postList[i].date),
-                    style: TextStyle(fontSize: kContentS))),
+                    style: TextStyle(fontSize: kContentS + 1))),
             dropDownIcon(context, postList[i])
           ],
         ),
@@ -173,13 +172,13 @@ class _ListScreenState extends State<ListScreen> {
                     width: MediaQuery.of(context).size.width - 30,
                     height: MediaQuery.of(context).size.width - 30,
                     alignment: Alignment.bottomRight,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(50.0),
                           color: Colors.black.withOpacity(0.4)),
                       child: Text(
                           '${_current[i] + 1} / ${postList[i].images.length}',
@@ -193,52 +192,54 @@ class _ListScreenState extends State<ListScreen> {
           ],
         ),
         Container(
-            color: kWhite,
-            width: MediaQuery.of(context).size.width - 30,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 7),
-            alignment: Alignment.centerLeft,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        decoration: listViewSetting[0] == true
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  stops: const [
-                                    0.65,
-                                    0.35,
-                                  ],
-                                  colors: [
-                                    kWhite,
-                                    kUnderline,
-                                  ],
-                                ),
-                              )
-                            : const BoxDecoration(),
-                        child: Text(
-                          postList[i].title,
-                          style: TextStyle(fontSize: kTitle),
-                        ),
+          color: kWhite,
+          width: MediaQuery.of(context).size.width - 30,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+          alignment: Alignment.centerLeft,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: listViewSetting[0] == true
+                          ? BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [
+                                  0.65,
+                                  0.35,
+                                ],
+                                colors: [
+                                  kWhite,
+                                  kUnderline,
+                                ],
+                              ),
+                            )
+                          : const BoxDecoration(),
+                      child: Text(
+                        postList[i].title,
+                        style: TextStyle(
+                            fontSize: kTitle, fontWeight: FontWeight.bold),
                       ),
-                      listViewSetting[1] == true ? moreText(i) : Container()
-                    ],
-                  ),
+                    ),
+                    listViewSetting[1] == true ? moreText(i) : Container()
+                  ],
                 ),
-                listViewSetting[0] == true
-                    ? Container(
-                        padding: const EdgeInsets.only(top: 7),
-                        alignment: Alignment.centerLeft,
-                        child: multilineText(i),
-                      )
-                    : Container()
-              ],
-            )),
+              ),
+              listViewSetting[0] == true
+                  ? Container(
+                      padding: const EdgeInsets.only(top: 7),
+                      alignment: Alignment.centerLeft,
+                      child: multilineText(i),
+                    )
+                  : Container()
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -305,9 +306,14 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget _buildListView() {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => Container(
+        height: 1,
+        color: kBackground,
+        margin: const EdgeInsets.symmetric(vertical: 5),
+      ),
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       itemCount: postList.length,
       itemBuilder: (context, i) {
         if (i == postList.length - 1) {
