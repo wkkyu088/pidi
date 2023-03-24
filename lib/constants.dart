@@ -60,7 +60,6 @@ final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 
 // data
-var postList = [];
 var dataflag = false;
 String userid = 'user1';
 var lastDoc;
