@@ -238,7 +238,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 settingItem('리스트보기', listViewSetting, ['전체 보기', '제목만 보기']),
                 settingItem('갤러리보기', galleryViewSetting, ['1단', '2단', '3단']),
-                settingItem('데이트피커', datePickerSetting, ['슬라이드형', '캘린더형']),
+                // settingItem('데이트피커', datePickerSetting, ['슬라이드형', '캘린더형']),
                 settingItem('캘린더보기', calendarViewSetting, ['1:1 비율', '3:4 비율']),
                 settingItem(
                     '캘린더 시작 요일', startingDayofWeekSetting, ['일요일', '월요일']),
