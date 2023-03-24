@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:intl/intl.dart';
 import 'package:pidi/constants.dart';
+import 'package:pidi/models/singleton.dart';
 import 'package:pidi/screens/detail_screen.dart';
 import '../models/item.dart';
 import '../widgets/custom_appbar.dart';
@@ -20,6 +21,7 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
+  var postList;
   List galleryList = [];
 
   void getGalleryList() {
@@ -37,7 +39,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {});
+    postList = Singleton().postList;
     getGalleryList();
   }
 

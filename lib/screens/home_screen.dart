@@ -6,6 +6,8 @@ import 'package:pidi/screens/detail_screen.dart';
 import '../constants.dart';
 import 'package:pidi/models/test.dart';
 
+import '../models/singleton.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -16,11 +18,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  var postList;
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
+    postList = Singleton().postList;
   }
 
   @override
