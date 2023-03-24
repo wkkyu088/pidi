@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/models/posts.dart';
-import 'package:pidi/screens/list_screen.dart';
+import 'package:pidi/models/singleton.dart';
 import 'package:pidi/widgets/custom_dialog.dart';
 
 import '../constants.dart';
@@ -89,7 +89,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                     builder: (BuildContext context) {
                       return customDialog(
                           context, '수정', '수정사항을 저장하시겠습니까?', '저장', () {
-                        updatePost(
+                        Singleton().updatePost(
                           widget.post.id,
                           title_controller.text,
                           contents_controller.text,

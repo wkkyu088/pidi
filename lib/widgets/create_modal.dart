@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +10,7 @@ import 'package:pidi/widgets/toast_message.dart';
 import 'dart:io';
 
 import '../constants.dart';
+import '../models/singleton.dart';
 
 class CreateModal extends StatefulWidget {
   const CreateModal({Key? key}) : super(key: key);
@@ -79,6 +78,8 @@ class _CreateModalState extends State<CreateModal> {
     final keyboardHeight = mediaQueryData.viewInsets.bottom;
 
     List<DateTime> deactivateDates = [];
+
+    var postList = Singleton().postList;
     for (var v in postList) {
       deactivateDates.add(v.date);
       if (kToday.difference(v.date).inDays == 0) {
@@ -401,7 +402,7 @@ class _CreateModalState extends State<CreateModal> {
                                   } else if (contentValue.isEmpty) {
                                     toastMessage(context, '내용은 반드시 입력해야합니다.');
                                   } else {
-                                    createPost(
+                                    Singleton().createPost(
                                       _pickedImages,
                                       titleValue,
                                       contentValue,

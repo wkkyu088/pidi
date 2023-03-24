@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pidi/models/singleton.dart';
 import 'package:pidi/screens/splash_screen.dart';
-import 'package:pidi/test/list_test.dart';
-
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
 import './screens/setting_screen.dart';
@@ -79,8 +78,7 @@ class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    //ListScreen(),
-    ListScreenTest(),
+    ListScreen(),
     GalleryScreen(),
     SettingScreen(), // 개수 맞추기 위해서 필요함
     HomeScreen(),
@@ -89,10 +87,15 @@ class _MainPageState extends State<MainPage> {
 
   void _onItemTapped(int index) {
     if (index != 2) {
-      setState(() {
-        _selectedIndex = index;
-      });
+      _selectedIndex = index;
+      setState(() {});
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Singleton().getPost(userid);
   }
 
   @override
@@ -102,7 +105,6 @@ class _MainPageState extends State<MainPage> {
         systemNavigationBarIconBrightness: Brightness.dark,
         statusBarColor: kWhite,
         statusBarIconBrightness: Brightness.dark));
-
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: kWhite,

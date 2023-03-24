@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:pidi/models/posts.dart';
+import 'package:pidi/models/singleton.dart';
 import 'package:pidi/screens/detail_screen.dart';
 
 import '../models/item.dart';
@@ -13,8 +10,6 @@ import '../widgets/custom_appbar.dart';
 import '../constants.dart';
 
 import '../widgets/dropdown_button.dart';
-
-import 'package:http/http.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -24,11 +19,8 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  var postList;
   final _current = List.filled(100, 0);
-
-  late bool _error;
-  late int _numberOfPostsPerRequest;
-
   late ScrollController _scrollController;
 
   Widget imageDialog(i, j) {
@@ -247,9 +239,8 @@ class _ListScreenState extends State<ListScreen> {
   @override
   void initState() {
     super.initState();
-    _numberOfPostsPerRequest = 3;
     _scrollController = ScrollController();
-    fetchData();
+    postList = Singleton().postList;
   }
 
   @override
@@ -258,42 +249,8 @@ class _ListScreenState extends State<ListScreen> {
     _scrollController.dispose();
   }
 
-  Future<void> fetchData() async {
-    print("\ninvoked");
-    try {
-      var query = firestore
-          .where('uid', isEqualTo: userid)
-          .orderBy('date', descending: true)
-          .limit(_numberOfPostsPerRequest);
-
-      var snapshot = await query.get();
-
-      List<Item> pList = snapshot.docs
-          .map((doc) => Item(
-              id: doc.id,
-              title: doc['title'],
-              date: doc['date'].toDate(),
-              content: doc['content'],
-              images: getImages(doc['images'])))
-          .toList();
-
-      setState(() {
-        postList.addAll(pList);
-      });
-    } catch (e) {
-      print("error --> $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        fetchData();
-      }
-    });
-
     return Scaffold(
         appBar: customAppBar('리스트 보기'),
         body: RefreshIndicator(
@@ -306,6 +263,13 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget _buildListView() {
+    if (postList.isEmpty) {
+      return const Center(
+          child: Padding(
+        padding: EdgeInsets.all(8),
+        child: CircularProgressIndicator(),
+      ));
+    }
     return ListView.separated(
       separatorBuilder: (context, index) => Container(
         height: 1,
