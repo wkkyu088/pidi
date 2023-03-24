@@ -33,18 +33,22 @@ Widget dropDownIcon(context, Item post) {
         child: MenuItems.buildItem(MenuItems.firstItems[1]),
       ),
     ],
-    // offset: const Offset(-50, 5),
-    // onChanged: (value) {
-    //   MenuItems.onChanged(context, value as MenuItem, post);
-    // },
-    // itemHeight: 35,
-    // itemPadding: const EdgeInsets.only(left: 15, right: 15),
-    // dropdownWidth: 85,
-    // dropdownDecoration: BoxDecoration(
-    //   borderRadius: kBorderRadius,
-    //   color: kWhite,
-    // ),
-    // dropdownElevation: 8,
+    dropdownStyleData: DropdownStyleData(
+      offset: const Offset(-50, 5),
+      width: 85,
+      decoration: BoxDecoration(
+        borderRadius: kBorderRadius,
+        color: kWhite,
+      ),
+      elevation: 8,
+    ),
+    menuItemStyleData: const MenuItemStyleData(
+      height: 35,
+      padding: EdgeInsets.only(left: 15, right: 15),
+    ),
+    onChanged: (value) {
+      MenuItems.onChanged(context, value as MenuItem, post);
+    },
   ));
 }
 

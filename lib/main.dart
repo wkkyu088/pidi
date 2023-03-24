@@ -116,14 +116,17 @@ class _MainPageState extends State<MainPage> {
             backgroundColor: kBlack,
             onPressed: () {
               showModalBottomSheet(
-                constraints: BoxConstraints.loose(Size(
-                    MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height)),
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
+                constraints: BoxConstraints.loose(
+                  Size(
+                    MediaQuery.of(context).size.width,
+                    MediaQuery.of(context).size.height,
+                  ),
+                ),
                 builder: (BuildContext context) {
-                  return const CreateModal();
+                  return const SingleChildScrollView(child: CreateModal());
                 },
               );
             },
