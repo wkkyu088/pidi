@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pidi/screens/login_screen.dart';
 
 import '../constants.dart';
 import '../main.dart';
@@ -12,13 +15,66 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  startTimer() async {
+    return Timer(const Duration(seconds: 2), initApp);
+    // return Timer(const Duration(seconds: 2), () {
+    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+    //       builder: (BuildContext context) => const LoginScreen()));
+    // });
+  }
+
+  void initApp() async {
+    var currentUser = FirebaseAuth.instance.currentUser;
+    print(currentUser);
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const LoginScreen()));
+    } else {
+      var user = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUser!.uid)
+          .get();
+      final v = user.data() as Map;
+      uid = currentUser.uid;
+      userName = v['userName'];
+      email = v['email'];
+      calendarViewSetting = [
+        v['calendarViewSetting'][0],
+        v['calendarViewSetting'][1]
+      ];
+      listViewSetting = [v['listViewSetting'][0], v['listViewSetting'][1]];
+      galleryViewSetting = [
+        v['galleryViewSetting'][0],
+        v['galleryViewSetting'][1],
+        v['galleryViewSetting'][2]
+      ];
+      startingDayofWeekSetting = [
+        v['startingDayofWeekSetting'][0],
+        v['startingDayofWeekSetting'][1]
+      ];
+      fontFamily = v['fontFamily'];
+
+      print({
+        'uid': uid,
+        'userName': userName,
+        'email': email,
+        'listViewSetting': listViewSetting,
+        'galleryViewSetting': galleryViewSetting,
+        'calendarViewSetting': calendarViewSetting,
+        'startingDayofWeekSetting': startingDayofWeekSetting,
+        'fontFamily': fontFamily,
+      });
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const MainPage()));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    Timer(
-        const Duration(seconds: 2),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => const MainPage())));
+    startTimer();
   }
 
   @override

@@ -207,7 +207,8 @@ class _CreateModalState extends State<CreateModal> {
                 // margin: const EdgeInsets.symmetric(vertical: 30),
                 decoration: const BoxDecoration(color: Colors.white),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -407,7 +408,7 @@ class _CreateModalState extends State<CreateModal> {
                                       titleValue,
                                       contentValue,
                                       _selectedValue,
-                                      userid,
+                                      uid,
                                     );
                                     Navigator.pop(context);
                                     toastMessage(context, '저장을 완료했습니다.');

@@ -1,78 +1,272 @@
-import 'dart:math';
-
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pidi/main.dart';
 
 import '../constants.dart';
+import '../widgets/toast_message.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final emailCont = TextEditingController();
+  final pwCont = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              height: 75,
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              margin: const EdgeInsets.symmetric(vertical: 50),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [
-                    0.65,
-                    0.35,
-                  ],
-                  colors: [
-                    kWhite,
-                    kUnderline,
-                  ],
-                ),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 3,
+            child: SizedBox(
+              width: screenWidth * 0.45,
+              child: const Image(
+                image: AssetImage('./assets/images/logo.png'),
               ),
-              child: Text('PiDi',
-                  style: TextStyle(
-                      color: kBlack,
-                      fontSize: kSplash + 5,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'GowunBatang')),
             ),
-            Column(
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.12),
+            child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                TextField(
+                  controller: emailCont,
+                  maxLines: 1,
+                  keyboardType: TextInputType.emailAddress,
+                  style: TextStyle(fontSize: kContentM),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.mail_rounded),
+                    isCollapsed: true,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kBlack, width: 1),
+                      borderRadius: kBorderRadiusS,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kGrey, width: 1),
+                      borderRadius: kBorderRadiusS,
+                    ),
+                    hintText: '이메일',
+                    hintStyle: TextStyle(fontSize: kContentM, color: kGrey),
+                    counterText: '',
                   ),
                 ),
-                Container(
-                  height: 50,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  color: Colors.amber[100],
-                ),
-                Container(
-                  height: 50,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  color: Colors.amber[100],
-                ),
-                Container(
-                  height: 50,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-                  color: Colors.amber[100],
+                const SizedBox(height: 10),
+                TextField(
+                  controller: pwCont,
+                  maxLines: 1,
+                  maxLength: 20,
+                  obscureText: true,
+                  obscuringCharacter: "*",
+                  style: TextStyle(fontSize: kContentM),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.lock_rounded),
+                    isCollapsed: true,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kBlack, width: 1),
+                      borderRadius: kBorderRadiusS,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: kGrey, width: 1),
+                      borderRadius: kBorderRadiusS,
+                    ),
+                    hintText: '비밀번호',
+                    hintStyle: TextStyle(fontSize: kContentM, color: kGrey),
+                    counterText: '',
+                  ),
                 ),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 30, left: screenWidth * 0.12, right: screenWidth * 0.12),
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () async {
+                      try {
+                        print("${emailCont.text} ${pwCont.text}");
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithEmailAndPassword(
+                                email: emailCont.text, password: pwCont.text);
+                        if (userCredential.user != null) {
+                          print("로그인 성공");
+                          var user = await FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(userCredential.user!.uid)
+                              .get();
+                          final v = user.data() as Map;
+                          uid = userCredential.user!.uid;
+                          userName = v['userName'];
+                          email = v['email'];
+                          calendarViewSetting = [
+                            v['calendarViewSetting'][0],
+                            v['calendarViewSetting'][1]
+                          ];
+                          listViewSetting = [
+                            v['listViewSetting'][0],
+                            v['listViewSetting'][1]
+                          ];
+                          galleryViewSetting = [
+                            v['galleryViewSetting'][0],
+                            v['galleryViewSetting'][1],
+                            v['galleryViewSetting'][2]
+                          ];
+                          startingDayofWeekSetting = [
+                            v['startingDayofWeekSetting'][0],
+                            v['startingDayofWeekSetting'][1]
+                          ];
+                          fontFamily = v['fontFamily'];
+                          print({
+                            'uid': uid,
+                            'userName': userName,
+                            'email': email,
+                            'listViewSetting': listViewSetting,
+                            'galleryViewSetting': galleryViewSetting,
+                            'calendarViewSetting': calendarViewSetting,
+                            'startingDayofWeekSetting':
+                                startingDayofWeekSetting,
+                            'fontFamily': fontFamily,
+                          });
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      const MainPage()),
+                              (route) => false);
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('등록되지 않은 이메일');
+                          toastMessage(context, "등록되지 않은 이메일입니다.");
+                        } else if (e.code == 'wrong-password') {
+                          print('비밀번호가 틀림');
+                          toastMessage(context, "비밀번호가 틀렸습니다.");
+                        } else if (e.code == 'invalid-email') {
+                          print('잘못된 이메일 형식');
+                          toastMessage(context, "잘못된 이메일 형식입니다.");
+                        } else {
+                          print('${e.code} : 알 수 없는 오류');
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      primary: kBlack,
+                      backgroundColor: kBlack,
+                      shape:
+                          RoundedRectangleBorder(borderRadius: kBorderRadius),
+                      minimumSize: Size(screenWidth, 50),
+                    ),
+                    child: Text(
+                      '로그인',
+                      style: TextStyle(
+                        color: kWhite,
+                        fontSize: kContentM,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () async {
+                      try {
+                        print("${emailCont.text} ${pwCont.text}");
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .createUserWithEmailAndPassword(
+                                email: emailCont.text, password: pwCont.text);
+                        if (userCredential.user != null) {
+                          print("회원가입 성공");
+                          await FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(userCredential.user!.uid)
+                              .set({
+                            'userName': emailCont.text.split('@')[0],
+                            'email': emailCont.text,
+                            'settings': [0, 2, 0, 0, 0],
+                            'uid': userCredential.user!.uid,
+                            'listViewSetting': [true, false],
+                            'galleryViewSetting': [false, false, true],
+                            'calendarViewSetting': [false, true],
+                            'startingDayofWeekSetting': [true, false],
+                            'fontFamily': fontList[0],
+                          });
+                          uid = userCredential.user!.uid;
+                          userName = emailCont.text.split('@')[0];
+                          email = emailCont.text;
+                          listViewSetting = [true, false];
+                          galleryViewSetting = [false, false, true];
+                          calendarViewSetting = [false, true];
+                          startingDayofWeekSetting = [true, false];
+                          fontFamily = fontList[0];
+                          print({
+                            'uid': uid,
+                            'userName': userName,
+                            'email': email,
+                            'listViewSetting': listViewSetting,
+                            'galleryViewSetting': galleryViewSetting,
+                            'calendarViewSetting': calendarViewSetting,
+                            'startingDayofWeekSetting':
+                                startingDayofWeekSetting,
+                            'fontFamily': fontFamily,
+                          });
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MainPage()),
+                              (route) => false);
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'email-already-in-use') {
+                          print('이미 계정이 있음');
+                          toastMessage(context, "이미 있는 계정입니다.");
+                        } else if (e.code == 'weak-password') {
+                          print('비밀번호가 너무 약함');
+                          toastMessage(context, "비밀번호가 너무 약합니다.");
+                        } else if (e.code == 'invalid-email') {
+                          print('잘못된 이메일 형식');
+                          toastMessage(context, "잘못된 이메일 형식입니다.");
+                        } else {
+                          print('${e.code} : 알 수 없는 오류');
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      primary: kBlack,
+                      backgroundColor: Colors.transparent,
+                      shape:
+                          RoundedRectangleBorder(borderRadius: kBorderRadius),
+                      side: BorderSide(color: kBlack, width: 1),
+                      minimumSize: Size(screenWidth, 50),
+                    ),
+                    child: Text(
+                      '회원가입',
+                      style: TextStyle(
+                        color: kBlack,
+                        fontSize: kContentM,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
