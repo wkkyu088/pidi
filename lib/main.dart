@@ -15,6 +15,7 @@ import './widgets/create_modal.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'pidi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
