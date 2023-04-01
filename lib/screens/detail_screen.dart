@@ -1,27 +1,90 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/widgets/dropdown_button.dart';
 
 import '../constants.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final Item post;
   const DetailScreen({Key? key, required this.post}) : super(key: key);
 
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  final _current = List.filled(100, 0);
+
+  Widget imageDialog(i) {
+    return Column(
+      children: [
+        Expanded(
+          child: CarouselSlider.builder(
+            options: CarouselOptions(
+              initialPage: i,
+              enableInfiniteScroll: false,
+              disableCenter: true,
+              viewportFraction: 1.0,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current[i] = index;
+                });
+              },
+            ),
+            itemCount: widget.post.images.length,
+            itemBuilder: (context, itemIndex, realidx) {
+              return CachedNetworkImage(
+                imageUrl: widget.post.images[itemIndex].toString(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              );
+            },
+          ),
+        ),
+        Container(
+          width: 40,
+          height: 50,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(bottom: 10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.close_rounded,
+              size: 30,
+              color: kWhite,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget item(i) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(right: 5.0),
-      child: SizedBox(
-        child: ClipRRect(
-          borderRadius: kBorderRadius,
-          child: CachedNetworkImage(
-              imageUrl: post.images[i].toString(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              fit: BoxFit.fill),
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            barrierColor: Colors.black.withOpacity(0.8),
+            context: context,
+            builder: (BuildContext context) {
+              return imageDialog(i);
+            });
+      },
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(right: 5.0),
+        child: SizedBox(
+          child: ClipRRect(
+            borderRadius: kBorderRadius,
+            child: CachedNetworkImage(
+                imageUrl: widget.post.images[i].toString(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.fill),
+          ),
         ),
       ),
     );
@@ -30,7 +93,7 @@ class DetailScreen extends StatelessWidget {
   Widget _buildImages() {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: post.images.length,
+      itemCount: widget.post.images.length,
       itemBuilder: (context, i) {
         return item(i);
       },
@@ -39,9 +102,9 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String date = DateFormat('yyyy-MM-dd').format(post.date);
-    String titleValue = post.title;
-    String contentValue = post.content;
+    String date = DateFormat('yyyy-MM-dd').format(widget.post.date);
+    String titleValue = widget.post.title;
+    String contentValue = widget.post.content;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -76,7 +139,7 @@ class DetailScreen extends StatelessWidget {
             // ),
             Padding(
               padding: const EdgeInsets.only(right: 15),
-              child: dropDownIcon(context, post),
+              child: dropDownIcon(context, widget.post),
             )
           ],
           elevation: 0,
