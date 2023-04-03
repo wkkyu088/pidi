@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'models/item.dart';
 
+// User Data
+String uid = "";
+String userName = "";
+String email = "";
+
 // Colors
 // 배경색
 Color kWhite = const Color(0xFFFAFAFA);
@@ -40,11 +45,11 @@ BorderRadius kBorderRadius = BorderRadius.circular(10.0);
 BorderRadius kBorderRadiusS = BorderRadius.circular(8.0);
 
 // settings
-final List<bool> calendarViewSetting = [false, true];
-final List<bool> listViewSetting = [true, false];
-final List<bool> galleryViewSetting = [false, false, true];
-final List<bool> datePickerSetting = [true, false];
-final List<bool> startingDayofWeekSetting = [true, false];
+List<bool> calendarViewSetting = [false, true];
+List<bool> listViewSetting = [true, false];
+List<bool> galleryViewSetting = [false, false, true];
+List<bool> startingDayofWeekSetting = [true, false];
+// final List<bool> datePickerSetting = [true, false];
 List fontList = [
   'GowunDodum',
   'GowunBatang',
@@ -52,7 +57,7 @@ List fontList = [
   'MapoPeacefull',
   'NanumSquare'
 ];
-String fontFamily = fontList[4];
+String fontFamily = '';
 
 // calendar day setting
 final kToday = DateTime.now();

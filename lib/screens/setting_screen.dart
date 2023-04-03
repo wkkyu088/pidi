@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pidi/screens/login_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
+import '../widgets/custom_dialog.dart';
+import '../widgets/toast_message.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -14,13 +18,37 @@ class SettingScreen extends StatefulWidget {
 enum Fonts { gowundodum, gowunbatang, gangwon, mapo, nanum }
 
 class _SettingScreenState extends State<SettingScreen> {
-  Fonts? nowFont = Fonts.gowundodum;
-  bool isLogged = false;
+  Fonts? nowFont;
+  var isEdit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    switch (fontFamily) {
+      case 'GowunDodum':
+        nowFont = Fonts.gowundodum;
+        break;
+      case 'GowunBatang':
+        nowFont = Fonts.gowunbatang;
+        break;
+      case 'GangwonSaeum':
+        nowFont = Fonts.gangwon;
+        break;
+      case 'MapoPeacefull':
+        nowFont = Fonts.mapo;
+        break;
+      case 'NanumSquare':
+        nowFont = Fonts.nanum;
+        break;
+    }
+    print(nowFont);
+  }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width - 50;
     const profileHeight = 180.0;
+    final nameCont = TextEditingController(text: userName);
     String sampleText =
         '가나다라마바사아자차카타파하\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890 !@#\$%^&*().,';
 
@@ -32,7 +60,7 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Text(s, style: TextStyle(fontSize: kContentM + 1)));
     }
 
-    Widget customToggleButton(selectList, children) {
+    Widget customToggleButton(selectList, listName, children) {
       return ToggleButtons(
           isSelected: selectList,
           onPressed: (int index) {
@@ -45,6 +73,11 @@ class _SettingScreenState extends State<SettingScreen> {
                 }
               }
             });
+            print("$listName : $selectList");
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(uid)
+                .update({listName: selectList});
           },
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           constraints: const BoxConstraints(),
@@ -66,7 +99,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ]);
     }
 
-    Widget settingItem(title, selectList, children) {
+    Widget settingItem(title, selectList, listName, children) {
       return Container(
         padding: const EdgeInsets.only(bottom: 15),
         width: width,
@@ -89,13 +122,13 @@ class _SettingScreenState extends State<SettingScreen> {
                         size: kTitle, color: kGrey))
               ]),
             ),
-            customToggleButton(selectList, children)
+            customToggleButton(selectList, listName, children)
           ],
         ),
       );
     }
 
-    Widget radioItem(title, font, Fonts value, isSelected) {
+    Widget radioItem(title, font, Fonts value) {
       return SizedBox(
         width: width,
         height: 45,
@@ -108,8 +141,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   overlayColor: MaterialStateProperty.all<Color>(kBackground)),
               onPressed: () {
                 setState(() {
+                  print(fontFamily);
                   nowFont = value;
                   fontFamily = font;
+                  print("$font $fontFamily");
+                  FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(uid)
+                      .update({'fontFamily': font});
                 });
               },
               child: Text(
@@ -127,8 +166,14 @@ class _SettingScreenState extends State<SettingScreen> {
             groupValue: nowFont,
             onChanged: (Fonts? value) {
               setState(() {
+                print(fontFamily);
                 nowFont = value;
                 fontFamily = font;
+                print("$font $fontFamily");
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(uid)
+                    .update({'fontFamily': font});
               });
             },
             activeColor: kBlack,
@@ -154,6 +199,185 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           child:
               Text('적용', style: TextStyle(color: kWhite, fontSize: kContentM)));
+    }
+
+    Widget editNameField() {
+      return SizedBox(
+        width: 120,
+        child: TextField(
+          controller: nameCont,
+          maxLines: 1,
+          cursorColor: kGrey,
+          keyboardType: TextInputType.text,
+          style: TextStyle(
+            fontSize: kTitle,
+            fontWeight: FontWeight.bold,
+            color: kWhite,
+          ),
+          decoration: InputDecoration(
+            isCollapsed: true,
+            isDense: true,
+            contentPadding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
+            focusedBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
+            enabledBorder:
+                UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
+            hintStyle: TextStyle(fontSize: kTitle, color: kGrey),
+            counterText: '',
+          ),
+        ),
+      );
+    }
+
+    Widget beforeEdit() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            userName,
+            style: TextStyle(
+              fontSize: kTitle,
+              fontWeight: FontWeight.bold,
+              color: kWhite,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              isEdit = true;
+              setState(() {});
+            },
+            padding: const EdgeInsets.only(left: 5),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.edit_rounded),
+            iconSize: kTitle - 2,
+            color: Colors.grey,
+          )
+        ],
+      );
+    }
+
+    Widget afterEdit() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          editNameField(),
+          IconButton(
+            onPressed: () {
+              isEdit = false;
+              print(nameCont.text);
+              userName = nameCont.text;
+              FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(uid)
+                  .update({'userName': nameCont.text});
+              toastMessage(context, "수정되었습니다.");
+              setState(() {});
+            },
+            padding: const EdgeInsets.only(left: 5),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.check_rounded),
+            iconSize: kTitle,
+            color: Colors.grey,
+          ),
+          IconButton(
+            onPressed: () {
+              isEdit = false;
+              setState(() {});
+            },
+            padding: const EdgeInsets.only(left: 5),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.close_rounded),
+            iconSize: kTitle,
+            color: Colors.grey,
+          )
+        ],
+      );
+    }
+
+    Widget logoutButton() {
+      return TextButton(
+        onPressed: () {
+          print("로그아웃됨");
+          FirebaseAuth.instance.signOut();
+          uid = "";
+          userName = "";
+          email = "";
+          listViewSetting = [true, false];
+          galleryViewSetting = [false, false, true];
+          calendarViewSetting = [false, true];
+          startingDayofWeekSetting = [true, false];
+          fontFamily = fontList[0];
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              (route) => false);
+        },
+        style: TextButton.styleFrom(
+          primary: kGrey,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          minimumSize: Size.zero,
+        ),
+        child: SizedBox(
+          width: width,
+          child: Row(
+            children: [
+              Text(
+                '로그아웃',
+                style: TextStyle(
+                  fontSize: kTitle,
+                  fontWeight: FontWeight.bold,
+                  color: kGrey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget deleteAccountButton() {
+      return TextButton(
+        onPressed: () async {
+          print("계정 삭제됨");
+          print(FirebaseAuth.instance.currentUser?.uid);
+          // FirebaseAuth.instance.currentUser?.delete();
+          // FirebaseFirestore.instance.collection('Users').doc(uid).delete();
+          // uid = "";
+          // userName = "";
+          // email = "";
+          // listViewSetting = [true, false];
+          // galleryViewSetting = [false, false, true];
+          // calendarViewSetting = [false, true];
+          // startingDayofWeekSetting = [true, false];
+          // fontFamily = fontList[0];
+          // Navigator.pushAndRemoveUntil(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => const LoginScreen()),
+          //     (route) => false);
+        },
+        style: TextButton.styleFrom(
+          primary: kGrey,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          minimumSize: Size.zero,
+        ),
+        child: SizedBox(
+          width: width,
+          child: Row(
+            children: [
+              Text(
+                '계정 삭제',
+                style: TextStyle(
+                  fontSize: kTitle,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -183,22 +407,17 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          isLogged
-                              ? Text(
-                                  userid,
-                                  style: TextStyle(
-                                    fontSize: kTitle,
-                                    fontWeight: FontWeight.bold,
-                                    color: kWhite,
-                                  ),
-                                )
+                          uid != ""
+                              ? isEdit
+                                  ? afterEdit()
+                                  : beforeEdit()
                               : TextButton(
                                   onPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                LoginScreen()));
+                                                const LoginScreen()));
                                   },
                                   style: TextButton.styleFrom(
                                     primary: kGrey,
@@ -236,12 +455,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                 AssetImage('./assets/images/background2.png'))),
                   ],
                 ),
-                settingItem('리스트보기', listViewSetting, ['전체 보기', '제목만 보기']),
-                settingItem('갤러리보기', galleryViewSetting, ['1단', '2단', '3단']),
+                settingItem('리스트보기', listViewSetting, 'listViewSetting',
+                    ['전체 보기', '제목만 보기']),
+                settingItem('갤러리보기', galleryViewSetting, 'galleryViewSetting',
+                    ['1단', '2단', '3단']),
                 // settingItem('데이트피커', datePickerSetting, ['슬라이드형', '캘린더형']),
-                settingItem('캘린더보기', calendarViewSetting, ['1:1 비율', '3:4 비율']),
-                settingItem(
-                    '캘린더 시작 요일', startingDayofWeekSetting, ['일요일', '월요일']),
+                settingItem('캘린더보기', calendarViewSetting, 'calendarViewSetting',
+                    ['1:1 비율', '3:4 비율']),
+                settingItem('캘린더 시작 요일', startingDayofWeekSetting,
+                    'startingDayofWeekSetting', ['일요일', '월요일']),
                 Container(
                   color: kUnderline,
                   width: width,
@@ -288,20 +510,33 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                       Column(
                         children: [
-                          radioItem(
-                              '고운 돋움', 'GowunDodum', Fonts.gowundodum, true),
-                          radioItem(
-                              '고운 바탕', 'GowunBatang', Fonts.gowunbatang, false),
-                          radioItem(
-                              '강원교육새음체', 'GangwonSaeum', Fonts.gangwon, false),
-                          radioItem(
-                              '마포한아름', 'MapoPeacefull', Fonts.mapo, false),
-                          radioItem('나눔스퀘어', 'NanumSquare', Fonts.nanum, false),
+                          radioItem('고운 돋움', 'GowunDodum', Fonts.gowundodum),
+                          radioItem('고운 바탕', 'GowunBatang', Fonts.gowunbatang),
+                          radioItem('강원교육새음체', 'GangwonSaeum', Fonts.gangwon),
+                          radioItem('마포한아름', 'MapoPeacefull', Fonts.mapo),
+                          radioItem('나눔스퀘어', 'NanumSquare', Fonts.nanum),
                         ],
                       )
                     ],
                   ),
                 ),
+
+                uid != ""
+                    ? Column(
+                        children: [
+                          Container(
+                            color: kUnderline,
+                            width: width,
+                            height: 1,
+                            margin: const EdgeInsets.only(top: 8, bottom: 16),
+                          ),
+                          logoutButton(),
+                          // const SizedBox(height: 5),
+                          // deleteAccountButton(),
+                          const SizedBox(height: 40),
+                        ],
+                      )
+                    : Container(),
               ],
             ),
           ),

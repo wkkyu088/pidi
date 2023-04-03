@@ -15,6 +15,7 @@ import './widgets/create_modal.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'pidi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
@@ -95,7 +96,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    Singleton().getPost(userid);
+    Singleton().getPost(uid);
   }
 
   @override
