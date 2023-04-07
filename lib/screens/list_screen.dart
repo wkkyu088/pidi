@@ -263,13 +263,13 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget _buildListView() {
-    if (postList.isEmpty) {
-      return const Center(
-          child: Padding(
-        padding: EdgeInsets.all(8),
-        child: CircularProgressIndicator(),
-      ));
-    }
+    // if (postList.isEmpty) {
+    //   return const Center(
+    //       child: Padding(
+    //     padding: EdgeInsets.all(8),
+    //     child: CircularProgressIndicator(),
+    //   ));
+    // }
     return ListView.separated(
       separatorBuilder: (context, index) => Container(
         height: 1,

@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pidi/models/posts.dart';
-import 'package:pidi/widgets/toast_message.dart';
 import 'dart:io';
 
 import '../constants.dart';
@@ -40,7 +40,7 @@ class _CreateModalState extends State<CreateModal> {
       setState(() {
         if (images.length > 5) {
           _pickedImages = images.sublist(0, 5);
-          toastMessage(context, '최대 5장까지 등록 가능합니다.');
+          Fluttertoast.showToast(msg: "최대 5장까지 등록 가능합니다.");
         } else {
           _pickedImages = images;
         }
@@ -394,14 +394,17 @@ class _CreateModalState extends State<CreateModal> {
                                 }),
                                 customTextButton('저장', kBlack, () async {
                                   if (isTodayDone && _selectedValue == kToday) {
-                                    toastMessage(context, '날짜는 반드시 선택해야합니다.');
+                                    Fluttertoast.showToast(
+                                        msg: "날짜는 반드시 선택해야합니다.");
                                   } else if (_pickedImages.isEmpty) {
-                                    toastMessage(
-                                        context, '이미지는 1장 이상 등록해야합니다.');
+                                    Fluttertoast.showToast(
+                                        msg: "이미지는 1장 이상 등록해야합니다.");
                                   } else if (titleValue.isEmpty) {
-                                    toastMessage(context, '제목은 반드시 입력해야합니다.');
+                                    Fluttertoast.showToast(
+                                        msg: "제목은 반드시 입력해야합니다.");
                                   } else if (contentValue.isEmpty) {
-                                    toastMessage(context, '내용은 반드시 입력해야합니다.');
+                                    Fluttertoast.showToast(
+                                        msg: "내용은 반드시 입력해야합니다.");
                                   } else {
                                     Singleton().createPost(
                                       _pickedImages,
@@ -411,7 +414,7 @@ class _CreateModalState extends State<CreateModal> {
                                       uid,
                                     );
                                     Navigator.pop(context);
-                                    toastMessage(context, '저장을 완료했습니다.');
+                                    Fluttertoast.showToast(msg: "저장을 완료했습니다.");
                                   }
                                 })
                               ],

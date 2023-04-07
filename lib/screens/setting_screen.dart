@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pidi/screens/login_screen.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
 import '../widgets/custom_dialog.dart';
-import '../widgets/toast_message.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -272,7 +272,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   .collection('Users')
                   .doc(uid)
                   .update({'userName': nameCont.text});
-              toastMessage(context, "수정되었습니다.");
+              Fluttertoast.showToast(
+                  msg: "수정되었습니다.", gravity: ToastGravity.BOTTOM);
               setState(() {});
             },
             padding: const EdgeInsets.only(left: 5),

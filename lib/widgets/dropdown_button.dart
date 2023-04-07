@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pidi/models/posts.dart';
 import 'package:pidi/models/singleton.dart';
-import 'package:pidi/widgets/toast_message.dart';
 
 import '../constants.dart';
 import '../models/item.dart';
@@ -100,7 +100,7 @@ class MenuItems {
                   Singleton().deletePost(post.id);
                   // firestore.doc(post.id).delete();
                   Navigator.pop(context);
-                  toastMessage(context, '삭제되었습니다.');
+                  Fluttertoast.showToast(msg: "삭제되었습니다.");
                 });
               },
               context: context);

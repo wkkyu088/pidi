@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
@@ -8,7 +9,6 @@ import 'package:pidi/models/singleton.dart';
 import 'package:pidi/widgets/custom_dialog.dart';
 
 import '../constants.dart';
-import '../widgets/toast_message.dart';
 
 class ModifyScreen extends StatefulWidget {
   final Item post;
@@ -95,7 +95,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                           contents_controller.text,
                         );
                         Navigator.pop(context);
-                        toastMessage(context, '수정되었습니다.');
+                        Fluttertoast.showToast(msg: "수정되었습니다.");
                       });
                     },
                     context: context);

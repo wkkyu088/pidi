@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pidi/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../constants.dart';
-import '../widgets/toast_message.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -143,6 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 startingDayofWeekSetting,
                             'fontFamily': fontFamily,
                           });
+                          Fluttertoast.showToast(msg: "로그인 되었습니다.");
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
@@ -151,14 +152,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
+                          Fluttertoast.showToast(msg: "등록되지 않은 이메일입니다.");
                           print('등록되지 않은 이메일');
-                          toastMessage(context, "등록되지 않은 이메일입니다.");
                         } else if (e.code == 'wrong-password') {
+                          Fluttertoast.showToast(msg: "비밀번호가 틀렸습니다.");
                           print('비밀번호가 틀림');
-                          toastMessage(context, "비밀번호가 틀렸습니다.");
                         } else if (e.code == 'invalid-email') {
+                          Fluttertoast.showToast(msg: "잘못된 이메일 형식입니다.");
                           print('잘못된 이메일 형식');
-                          toastMessage(context, "잘못된 이메일 형식입니다.");
                         } else {
                           print('${e.code} : 알 수 없는 오류');
                         }
@@ -224,6 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 startingDayofWeekSetting,
                             'fontFamily': fontFamily,
                           });
+                          Fluttertoast.showToast(msg: "회원가입 되었습니다.");
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -232,14 +234,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'email-already-in-use') {
+                          Fluttertoast.showToast(
+                            msg: "이미 있는 계정입니다.",
+                          );
                           print('이미 계정이 있음');
-                          toastMessage(context, "이미 있는 계정입니다.");
                         } else if (e.code == 'weak-password') {
+                          Fluttertoast.showToast(msg: "비밀번호가 너무 약합니다.");
                           print('비밀번호가 너무 약함');
-                          toastMessage(context, "비밀번호가 너무 약합니다.");
                         } else if (e.code == 'invalid-email') {
+                          Fluttertoast.showToast(msg: "잘못된 이메일 형식입니다.");
                           print('잘못된 이메일 형식');
-                          toastMessage(context, "잘못된 이메일 형식입니다.");
                         } else {
                           print('${e.code} : 알 수 없는 오류');
                         }
