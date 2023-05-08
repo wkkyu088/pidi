@@ -6,6 +6,7 @@ import 'models/item.dart';
 String uid = "";
 String userName = "";
 String email = "";
+String profileImg = "";
 
 // Colors
 // 배경색

@@ -114,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           uid = userCredential.user!.uid;
                           userName = v['userName'];
                           email = v['email'];
+                          profileImg = v['profileImg'];
                           calendarViewSetting = [
                             v['calendarViewSetting'][0],
                             v['calendarViewSetting'][1]
@@ -136,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             'uid': uid,
                             'userName': userName,
                             'email': email,
+                            'profileImg': profileImg,
                             'listViewSetting': listViewSetting,
                             'galleryViewSetting': galleryViewSetting,
                             'calendarViewSetting': calendarViewSetting,
@@ -198,6 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               .set({
                             'userName': emailCont.text.split('@')[0],
                             'email': emailCont.text,
+                            'profileImg': "",
                             'settings': [0, 2, 0, 0, 0],
                             'uid': userCredential.user!.uid,
                             'listViewSetting': [true, false],
@@ -209,6 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           uid = userCredential.user!.uid;
                           userName = emailCont.text.split('@')[0];
                           email = emailCont.text;
+                          profileImg = "";
                           listViewSetting = [true, false];
                           galleryViewSetting = [false, false, true];
                           calendarViewSetting = [false, true];
@@ -218,6 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             'uid': uid,
                             'userName': userName,
                             'email': email,
+                            'profileImg': '',
                             'listViewSetting': listViewSetting,
                             'galleryViewSetting': galleryViewSetting,
                             'calendarViewSetting': calendarViewSetting,

@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pidi/screens/login_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../widgets/custom_appbar.dart';
 import '../constants.dart';
@@ -20,6 +24,8 @@ enum Fonts { gowundodum, gowunbatang, gangwon, mapo, nanum }
 class _SettingScreenState extends State<SettingScreen> {
   Fonts? nowFont;
   var isEdit = false;
+  final ImagePicker picker = ImagePicker();
+  XFile? _pickedImage;
 
   @override
   void initState() {
@@ -42,6 +48,28 @@ class _SettingScreenState extends State<SettingScreen> {
         break;
     }
     print(nowFont);
+  }
+
+  Future setProfileImg() async {
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final ref = FirebaseStorage.instance.ref();
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+
+    if (image != null) {
+      final imgRef = ref.child('$id.jpg');
+      File file = File(image.path);
+      await imgRef.putFile(file);
+      final url = await imgRef.getDownloadURL();
+
+      _pickedImage = image;
+      profileImg = url;
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .update({'profileImg': url});
+      Fluttertoast.showToast(msg: "프로필 이미지가 변경되었습니다.");
+      setState(() {});
+    }
   }
 
   @override
@@ -382,165 +410,176 @@ class _SettingScreenState extends State<SettingScreen> {
     }
 
     return Scaffold(
-        appBar: customAppBar('설정'),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                Stack(
+      appBar: customAppBar('설정'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              // Stack(
+              //   children: [
+              //     Container(
+              //       width: MediaQuery.of(context).size.width,
+              //       height: profileHeight,
+              //       color: kBlack,
+              //       padding: const EdgeInsets.symmetric(horizontal: 20),
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           GestureDetector(
+              //             onLongPress: setProfileImg,
+              //             child: CircleAvatar(
+              //               radius: 35,
+              //               backgroundColor: kUnderline,
+              //               backgroundImage: profileImg != ""
+              //                   ? _pickedImage == null
+              //                       ? Image.network(profileImg).image
+              //                       : FileImage(File(_pickedImage!.path))
+              //                   : null,
+              //               child: profileImg == ""
+              //                   ? Icon(
+              //                       Icons.person_rounded,
+              //                       size: 40,
+              //                       color: kWhite,
+              //                     )
+              //                   : null,
+              //             ),
+              //           ),
+              //           const SizedBox(height: 10),
+              //           uid != ""
+              //               ? isEdit
+              //                   ? afterEdit()
+              //                   : beforeEdit()
+              //               : TextButton(
+              //                   onPressed: () {
+              //                     Navigator.push(
+              //                         context,
+              //                         MaterialPageRoute(
+              //                             builder: (context) =>
+              //                                 const LoginScreen()));
+              //                   },
+              //                   style: TextButton.styleFrom(
+              //                     primary: kGrey,
+              //                     tapTargetSize:
+              //                         MaterialTapTargetSize.shrinkWrap,
+              //                     minimumSize: Size.zero,
+              //                   ),
+              //                   child: Row(
+              //                     mainAxisAlignment: MainAxisAlignment.center,
+              //                     children: [
+              //                       Text(
+              //                         '로그인하세요',
+              //                         style: TextStyle(
+              //                           fontSize: kTitle,
+              //                           fontWeight: FontWeight.bold,
+              //                           color: kWhite,
+              //                         ),
+              //                       ),
+              //                       Icon(
+              //                         Icons.chevron_right_rounded,
+              //                         color: kWhite,
+              //                         size: 20,
+              //                       )
+              //                     ],
+              //                   )),
+              //         ],
+              //       ),
+              //     ),
+              //     Container(
+              //         width: MediaQuery.of(context).size.width,
+              //         padding: const EdgeInsets.only(
+              //             top: profileHeight - 5, bottom: 15),
+              //         child: const Image(
+              //             image:
+              //                 AssetImage('./assets/images/background2.png'))),
+              //   ],
+              // ),
+              settingItem('리스트보기', listViewSetting, 'listViewSetting',
+                  ['전체 보기', '제목만 보기']),
+              settingItem('갤러리보기', galleryViewSetting, 'galleryViewSetting',
+                  ['1단', '2단', '3단']),
+              settingItem('캘린더보기', calendarViewSetting, 'calendarViewSetting',
+                  ['1:1 비율', '3:4 비율']),
+              settingItem('캘린더 시작 요일', startingDayofWeekSetting,
+                  'startingDayofWeekSetting', ['일요일', '월요일']),
+              Container(
+                color: kUnderline,
+                width: width,
+                height: 1,
+                margin: const EdgeInsets.only(top: 8, bottom: 16),
+              ),
+              Container(
+                padding: const EdgeInsets.all(0),
+                margin: const EdgeInsets.only(bottom: 30),
+                width: width,
+                child: Column(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: profileHeight,
-                      color: kBlack,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            radius: 35,
-                            backgroundColor: kUnderline,
-                            child: Icon(
-                              Icons.person_rounded,
-                              size: 40,
-                              color: kWhite,
+                          Text(
+                            '폰트 변경',
+                            style: TextStyle(
+                              color: kBlack,
+                              fontSize: kTitle,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          uid != ""
-                              ? isEdit
-                                  ? afterEdit()
-                                  : beforeEdit()
-                              : TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginScreen()));
-                                  },
-                                  style: TextButton.styleFrom(
-                                    primary: kGrey,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    minimumSize: Size.zero,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '로그인하세요',
-                                        style: TextStyle(
-                                          fontSize: kTitle,
-                                          fontWeight: FontWeight.bold,
-                                          color: kWhite,
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.chevron_right_rounded,
-                                        color: kWhite,
-                                        size: 20,
-                                      )
-                                    ],
-                                  )),
+                          fontSaveButton(),
                         ],
                       ),
                     ),
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(
-                            top: profileHeight - 5, bottom: 15),
-                        child: const Image(
-                            image:
-                                AssetImage('./assets/images/background2.png'))),
-                  ],
-                ),
-                settingItem('리스트보기', listViewSetting, 'listViewSetting',
-                    ['전체 보기', '제목만 보기']),
-                settingItem('갤러리보기', galleryViewSetting, 'galleryViewSetting',
-                    ['1단', '2단', '3단']),
-                // settingItem('데이트피커', datePickerSetting, ['슬라이드형', '캘린더형']),
-                settingItem('캘린더보기', calendarViewSetting, 'calendarViewSetting',
-                    ['1:1 비율', '3:4 비율']),
-                settingItem('캘린더 시작 요일', startingDayofWeekSetting,
-                    'startingDayofWeekSetting', ['일요일', '월요일']),
-                Container(
-                  color: kUnderline,
-                  width: width,
-                  height: 1,
-                  margin: const EdgeInsets.only(top: 8, bottom: 16),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(0),
-                  margin: const EdgeInsets.only(bottom: 30),
-                  width: width,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '폰트 변경',
-                                style: TextStyle(
-                                    color: kBlack,
-                                    fontSize: kTitle,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              fontSaveButton()
-                            ]),
-                      ),
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 5, bottom: 20),
-                          width: width,
-                          height: 120,
-                          decoration: BoxDecoration(
-                              color: kBackground, borderRadius: kBorderRadius),
-                          alignment: Alignment.center,
-                          child: Text(
-                            sampleText,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: fontFamily == fontList[2] ? 16 : 13,
-                                fontFamily: fontFamily),
-                          ),
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 5, bottom: 20),
+                        width: width,
+                        height: 120,
+                        decoration: BoxDecoration(
+                            color: kBackground, borderRadius: kBorderRadius),
+                        alignment: Alignment.center,
+                        child: Text(
+                          sampleText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: fontFamily == fontList[2] ? 16 : 13,
+                              fontFamily: fontFamily),
                         ),
                       ),
-                      Column(
-                        children: [
-                          radioItem('고운 돋움', 'GowunDodum', Fonts.gowundodum),
-                          radioItem('고운 바탕', 'GowunBatang', Fonts.gowunbatang),
-                          radioItem('강원교육새음체', 'GangwonSaeum', Fonts.gangwon),
-                          radioItem('마포한아름', 'MapoPeacefull', Fonts.mapo),
-                          radioItem('나눔스퀘어', 'NanumSquare', Fonts.nanum),
-                        ],
-                      )
-                    ],
-                  ),
+                    ),
+                    Column(
+                      children: [
+                        radioItem('고운 돋움', 'GowunDodum', Fonts.gowundodum),
+                        radioItem('고운 바탕', 'GowunBatang', Fonts.gowunbatang),
+                        radioItem('강원교육새음체', 'GangwonSaeum', Fonts.gangwon),
+                        radioItem('마포한아름', 'MapoPeacefull', Fonts.mapo),
+                        radioItem('나눔스퀘어', 'NanumSquare', Fonts.nanum),
+                      ],
+                    )
+                  ],
                 ),
-
-                uid != ""
-                    ? Column(
-                        children: [
-                          Container(
-                            color: kUnderline,
-                            width: width,
-                            height: 1,
-                            margin: const EdgeInsets.only(top: 8, bottom: 16),
-                          ),
-                          logoutButton(),
-                          // const SizedBox(height: 5),
-                          // deleteAccountButton(),
-                          const SizedBox(height: 40),
-                        ],
-                      )
-                    : Container(),
-              ],
-            ),
+              ),
+              uid != ""
+                  ? Column(
+                      children: [
+                        Container(
+                          color: kUnderline,
+                          width: width,
+                          height: 1,
+                          margin: const EdgeInsets.only(top: 8, bottom: 16),
+                        ),
+                        logoutButton(),
+                        // const SizedBox(height: 5),
+                        // deleteAccountButton(),
+                        const SizedBox(height: 40),
+                      ],
+                    )
+                  : Container(),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

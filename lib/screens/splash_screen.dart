@@ -39,6 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       uid = currentUser.uid;
       userName = v['userName'];
       email = v['email'];
+      profileImg = v['profileImg'];
       calendarViewSetting = [
         v['calendarViewSetting'][0],
         v['calendarViewSetting'][1]
@@ -59,6 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
         'uid': uid,
         'userName': userName,
         'email': email,
+        'profileImg': profileImg,
         'listViewSetting': listViewSetting,
         'galleryViewSetting': galleryViewSetting,
         'calendarViewSetting': calendarViewSetting,
