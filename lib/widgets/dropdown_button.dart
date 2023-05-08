@@ -93,17 +93,18 @@ class MenuItems {
         break;
       case MenuItems.delete:
         {
-          showDialog(
-              builder: (BuildContext context) {
-                return customDialog(
-                    context, '삭제', '영구적으로 삭제됩니다.\n정말 삭제하시겠습니까?', '확인', () {
-                  Singleton().deletePost(post.id);
-                  // firestore.doc(post.id).delete();
-                  Navigator.pop(context);
-                  Fluttertoast.showToast(msg: "삭제되었습니다.");
-                });
-              },
-              context: context);
+          customDialog(
+            context,
+            '기록 삭제',
+            '기록이 영구적으로 삭제됩니다.\n정말 삭제하시겠습니까?',
+            () {
+              Singleton().deletePost(post.id);
+              // firestore.doc(post.id).delete();
+              Navigator.pop(context);
+              Fluttertoast.showToast(msg: "삭제되었습니다.");
+            },
+            isDelete: true,
+          );
         }
         break;
     }

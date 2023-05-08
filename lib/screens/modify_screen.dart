@@ -63,43 +63,45 @@ class _ModifyScreenState extends State<ModifyScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_rounded, size: 22),
-            color: kBlack,
-            onPressed: () {
-              showDialog(
-                  builder: (BuildContext context) {
-                    return customDialog(
-                        context, '취소', '변경사항이 저장되지 않았습니다.\n취소하시겠습니까?', '확인',
-                        () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    });
-                  },
-                  context: context);
-            }),
+          icon: const Icon(Icons.arrow_back_rounded, size: 22),
+          color: kBlack,
+          onPressed: () {
+            customDialog(
+              context,
+              "취소",
+              "변경사항이 저장되지 않았습니다.\n취소하시겠습니까?",
+              () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+          },
+        ),
         title: Text(DateFormat('yyyy-MM-dd').format(widget.post.date),
             style: TextStyle(color: kBlack, fontSize: kContentM)),
         actions: [
           // 아이콘 변경
           IconButton(
-              icon: const Icon(Icons.check_rounded, size: 22),
-              color: kBlack,
-              onPressed: () {
-                showDialog(
-                    builder: (BuildContext context) {
-                      return customDialog(
-                          context, '수정', '수정사항을 저장하시겠습니까?', '저장', () {
-                        Singleton().updatePost(
-                          widget.post.id,
-                          title_controller.text,
-                          contents_controller.text,
-                        );
-                        Navigator.pop(context);
-                        Fluttertoast.showToast(msg: "수정되었습니다.");
-                      });
-                    },
-                    context: context);
-              }),
+            icon: const Icon(Icons.check_rounded, size: 22),
+            color: kBlack,
+            onPressed: () {
+              customDialog(
+                context,
+                "저장",
+                "수정사항을 저장하시겠습니까?",
+                () {
+                  Singleton().updatePost(
+                    widget.post.id,
+                    title_controller.text,
+                    contents_controller.text,
+                  );
+                  Fluttertoast.showToast(msg: "수정되었습니다.");
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
         ],
         elevation: 0,
         backgroundColor: kWhite,

@@ -5,12 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:pidi/screens/login_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../widgets/custom_appbar.dart';
+import 'package:pidi/screens/login_screen.dart';
+import 'package:pidi/widgets/custom_appbar.dart';
+import 'package:pidi/widgets/custom_dialog.dart';
+
 import '../constants.dart';
-import '../widgets/custom_dialog.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -229,119 +230,126 @@ class _SettingScreenState extends State<SettingScreen> {
               Text('적용', style: TextStyle(color: kWhite, fontSize: kContentM)));
     }
 
-    Widget editNameField() {
-      return SizedBox(
-        width: 120,
-        child: TextField(
-          controller: nameCont,
-          maxLines: 1,
-          cursorColor: kGrey,
-          keyboardType: TextInputType.text,
-          style: TextStyle(
-            fontSize: kTitle,
-            fontWeight: FontWeight.bold,
-            color: kWhite,
-          ),
-          decoration: InputDecoration(
-            isCollapsed: true,
-            isDense: true,
-            contentPadding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-            focusedBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
-            enabledBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
-            hintStyle: TextStyle(fontSize: kTitle, color: kGrey),
-            counterText: '',
-          ),
-        ),
-      );
-    }
+    // Widget editNameField() {
+    //   return SizedBox(
+    //     width: 120,
+    //     child: TextField(
+    //       controller: nameCont,
+    //       maxLines: 1,
+    //       cursorColor: kGrey,
+    //       keyboardType: TextInputType.text,
+    //       style: TextStyle(
+    //         fontSize: kTitle,
+    //         fontWeight: FontWeight.bold,
+    //         color: kWhite,
+    //       ),
+    //       decoration: InputDecoration(
+    //         isCollapsed: true,
+    //         isDense: true,
+    //         contentPadding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
+    //         focusedBorder:
+    //             UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
+    //         enabledBorder:
+    //             UnderlineInputBorder(borderSide: BorderSide(color: kGrey)),
+    //         hintStyle: TextStyle(fontSize: kTitle, color: kGrey),
+    //         counterText: '',
+    //       ),
+    //     ),
+    //   );
+    // }
 
-    Widget beforeEdit() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            userName,
-            style: TextStyle(
-              fontSize: kTitle,
-              fontWeight: FontWeight.bold,
-              color: kWhite,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              isEdit = true;
-              setState(() {});
-            },
-            padding: const EdgeInsets.only(left: 5),
-            constraints: const BoxConstraints(),
-            icon: const Icon(Icons.edit_rounded),
-            iconSize: kTitle - 2,
-            color: Colors.grey,
-          )
-        ],
-      );
-    }
+    // Widget beforeEdit() {
+    //   return Row(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     crossAxisAlignment: CrossAxisAlignment.center,
+    //     children: [
+    //       Text(
+    //         userName,
+    //         style: TextStyle(
+    //           fontSize: kTitle,
+    //           fontWeight: FontWeight.bold,
+    //           color: kWhite,
+    //         ),
+    //       ),
+    //       IconButton(
+    //         onPressed: () {
+    //           isEdit = true;
+    //           setState(() {});
+    //         },
+    //         padding: const EdgeInsets.only(left: 5),
+    //         constraints: const BoxConstraints(),
+    //         icon: const Icon(Icons.edit_rounded),
+    //         iconSize: kTitle - 2,
+    //         color: Colors.grey,
+    //       )
+    //     ],
+    //   );
+    // }
 
-    Widget afterEdit() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          editNameField(),
-          IconButton(
-            onPressed: () {
-              isEdit = false;
-              print(nameCont.text);
-              userName = nameCont.text;
-              FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(uid)
-                  .update({'userName': nameCont.text});
-              Fluttertoast.showToast(
-                  msg: "수정되었습니다.", gravity: ToastGravity.BOTTOM);
-              setState(() {});
-            },
-            padding: const EdgeInsets.only(left: 5),
-            constraints: const BoxConstraints(),
-            icon: const Icon(Icons.check_rounded),
-            iconSize: kTitle,
-            color: Colors.grey,
-          ),
-          IconButton(
-            onPressed: () {
-              isEdit = false;
-              setState(() {});
-            },
-            padding: const EdgeInsets.only(left: 5),
-            constraints: const BoxConstraints(),
-            icon: const Icon(Icons.close_rounded),
-            iconSize: kTitle,
-            color: Colors.grey,
-          )
-        ],
-      );
-    }
+    // Widget afterEdit() {
+    //   return Row(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     crossAxisAlignment: CrossAxisAlignment.center,
+    //     children: [
+    //       editNameField(),
+    //       IconButton(
+    //         onPressed: () {
+    //           isEdit = false;
+    //           print(nameCont.text);
+    //           userName = nameCont.text;
+    //           FirebaseFirestore.instance
+    //               .collection('Users')
+    //               .doc(uid)
+    //               .update({'userName': nameCont.text});
+    //           Fluttertoast.showToast(
+    //               msg: "수정되었습니다.", gravity: ToastGravity.BOTTOM);
+    //           setState(() {});
+    //         },
+    //         padding: const EdgeInsets.only(left: 5),
+    //         constraints: const BoxConstraints(),
+    //         icon: const Icon(Icons.check_rounded),
+    //         iconSize: kTitle,
+    //         color: Colors.grey,
+    //       ),
+    //       IconButton(
+    //         onPressed: () {
+    //           isEdit = false;
+    //           setState(() {});
+    //         },
+    //         padding: const EdgeInsets.only(left: 5),
+    //         constraints: const BoxConstraints(),
+    //         icon: const Icon(Icons.close_rounded),
+    //         iconSize: kTitle,
+    //         color: Colors.grey,
+    //       )
+    //     ],
+    //   );
+    // }
 
     Widget logoutButton() {
       return TextButton(
         onPressed: () {
-          print("로그아웃됨");
-          FirebaseAuth.instance.signOut();
-          uid = "";
-          userName = "";
-          email = "";
-          listViewSetting = [true, false];
-          galleryViewSetting = [false, false, true];
-          calendarViewSetting = [false, true];
-          startingDayofWeekSetting = [true, false];
-          fontFamily = fontList[0];
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (route) => false);
+          customDialog(
+            context,
+            "잠시만요!",
+            "정말 로그아웃 하시겠습니까?",
+            () {
+              Fluttertoast.showToast(msg: "로그아웃 되었습니다.");
+              FirebaseAuth.instance.signOut();
+              uid = "";
+              userName = "";
+              email = "";
+              listViewSetting = [true, false];
+              galleryViewSetting = [false, false, true];
+              calendarViewSetting = [false, true];
+              startingDayofWeekSetting = [true, false];
+              fontFamily = fontList[0];
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (route) => false);
+            },
+          );
         },
         style: TextButton.styleFrom(
           primary: kGrey,
@@ -355,7 +363,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Text(
                 '로그아웃',
                 style: TextStyle(
-                  fontSize: kTitle,
+                  fontSize: kContentM,
                   fontWeight: FontWeight.bold,
                   color: kGrey,
                 ),
@@ -371,20 +379,30 @@ class _SettingScreenState extends State<SettingScreen> {
         onPressed: () async {
           print("계정 삭제됨");
           print(FirebaseAuth.instance.currentUser?.uid);
-          // FirebaseAuth.instance.currentUser?.delete();
-          // FirebaseFirestore.instance.collection('Users').doc(uid).delete();
-          // uid = "";
-          // userName = "";
-          // email = "";
-          // listViewSetting = [true, false];
-          // galleryViewSetting = [false, false, true];
-          // calendarViewSetting = [false, true];
-          // startingDayofWeekSetting = [true, false];
-          // fontFamily = fontList[0];
-          // Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => const LoginScreen()),
-          //     (route) => false);
+          customDialog(
+            context,
+            "잠시만요!",
+            "사용자 정보와 기록이 모두 삭제됩니다.\n정말 계정을 삭제하시겠습니까?",
+            () {
+              Fluttertoast.showToast(msg: "계정이 삭제되었습니다.");
+              FirebaseAuth.instance.currentUser?.delete();
+              FirebaseFirestore.instance.collection('Users').doc(uid).delete();
+              // Posts 컬렉션에 uid가 해당 사용자인 post를 모두 삭제
+              uid = "";
+              userName = "";
+              email = "";
+              listViewSetting = [true, false];
+              galleryViewSetting = [false, false, true];
+              calendarViewSetting = [false, true];
+              startingDayofWeekSetting = [true, false];
+              fontFamily = fontList[0];
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (route) => false);
+            },
+            isDelete: true,
+          );
         },
         style: TextButton.styleFrom(
           primary: kGrey,
@@ -398,7 +416,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Text(
                 '계정 삭제',
                 style: TextStyle(
-                  fontSize: kTitle,
+                  fontSize: kContentM,
                   fontWeight: FontWeight.bold,
                   color: Colors.red,
                 ),
@@ -570,8 +588,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           margin: const EdgeInsets.only(top: 8, bottom: 16),
                         ),
                         logoutButton(),
-                        // const SizedBox(height: 5),
-                        // deleteAccountButton(),
+                        deleteAccountButton(),
                         const SizedBox(height: 40),
                       ],
                     )
