@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SizedBox(width: 70),
+                            const SizedBox(width: 50),
                             Container(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 2),
@@ -94,58 +94,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )),
                             // 오늘로 돌아가는 버튼
                             SizedBox(
-                                width: 70,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextButton(
+                                width: 50,
+                                child: TextButton(
                                       onPressed: () {
-                                        setState(() {
-                                          _selectedDay = DateTime.now();
-                                          _focusedDay = DateTime.now();
-                                        });
+                                    onTodayButtonTap();
                                       },
                                       style: TextButton.styleFrom(
                                         primary: kBlack.withOpacity(0.5),
+                                    side: BorderSide(color: kBlack, width: 1.2),
                                         shape: RoundedRectangleBorder(
                                             borderRadius: kBorderRadiusL),
                                         tapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 2),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 4),
                                         minimumSize: Size.zero,
                                       ),
-                                      child: Icon(
-                                        Icons.refresh_rounded,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.reply_rounded,
+                                        size: kContentM,
                                         color: kBlack,
-                                        size: 18,
                                       ),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {
-                                          onTodayButtonTap();
-                                        },
-                                        style: TextButton.styleFrom(
-                                          primary: kBlack.withOpacity(0.5),
-                                          side: BorderSide(
-                                              color: kBlack, width: 1.2),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: kBorderRadiusL),
-                                          tapTargetSize:
-                                              MaterialTapTargetSize.shrinkWrap,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 8),
-                                          minimumSize: Size.zero,
-                                        ),
+                                        size: 18,
+                                      Text(
                                         child: Text(
                                           '오늘',
                                           style: TextStyle(
                                               color: kBlack,
                                               fontSize: kContentS,
                                               fontWeight: FontWeight.bold),
-                                        )),
+                                      ),
                                   ],
+                                  ),
                                 ))
                           ],
                         ),
