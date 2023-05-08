@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pidi/models/singleton.dart';
+import 'package:pidi/screens/login_screen.dart';
 import 'package:pidi/screens/splash_screen.dart';
 import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
@@ -127,7 +128,8 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 builder: (BuildContext context) {
-                  return const SingleChildScrollView(child: CreateModal());
+                  return SingleChildScrollView(
+                      child: CreateModal(selectedDate: kToday));
                 },
               );
             },

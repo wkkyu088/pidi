@@ -46,7 +46,6 @@ dependencies:
   table_calendar: ^3.0.8
   smooth_page_indicator: ^1.0.1
   carousel_slider: ^4.2.1
-  date_picker_timeline: ^1.2.3
   flutter_rounded_date_picker: ^3.0.2
   image_picker: ^0.8.7
   dropdown_button2: ^2.0.0

@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pidi/widgets/create_modal.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:pidi/screens/detail_screen.dart';
 
 import '../constants.dart';
-import 'package:pidi/models/test.dart';
 
 import '../models/singleton.dart';
 
@@ -96,20 +96,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                                 width: 50,
                                 child: TextButton(
-                                      onPressed: () {
+                                  onPressed: () {
                                     onTodayButtonTap();
-                                      },
-                                      style: TextButton.styleFrom(
-                                        primary: kBlack.withOpacity(0.5),
+                                  },
+                                  style: TextButton.styleFrom(
+                                    primary: kBlack.withOpacity(0.5),
                                     side: BorderSide(color: kBlack, width: 1.2),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: kBorderRadiusL),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: kBorderRadiusL),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
                                     padding:
                                         const EdgeInsets.symmetric(vertical: 4),
-                                        minimumSize: Size.zero,
-                                      ),
+                                    minimumSize: Size.zero,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -118,16 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         size: kContentM,
                                         color: kBlack,
                                       ),
-                                        size: 18,
                                       Text(
-                                        child: Text(
-                                          '오늘',
-                                          style: TextStyle(
-                                              color: kBlack,
-                                              fontSize: kContentS,
-                                              fontWeight: FontWeight.bold),
+                                        '오늘',
+                                        style: TextStyle(
+                                            color: kBlack,
+                                            fontSize: kContentS,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                  ],
+                                    ],
                                   ),
                                 ))
                           ],
@@ -307,6 +305,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
                       });
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        constraints: BoxConstraints.loose(
+                          Size(
+                            MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height,
+                          ),
+                        ),
+                        builder: (BuildContext context) {
+                          return SingleChildScrollView(
+                              child: CreateModal(selectedDate: selectedDay));
+                        },
+                      );
                     }
                   },
                   onPageChanged: (focusedDay) {
