@@ -252,24 +252,21 @@ class _ListScreenState extends State<ListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar('리스트 보기'),
-        body: RefreshIndicator(
-          onRefresh: () {
-            setState(() {});
-            return Future<void>.value();
-          },
-          child: _buildListView(),
-        ));
+      appBar: customAppBar('리스트 보기'),
+      body: RefreshIndicator(
+        onRefresh: () {
+          setState(() {});
+          return Future<void>.value();
+        },
+        child: _buildListView(),
+      ),
+    );
   }
 
   Widget _buildListView() {
-    // if (postList.isEmpty) {
-    //   return const Center(
-    //       child: Padding(
-    //     padding: EdgeInsets.all(8),
-    //     child: CircularProgressIndicator(),
-    //   ));
-    // }
+    if (postList.isEmpty) {
+      return const Center(child: Text("기록이 없습니다."));
+    }
     return ListView.separated(
       separatorBuilder: (context, index) => Container(
         height: 1,
