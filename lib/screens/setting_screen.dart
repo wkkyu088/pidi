@@ -218,8 +218,7 @@ class _SettingScreenState extends State<SettingScreen> {
             setState(() {});
           },
           style: TextButton.styleFrom(
-            primary: kUnderline,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            foregroundColor: kUnderline, padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: kBlack,
             minimumSize: const Size(0, 0),
@@ -353,8 +352,7 @@ class _SettingScreenState extends State<SettingScreen> {
           );
         },
         style: TextButton.styleFrom(
-          primary: kGrey,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          foregroundColor: kGrey, tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: Size.zero,
         ),
         child: SizedBox(
@@ -404,8 +402,7 @@ class _SettingScreenState extends State<SettingScreen> {
           );
         },
         style: TextButton.styleFrom(
-          primary: kGrey,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          foregroundColor: kGrey, tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           minimumSize: Size.zero,
         ),
         child: SizedBox(

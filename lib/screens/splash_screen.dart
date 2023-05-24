@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/login_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../main.dart';
@@ -67,6 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
         'startingDayofWeekSetting': startingDayofWeekSetting,
         'fontFamily': fontFamily,
       });
+
+      context.read<DBConnection>().firstLoad();
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => const MainPage()));

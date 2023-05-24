@@ -1,17 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:pidi/models/singleton.dart';
-import 'package:pidi/screens/login_screen.dart';
+import 'package:pidi/screens/gallery_screen.dart';
+import 'package:pidi/screens/home_screen.dart';
+import 'package:pidi/screens/setting_screen.dart';
+import 'package:pidi/widgets/create_modal.dart';
+import 'package:provider/provider.dart';
 import 'package:pidi/screens/splash_screen.dart';
-import './screens/gallery_screen.dart';
 import './screens/list_screen.dart';
-import './screens/setting_screen.dart';
 import 'firebase_options.dart';
-import 'screens/home_screen.dart';
 import './constants.dart';
-import './widgets/create_modal.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +19,12 @@ Future<void> main() async {
     name: 'pidi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => DBConnection()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -58,8 +62,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const SplashScreen(),
       localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
       ],
       supportedLocales: const [
         Locale('ko', 'KR'),
@@ -97,7 +102,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    Singleton().getPost(uid);
   }
 
   @override

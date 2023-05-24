@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/models/posts.dart';
-import 'package:pidi/models/singleton.dart';
 import 'package:pidi/widgets/custom_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -53,11 +53,11 @@ class _ModifyScreenState extends State<ModifyScreen> {
         title: widget.post.title,
         content: widget.post.content,
         images: widget.post.images);
-    var title_controller = TextEditingController();
-    title_controller.text = widget.post.title;
+    var titleController = TextEditingController();
+    titleController.text = widget.post.title;
 
-    var contents_controller = TextEditingController();
-    contents_controller.text = widget.post.content;
+    var contentsController = TextEditingController();
+    contentsController.text = widget.post.content;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,11 +90,11 @@ class _ModifyScreenState extends State<ModifyScreen> {
                 "저장",
                 "수정사항을 저장하시겠습니까?",
                 () {
-                  Singleton().updatePost(
-                    widget.post.id,
-                    title_controller.text,
-                    contents_controller.text,
-                  );
+                  context.read<DBConnection>().updatePost(
+                        widget.post.id,
+                        titleController.text,
+                        contentsController.text,
+                      );
                   Fluttertoast.showToast(msg: "수정되었습니다.");
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -138,9 +138,9 @@ class _ModifyScreenState extends State<ModifyScreen> {
                     ),
                     Expanded(
                       child: TextField(
-                        controller: title_controller,
+                        controller: titleController,
                         onChanged: (text) {
-                          rePost.title = title_controller.text;
+                          rePost.title = titleController.text;
                         },
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -173,7 +173,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                     thumbColor: kUnderline,
                     radius: const Radius.circular(20),
                     child: TextField(
-                      controller: contents_controller,
+                      controller: contentsController,
                       autofocus: true,
                       onChanged: (text) {
                         rePost.content = text;

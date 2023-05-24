@@ -2,14 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:pidi/models/singleton.dart';
+import 'package:pidi/constants.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/detail_screen.dart';
-
-import '../models/item.dart';
-import '../widgets/custom_appbar.dart';
-import '../constants.dart';
-
-import '../widgets/dropdown_button.dart';
+import 'package:pidi/widgets/custom_appbar.dart';
+import 'package:pidi/widgets/dropdown_button.dart';
+import 'package:provider/provider.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -19,7 +17,6 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  var postList;
   final _current = List.filled(100, 0);
   late ScrollController _scrollController;
 
@@ -94,7 +91,7 @@ class _ListScreenState extends State<ListScreen> {
   Widget moreText(i) {
     return TextButton(
         style: TextButton.styleFrom(
-          primary: kGrey,
+          foregroundColor: kGrey,
           minimumSize: Size.zero,
           padding: const EdgeInsets.symmetric(vertical: 5),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -240,7 +237,9 @@ class _ListScreenState extends State<ListScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    postList = Singleton().postList;
+    _scrollController.addListener(() {
+      context.read<DBConnection>().loadMore(_scrollController);
+    });
   }
 
   @override
@@ -251,6 +250,8 @@ class _ListScreenState extends State<ListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(postList.length.toString());
+
     return Scaffold(
       appBar: customAppBar('리스트 보기'),
       body: RefreshIndicator(
@@ -267,22 +268,47 @@ class _ListScreenState extends State<ListScreen> {
     if (postList.isEmpty) {
       return const Center(child: Text("기록이 없습니다."));
     }
-    return ListView.separated(
-      separatorBuilder: (context, index) => Container(
-        height: 1,
-        color: kBackground,
-        margin: const EdgeInsets.symmetric(vertical: 5),
-      ),
-      controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      itemCount: postList.length,
-      itemBuilder: (context, i) {
-        if (i == postList.length - 1) {
-          return Container(
-              padding: const EdgeInsets.only(bottom: 30), child: item(i));
-        }
-        return item(i);
-      },
-    );
+    return context.watch<DBConnection>().isFirstLoadRunning
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Column(
+            children: [
+              Expanded(
+                  child: ListView.separated(
+                separatorBuilder: (context, index) => Container(
+                  height: 1,
+                  color: kBackground,
+                  margin: const EdgeInsets.symmetric(vertical: 5),
+                ),
+                controller: _scrollController,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                itemCount: postList.length,
+                itemBuilder: (context, i) {
+                  if (i == postList.length - 1) {
+                    return Container(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: item(i));
+                  }
+                  return item(i);
+                },
+              )),
+              if (context.watch<DBConnection>().isLoadMoreRunning == true)
+                const Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 40),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              if (context.watch<DBConnection>().hasNextPage == false)
+                Container(
+                  padding: const EdgeInsets.only(top: 30, bottom: 40),
+                  color: Colors.amber,
+                  child: const Center(
+                    child: Text('You have fetched all of the content'),
+                  ),
+                ),
+            ],
+          );
   }
 }

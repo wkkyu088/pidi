@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:intl/intl.dart';
 import 'package:pidi/constants.dart';
-import 'package:pidi/models/singleton.dart';
+import 'package:pidi/models/item.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/detail_screen.dart';
-import '../models/item.dart';
+import 'package:provider/provider.dart';
 import '../widgets/custom_appbar.dart';
-import '../constants.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  var postList;
+  late ScrollController _scrollController;
   List galleryList = [];
 
   void getGalleryList() {
@@ -39,7 +38,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   void initState() {
     super.initState();
-    postList = Singleton().postList;
+    _scrollController = ScrollController()
+      ..addListener(() {
+        context.read<DBConnection>().loadMore(_scrollController);
+      });
     getGalleryList();
   }
 
@@ -64,6 +66,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: MasonryGridView.count(
+        controller: _scrollController,
         crossAxisCount: galleryViewSetting.indexOf(true) + 1,
         itemCount: galleryList.length,
         itemBuilder: (BuildContext context, int index) => Container(
