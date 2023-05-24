@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pidi/models/users.dart';
 
 import 'package:pidi/screens/login_screen.dart';
 import 'package:pidi/widgets/custom_appbar.dart';
@@ -375,17 +376,15 @@ class _SettingScreenState extends State<SettingScreen> {
     Widget deleteAccountButton() {
       return TextButton(
         onPressed: () async {
-          print("계정 삭제됨");
-          print(FirebaseAuth.instance.currentUser?.uid);
           customDialog(
             context,
             "잠시만요!",
             "사용자 정보와 기록이 모두 삭제됩니다.\n정말 계정을 삭제하시겠습니까?",
-            () {
+            () async {
               Fluttertoast.showToast(msg: "계정이 삭제되었습니다.");
-              FirebaseAuth.instance.currentUser?.delete();
-              FirebaseFirestore.instance.collection('Users').doc(uid).delete();
-              // Posts 컬렉션에 uid가 해당 사용자인 post를 모두 삭제
+              await deleteUser();
+              print("계정 삭제됨");
+              print(FirebaseAuth.instance.currentUser?.uid);
               uid = "";
               userName = "";
               email = "";
@@ -585,6 +584,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           margin: const EdgeInsets.only(top: 8, bottom: 16),
                         ),
                         logoutButton(),
+                        const SizedBox(height: 10),
                         deleteAccountButton(),
                         const SizedBox(height: 40),
                       ],
