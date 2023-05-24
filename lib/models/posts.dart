@@ -1,62 +1,152 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/material.dart';
-// import 'package:pidi/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:pidi/constants.dart';
+import 'package:pidi/models/item.dart';
+import 'package:provider/provider.dart';
 
-// import 'item.dart';
+class DBConnection with ChangeNotifier {
+  late final CollectionReference<Map<String, dynamic>> collections;
 
-// final firestore = FirebaseFirestore.instance.collection('Posts');
+  late DocumentSnapshot lastDocument;
+  final int _limit = 5;
 
-// void createPost(pickedImages, title, content, date, uid) async {
-//   List<String> photoURL = [];
-//   final ref = FirebaseStorage.instance.ref();
+  bool isFirstLoadRunning = false;
+  bool hasNextPage = true;
+  bool isLoadMoreRunning = false;
 
-//   final id = DateTime.now().millisecondsSinceEpoch.toString();
+  List<String> getImages(List images) {
+    List<String> imgList = [];
+    for (int i = 0; i < images.length; i++) {
+      imgList.add(images[i].toString());
+    }
+    return imgList;
+  }
 
-//   for (int i = 0; i < pickedImages.length; i++) {
-//     final imgRef = ref.child('$id-$i.jpg');
-//     File file = File(pickedImages[i]!.path);
-//     await imgRef.putFile(file);
-//     final url = await imgRef.getDownloadURL();
-//     photoURL.add(url);
-//   }
+  void loadMore(ScrollController controller) async {
+    debugPrint('-- loadMore');
 
-//   postList = [
-//     Item(
-//       id: id,
-//       title: title,
-//       date: date,
-//       content: content,
-//       images: photoURL,
-//     ),
-//     ...postList
-//   ];
-//   postList.sort((b, a) => a.date.compareTo(b.date));
+    if (hasNextPage == true &&
+        isFirstLoadRunning == false &&
+        isLoadMoreRunning == false &&
+        controller.position.extentAfter < 300) {
+      isLoadMoreRunning = true;
+      notifyListeners();
 
-//   firestore.doc(id).set({
-//     'title': title,
-//     'content': content,
-//     'date': Timestamp.fromDate(date),
-//     'images': photoURL,
-//     'uid': uid
-//   }).catchError((error) => debugPrint(error));
-// }
+      try {
+        var query = collections
+            .doc(uid)
+            .collection('postList')
+            .orderBy('date', descending: true)
+            .startAfterDocument(lastDocument)
+            .limit(_limit);
 
-// void updatePost(id, title, content) {
-//   firestore.doc(id).update({'title': title, 'content': content});
-// }
+        var snapshot = await query.get();
 
-// void deletePost(id) {
-//   firestore.doc(id).delete();
-// }
+        List<Item> fetchedPosts = snapshot.docs
+            .map((doc) => Item(
+                id: doc.id,
+                title: doc['title'],
+                date: doc['date'].toDate(),
+                content: doc['content'],
+                images: getImages(doc['images'])))
+            .toList();
+        lastDocument = snapshot.docs[snapshot.size - 1];
 
-// List<String> getImages(List images) {
-//   List<String> imgList = [];
-//   for (int i = 0; i < images.length; i++) {
-//     imgList.add(images[i].toString());
-//   }
-//   return imgList;
-// }
+        if (fetchedPosts.isNotEmpty) {
+          postList.addAll(fetchedPosts);
+          notifyListeners();
+        } else {
+          hasNextPage = false;
+          notifyListeners();
+        }
+      } catch (err) {
+        debugPrint('loadMore: $err');
+      }
+
+      isLoadMoreRunning = false;
+      notifyListeners();
+    }
+  }
+
+  void firstLoad() async {
+    debugPrint('-- firstLoad $uid');
+
+    isFirstLoadRunning = true;
+    notifyListeners();
+
+    try {
+      collections = FirebaseFirestore.instance.collection("Users");
+
+      var query = collections
+          .doc(uid)
+          .collection('postList')
+          .orderBy('date', descending: true)
+          .limit(_limit);
+
+      var snapshot = await query.get();
+
+      postList = snapshot.docs
+          .map((doc) => Item(
+              id: doc.id,
+              title: doc['title'],
+              date: doc['date'].toDate(),
+              content: doc['content'],
+              images: getImages(doc['images'])))
+          .toList();
+      lastDocument = snapshot.docs[snapshot.size - 1];
+      notifyListeners();
+      debugPrint('firstLoad :  ${postList.toList()}');
+    } catch (err) {
+      debugPrint('firstLoad :  $err');
+    }
+
+    isFirstLoadRunning = false;
+    notifyListeners();
+  }
+
+  void createPost(pickedImages, title, content, date, uid) async {
+    List<String> photoURL = [];
+    final ref = FirebaseStorage.instance.ref();
+
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
+
+    for (int i = 0; i < pickedImages.length; i++) {
+      final imgRef = ref.child('$id-$i.jpg');
+      File file = File(pickedImages[i]!.path);
+      await imgRef.putFile(file);
+      final url = await imgRef.getDownloadURL();
+      photoURL.add(url);
+    }
+
+    postList = [
+      Item(
+        id: id,
+        title: title,
+        date: date,
+        content: content,
+        images: photoURL,
+      ),
+      ...postList
+    ];
+    postList.sort((b, a) => a.date.compareTo(b.date));
+
+    collections.doc(id).set({
+      'title': title,
+      'content': content,
+      'date': Timestamp.fromDate(date),
+      'images': photoURL,
+      'uid': uid
+    }).catchError((error) => debugPrint(error));
+  }
+
+  void updatePost(id, title, content) {
+    collections.doc(id).update({'title': title, 'content': content});
+  }
+
+  void deletePost(id) {
+    collections.doc(id).delete();
+  }
+}
