@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pidi/models/posts.dart';
-import 'package:pidi/models/singleton.dart';
-
+import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../models/item.dart';
 import '../screens/modify_screen.dart';
@@ -98,8 +96,7 @@ class MenuItems {
             '기록 삭제',
             '기록이 영구적으로 삭제됩니다.\n정말 삭제하시겠습니까?',
             () {
-              Singleton().deletePost(post.id);
-              // firestore.doc(post.id).delete();
+              context.read<DBConnection>().deletePost(post.id);
               Navigator.pop(context);
               Fluttertoast.showToast(msg: "삭제되었습니다.");
             },

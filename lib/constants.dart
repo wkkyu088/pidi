@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'models/item.dart';
+import 'package:pidi/models/item.dart';
 
 // User Data
 String uid = "";
@@ -66,6 +65,4 @@ final kFirstDay = DateTime(kToday.year - 1, kToday.month, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 
 // data
-var dataflag = false;
-String userid = 'user1';
-var lastDoc;
+List<Item> postList = [];

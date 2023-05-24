@@ -3,10 +3,11 @@ import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pidi/models/posts.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import '../constants.dart';
-import '../models/singleton.dart';
 
 class CreateModal extends StatefulWidget {
   final DateTime selectedDate;
@@ -75,7 +76,6 @@ class _CreateModalState extends State<CreateModal> {
 
     List<DateTime> deactivateDates = [];
 
-    var postList = Singleton().postList;
     for (var v in postList) {
       deactivateDates.add(v.date);
       if (kToday.difference(v.date).inDays == 0) {
@@ -361,13 +361,13 @@ class _CreateModalState extends State<CreateModal> {
                                   Fluttertoast.showToast(
                                       msg: "내용은 반드시 입력해야합니다.");
                                 } else {
-                                  Singleton().createPost(
-                                    _pickedImages,
-                                    titleValue,
-                                    contentValue,
-                                    dateTime,
-                                    uid,
-                                  );
+                                  context.read<DBConnection>().createPost(
+                                        _pickedImages,
+                                        titleValue,
+                                        contentValue,
+                                        dateTime,
+                                        uid,
+                                      );
                                   Navigator.pop(context);
                                   Fluttertoast.showToast(msg: "저장을 완료했습니다.");
                                 }

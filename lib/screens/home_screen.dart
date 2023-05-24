@@ -6,8 +6,6 @@ import 'package:pidi/screens/detail_screen.dart';
 
 import '../constants.dart';
 
-import '../models/singleton.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -18,12 +16,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  var postList;
 
   @override
   void initState() {
     super.initState();
-    postList = Singleton().postList;
   }
 
   @override
@@ -100,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onTodayButtonTap();
                                   },
                                   style: TextButton.styleFrom(
-                                    primary: kBlack.withOpacity(0.5),
+                                    foregroundColor: kBlack.withOpacity(0.5),
                                     side: BorderSide(color: kBlack, width: 1.2),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: kBorderRadiusL),
