@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pidi/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -143,8 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      primary: kBlack,
-                      backgroundColor: kBlack,
+                      foregroundColor: kBlack, backgroundColor: kBlack,
                       shape:
                           RoundedRectangleBorder(borderRadius: kBorderRadius),
                       minimumSize: Size(screenWidth, 50),
@@ -207,8 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      primary: kBlack,
-                      backgroundColor: Colors.transparent,
+                      foregroundColor: kBlack, backgroundColor: Colors.transparent,
                       shape:
                           RoundedRectangleBorder(borderRadius: kBorderRadius),
                       side: BorderSide(color: kBlack, width: 1),

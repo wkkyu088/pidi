@@ -35,17 +35,15 @@ class _CreateModalState extends State<CreateModal> {
   List<XFile?> _pickedImages = [];
 
   Future getImage(ImageSource imageSource) async {
-    final List<XFile>? images = await picker.pickMultiImage();
-    if (images != null) {
-      setState(() {
-        if (images.length > 5) {
-          _pickedImages = images.sublist(0, 5);
-          Fluttertoast.showToast(msg: "최대 5장까지 등록 가능합니다.");
-        } else {
-          _pickedImages = images;
-        }
-      });
-    }
+    final List<XFile> images = await picker.pickMultiImage();
+    setState(() {
+      if (images.length > 5) {
+        _pickedImages = images.sublist(0, 5);
+        Fluttertoast.showToast(msg: "최대 5장까지 등록 가능합니다.");
+      } else {
+        _pickedImages = images;
+      }
+    });
   }
 
   Widget uploadImage(onPressed) {
@@ -55,8 +53,7 @@ class _CreateModalState extends State<CreateModal> {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          primary: kGrey,
-          shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
+          foregroundColor: kGrey, shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
           side: BorderSide(color: kGrey),
         ),
         child: Icon(
@@ -293,7 +290,7 @@ class _CreateModalState extends State<CreateModal> {
                             });
                           }
                         }),
-                        style: TextButton.styleFrom(primary: kGrey),
+                        style: TextButton.styleFrom(foregroundColor: kGrey),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

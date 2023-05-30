@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:pidi/models/item.dart';
-import 'package:provider/provider.dart';
 
 class DBConnection with ChangeNotifier {
   late final CollectionReference<Map<String, dynamic>> collections;
