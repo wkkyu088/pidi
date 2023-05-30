@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pidi/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pidi/models/users.dart';
 
 import '../constants.dart';
 
@@ -106,33 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: emailCont.text, password: pwCont.text);
                         if (userCredential.user != null) {
                           print("로그인 성공");
-                          var user = await FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(userCredential.user!.uid)
-                              .get();
-                          final v = user.data() as Map;
-                          uid = userCredential.user!.uid;
-                          userName = v['userName'];
-                          email = v['email'];
-                          profileImg = v['profileImg'];
-                          calendarViewSetting = [
-                            v['calendarViewSetting'][0],
-                            v['calendarViewSetting'][1]
-                          ];
-                          listViewSetting = [
-                            v['listViewSetting'][0],
-                            v['listViewSetting'][1]
-                          ];
-                          galleryViewSetting = [
-                            v['galleryViewSetting'][0],
-                            v['galleryViewSetting'][1],
-                            v['galleryViewSetting'][2]
-                          ];
-                          startingDayofWeekSetting = [
-                            v['startingDayofWeekSetting'][0],
-                            v['startingDayofWeekSetting'][1]
-                          ];
-                          fontFamily = v['fontFamily'];
+                          await loginUser(userCredential);
                           print({
                             'uid': uid,
                             'userName': userName,
@@ -194,30 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 email: emailCont.text, password: pwCont.text);
                         if (userCredential.user != null) {
                           print("회원가입 성공");
-                          await FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(userCredential.user!.uid)
-                              .set({
-                            'userName': emailCont.text.split('@')[0],
-                            'email': emailCont.text,
-                            'profileImg': "",
-                            'settings': [0, 2, 0, 0, 0],
-                            'uid': userCredential.user!.uid,
-                            'listViewSetting': [true, false],
-                            'galleryViewSetting': [false, false, true],
-                            'calendarViewSetting': [false, true],
-                            'startingDayofWeekSetting': [true, false],
-                            'fontFamily': fontList[0],
-                          });
-                          uid = userCredential.user!.uid;
-                          userName = emailCont.text.split('@')[0];
-                          email = emailCont.text;
-                          profileImg = "";
-                          listViewSetting = [true, false];
-                          galleryViewSetting = [false, false, true];
-                          calendarViewSetting = [false, true];
-                          startingDayofWeekSetting = [true, false];
-                          fontFamily = fontList[0];
+                          await signupUser(userCredential, emailCont);
                           print({
                             'uid': uid,
                             'userName': userName,
