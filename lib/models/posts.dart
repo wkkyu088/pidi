@@ -146,9 +146,15 @@ class DBConnection with ChangeNotifier {
         .collection('postList')
         .doc(id)
         .update({'title': title, 'content': content});
+
+    postList.firstWhere((element) => element.id == id).title = title;
+    postList.firstWhere((element) => element.id == id).content = content;
   }
 
   void deletePost(id) {
     collections.doc(uid).collection('postList').doc(id).delete();
+    postList.removeWhere((element) => element.id == id);
+
+    // reload 필요
   }
 }
