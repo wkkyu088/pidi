@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +7,7 @@ import 'package:pidi/models/posts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pidi/screens/gallery_screen.dart';
 import 'package:pidi/screens/home_screen.dart';
+import 'package:pidi/screens/loading_screen.dart';
 import 'package:pidi/screens/setting_screen.dart';
 import 'package:pidi/widgets/create_modal.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +19,7 @@ import './constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: 'pidi',
+    // name: 'pidi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MultiProvider(
@@ -83,11 +86,11 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   static const List<Widget> _widgetOptions = <Widget>[
     ListScreen(),
     GalleryScreen(),
-    SettingScreen(), // 개수 맞추기 위해서 필요함
+    LoadingPage(), // 개수 맞추기 위해서 필요함
     HomeScreen(),
     SettingScreen(),
   ];
@@ -99,9 +102,17 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  startTimer() async {
+    return Timer(const Duration(seconds: 2), () {
+      _selectedIndex = 0;
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    startTimer();
   }
 
   @override

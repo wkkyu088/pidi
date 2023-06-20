@@ -5,9 +5,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pidi/constants.dart';
 import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/detail_screen.dart';
+import 'package:pidi/screens/loading_screen.dart';
 import 'package:pidi/widgets/custom_appbar.dart';
 import 'package:pidi/widgets/dropdown_button.dart';
 import 'package:provider/provider.dart';
+
+import '../main.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
