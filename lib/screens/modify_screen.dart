@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:pidi/main.dart';
 
 import 'package:pidi/models/item.dart';
 import 'package:pidi/models/posts.dart';
@@ -73,6 +74,10 @@ class _ModifyScreenState extends State<ModifyScreen> {
               () {
                 Navigator.pop(context);
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainPage()),
+                );
               },
             );
           },
@@ -98,6 +103,10 @@ class _ModifyScreenState extends State<ModifyScreen> {
                   Fluttertoast.showToast(msg: "수정되었습니다.");
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainPage()),
+                  );
                 },
               );
             },
