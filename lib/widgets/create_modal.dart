@@ -53,7 +53,8 @@ class _CreateModalState extends State<CreateModal> {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: kGrey, shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
+          foregroundColor: kGrey,
+          shape: RoundedRectangleBorder(borderRadius: kBorderRadius),
           side: BorderSide(color: kGrey),
         ),
         child: Icon(
@@ -367,6 +368,11 @@ class _CreateModalState extends State<CreateModal> {
                                       );
                                   Navigator.pop(context);
                                   Fluttertoast.showToast(msg: "저장을 완료했습니다.");
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MainPage()),
+                                  );
                                 }
                               },
                             )

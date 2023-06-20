@@ -109,7 +109,6 @@ class DBConnection with ChangeNotifier {
   void createPost(pickedImages, title, content, date, uid) async {
     List<String> photoURL = [];
     final ref = FirebaseStorage.instance.ref();
-
     final id = DateTime.now().millisecondsSinceEpoch.toString();
 
     for (int i = 0; i < pickedImages.length; i++) {
@@ -132,7 +131,7 @@ class DBConnection with ChangeNotifier {
     ];
     postList.sort((b, a) => a.date.compareTo(b.date));
 
-    collections.doc(id).set({
+    collections.doc(uid).collection('postList').doc(id).set({
       'title': title,
       'content': content,
       'date': Timestamp.fromDate(date),
@@ -142,10 +141,14 @@ class DBConnection with ChangeNotifier {
   }
 
   void updatePost(id, title, content) {
-    collections.doc(id).update({'title': title, 'content': content});
+    collections
+        .doc(uid)
+        .collection('postList')
+        .doc(id)
+        .update({'title': title, 'content': content});
   }
 
   void deletePost(id) {
-    collections.doc(id).delete();
+    collections.doc(uid).collection('postList').doc(id).delete();
   }
 }
