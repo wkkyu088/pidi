@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pidi/main.dart';
 import 'package:pidi/models/posts.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
@@ -99,6 +100,10 @@ class MenuItems {
               context.read<DBConnection>().deletePost(post.id);
               Navigator.pop(context);
               Fluttertoast.showToast(msg: "삭제되었습니다.");
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const MainPage()),
+              );
             },
             isDelete: true,
           );

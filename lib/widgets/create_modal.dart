@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
@@ -203,94 +203,94 @@ class _CreateModalState extends State<CreateModal> {
                       // 1. 데이트 피커
                       TextButton(
                         onPressed: (() async {
-                          // DateTime? newDateTime = await showRoundedDatePicker(
-                          //     context: context,
-                          //     height: mediaQueryData.size.height * 0.43,
-                          //     initialDate: dateTime,
-                          //     firstDate: kFirstDay,
-                          //     lastDate: kToday,
-                          //     borderRadius: 8,
-                          //     listDateDisabled: deactivateDates,
-                          //     theme: ThemeData(
-                          //         primaryColor: kBackground,
-                          //         colorScheme: ColorScheme(
-                          //           brightness: Brightness.light,
-                          //           primary: kBlack,
-                          //           onPrimary: kBlack,
-                          //           secondary: kGrey,
-                          //           onSecondary: kGrey,
-                          //           error: kPoint,
-                          //           onError: kPoint,
-                          //           background: kWhite,
-                          //           onBackground: kWhite,
-                          //           surface: kBlack,
-                          //           onSurface: kBlack,
-                          //         ),
-                          //         fontFamily: fontFamily),
-                          //     styleDatePicker: MaterialRoundedDatePickerStyle(
-                          //       textStyleDayButton:
-                          //           TextStyle(fontSize: kTitle, color: kBlack),
-                          //       textStyleYearButton: TextStyle(
-                          //           fontSize: kContentM, color: kBlack),
-                          //       textStyleDayHeader: TextStyle(
-                          //           fontSize: kContentM, color: kBlack),
-                          //       textStyleCurrentDayOnCalendar: TextStyle(
-                          //           fontSize: kContentM,
-                          //           color: kPoint,
-                          //           fontWeight: FontWeight.bold),
-                          //       textStyleDayOnCalendar: TextStyle(
-                          //           fontSize: kContentM, color: kBlack),
-                          //       textStyleDayOnCalendarSelected: TextStyle(
-                          //           fontSize: kContentM,
-                          //           color: Colors.white,
-                          //           fontWeight: FontWeight.bold),
-                          //       textStyleDayOnCalendarDisabled: TextStyle(
-                          //           fontSize: kTitle,
-                          //           color: kBlack.withOpacity(0.1)),
-                          //       textStyleMonthYearHeader: TextStyle(
-                          //           fontSize: kContentM + 1,
-                          //           color: kBlack,
-                          //           fontWeight: FontWeight.bold),
-                          //       paddingDatePicker: const EdgeInsets.all(8),
-                          //       paddingMonthHeader: const EdgeInsets.all(16),
-                          //       sizeArrow: 22,
-                          //       colorArrowNext: kBlack,
-                          //       colorArrowPrevious: kBlack,
-                          //       marginTopArrowPrevious: 8,
-                          //       marginLeftArrowPrevious: 8,
-                          //       marginTopArrowNext: 8,
-                          //       marginRightArrowNext: 16,
-                          //       textStyleButtonAction: TextStyle(
-                          //           fontSize: kContentM, color: kBlack),
-                          //       textStyleButtonPositive: TextStyle(
-                          //           fontSize: kContentM,
-                          //           color: kBlack,
-                          //           fontWeight: FontWeight.bold),
-                          //       textStyleButtonNegative: TextStyle(
-                          //           fontSize: kContentM,
-                          //           color: kBlack.withOpacity(0.5)),
-                          //       decorationDateSelected: BoxDecoration(
-                          //           color: kBlack, shape: BoxShape.circle),
-                          //       backgroundPicker: Colors.white,
-                          //       backgroundActionBar: Colors.white,
-                          //       backgroundHeaderMonth: Colors.white,
-                          //     ),
-                          //     styleYearPicker: MaterialRoundedYearPickerStyle(
-                          //       textStyleYear: TextStyle(
-                          //           fontSize: kContentM, color: kBlack),
-                          //       textStyleYearSelected: TextStyle(
-                          //           fontSize: kAppBar,
-                          //           color: kBlack,
-                          //           fontWeight: FontWeight.bold),
-                          //       heightYearRow: 50,
-                          //       backgroundPicker: Colors.white,
-                          //     ));
-                          // if (newDateTime != null) {
-                          //   setState(() {
-                          //     dateTime = newDateTime;
-                          //     print(dateTime);
-                          //   });
-                          // }
+                          DateTime? newDateTime = await showRoundedDatePicker(
+                              context: context,
+                              height: mediaQueryData.size.height * 0.43,
+                              initialDate: dateTime,
+                              firstDate: kFirstDay,
+                              lastDate: kToday,
+                              borderRadius: 8,
+                              listDateDisabled: deactivateDates,
+                              theme: ThemeData(
+                                  primaryColor: kBackground,
+                                  colorScheme: ColorScheme(
+                                    brightness: Brightness.light,
+                                    primary: kBlack,
+                                    onPrimary: kBlack,
+                                    secondary: kGrey,
+                                    onSecondary: kGrey,
+                                    error: kPoint,
+                                    onError: kPoint,
+                                    background: kWhite,
+                                    onBackground: kWhite,
+                                    surface: kBlack,
+                                    onSurface: kBlack,
+                                  ),
+                                  fontFamily: fontFamily),
+                              styleDatePicker: MaterialRoundedDatePickerStyle(
+                                textStyleDayButton:
+                                    TextStyle(fontSize: kTitle, color: kBlack),
+                                textStyleYearButton: TextStyle(
+                                    fontSize: kContentM, color: kBlack),
+                                textStyleDayHeader: TextStyle(
+                                    fontSize: kContentM, color: kBlack),
+                                textStyleCurrentDayOnCalendar: TextStyle(
+                                    fontSize: kContentM,
+                                    color: kPoint,
+                                    fontWeight: FontWeight.bold),
+                                textStyleDayOnCalendar: TextStyle(
+                                    fontSize: kContentM, color: kBlack),
+                                textStyleDayOnCalendarSelected: TextStyle(
+                                    fontSize: kContentM,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                textStyleDayOnCalendarDisabled: TextStyle(
+                                    fontSize: kTitle,
+                                    color: kBlack.withOpacity(0.1)),
+                                textStyleMonthYearHeader: TextStyle(
+                                    fontSize: kContentM + 1,
+                                    color: kBlack,
+                                    fontWeight: FontWeight.bold),
+                                paddingDatePicker: const EdgeInsets.all(8),
+                                paddingMonthHeader: const EdgeInsets.all(16),
+                                sizeArrow: 22,
+                                colorArrowNext: kBlack,
+                                colorArrowPrevious: kBlack,
+                                marginTopArrowPrevious: 8,
+                                marginLeftArrowPrevious: 8,
+                                marginTopArrowNext: 8,
+                                marginRightArrowNext: 16,
+                                textStyleButtonAction: TextStyle(
+                                    fontSize: kContentM, color: kBlack),
+                                textStyleButtonPositive: TextStyle(
+                                    fontSize: kContentM,
+                                    color: kBlack,
+                                    fontWeight: FontWeight.bold),
+                                textStyleButtonNegative: TextStyle(
+                                    fontSize: kContentM,
+                                    color: kBlack.withOpacity(0.5)),
+                                decorationDateSelected: BoxDecoration(
+                                    color: kBlack, shape: BoxShape.circle),
+                                backgroundPicker: Colors.white,
+                                backgroundActionBar: Colors.white,
+                                backgroundHeaderMonth: Colors.white,
+                              ),
+                              styleYearPicker: MaterialRoundedYearPickerStyle(
+                                textStyleYear: TextStyle(
+                                    fontSize: kContentM, color: kBlack),
+                                textStyleYearSelected: TextStyle(
+                                    fontSize: kAppBar,
+                                    color: kBlack,
+                                    fontWeight: FontWeight.bold),
+                                heightYearRow: 50,
+                                backgroundPicker: Colors.white,
+                              ));
+                          if (newDateTime != null) {
+                            setState(() {
+                              dateTime = newDateTime;
+                              print(dateTime);
+                            });
+                          }
                         }),
                         style: TextButton.styleFrom(foregroundColor: kGrey),
                         child: Row(

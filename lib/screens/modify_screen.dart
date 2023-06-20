@@ -74,10 +74,6 @@ class _ModifyScreenState extends State<ModifyScreen> {
               () {
                 Navigator.pop(context);
                 Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainPage()),
-                );
               },
             );
           },
