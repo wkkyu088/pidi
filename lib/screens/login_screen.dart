@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pidi/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pidi/models/posts.dart';
 import 'package:pidi/models/users.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -107,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (userCredential.user != null) {
                           print("로그인 성공");
                           await loginUser(userCredential);
+                          //
                           print({
                             'uid': uid,
                             'userName': userName,
@@ -120,11 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             'fontFamily': fontFamily,
                           });
                           Fluttertoast.showToast(msg: "로그인 되었습니다.");
-                          Navigator.of(context).pushAndRemoveUntil(
+
+                          context.read<DBConnection>().firstLoad();
+
+                          Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const MainPage()),
-                              (route) => false);
+                                      const MainPage()));
                         }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
@@ -142,7 +147,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: kBlack, backgroundColor: kBlack,
+                      foregroundColor: kBlack,
+                      backgroundColor: kBlack,
                       shape:
                           RoundedRectangleBorder(borderRadius: kBorderRadius),
                       minimumSize: Size(screenWidth, 50),
@@ -181,11 +187,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             'fontFamily': fontFamily,
                           });
                           Fluttertoast.showToast(msg: "회원가입 되었습니다.");
-                          Navigator.pushAndRemoveUntil(
-                              context,
+
+                          context.read<DBConnection>().firstLoad();
+                          Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => const MainPage()),
-                              (route) => false);
+                                  builder: (BuildContext context) =>
+                                      const MainPage()));
                         }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'email-already-in-use') {
@@ -205,7 +212,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: TextButton.styleFrom(
-                      foregroundColor: kBlack, backgroundColor: Colors.transparent,
+                      foregroundColor: kBlack,
+                      backgroundColor: Colors.transparent,
                       shape:
                           RoundedRectangleBorder(borderRadius: kBorderRadius),
                       side: BorderSide(color: kBlack, width: 1),
