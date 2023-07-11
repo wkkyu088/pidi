@@ -97,7 +97,7 @@ class MenuItems {
             '기록 삭제',
             '기록이 영구적으로 삭제됩니다.\n정말 삭제하시겠습니까?',
             () {
-              context.read<DBConnection>().deletePost(post.id);
+              context.read<Posts>().deletePost(post.id);
               Navigator.pop(context);
               Fluttertoast.showToast(msg: "삭제되었습니다.");
               Navigator.pushReplacement(

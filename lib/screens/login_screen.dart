@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           Fluttertoast.showToast(msg: "로그인 되었습니다.");
 
-                          context.read<DBConnection>().firstLoad();
+                          context.read<Posts>().firstLoad();
 
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           Fluttertoast.showToast(msg: "회원가입 되었습니다.");
 
-                          context.read<DBConnection>().firstLoad();
+                          context.read<Posts>().firstLoad();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
