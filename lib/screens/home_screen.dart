@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pidi/models/cal_posts.dart';
+import 'package:pidi/models/item.dart';
 import 'package:pidi/widgets/create_modal.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:pidi/screens/detail_screen.dart';
@@ -16,10 +18,24 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  late CalPosts calPosts;
+  List<Item> calPostList = [];
+
+  void getPosts() async {
+    calPosts = CalPosts();
+    calPosts.getCalPosts(DateTime.now()).then((posts) {
+      calPostList = posts;
+      setState(() {});
+    }).catchError((error) {
+      // 오류 처리
+      debugPrint(error);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getPosts();
   }
 
   @override
@@ -94,6 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: TextButton(
                                   onPressed: () {
                                     onTodayButtonTap();
+                                    calPosts
+                                        .getCalPosts(DateTime.now())
+                                        .then((posts) {
+                                      calPostList = posts;
+                                      setState(() {});
+                                    }).catchError((error) {
+                                      // 오류 처리
+                                      debugPrint(error);
+                                    });
                                   },
                                   style: TextButton.styleFrom(
                                     foregroundColor: kBlack.withOpacity(0.5),
@@ -131,10 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     // 특정한 날 설정
                     prioritizedBuilder: (context, day, focusedDay) {
                       // post가 있는 날
-                      for (int i = 0; i < postList.length; i++) {
-                        if (day.year == postList[i].date.year &&
-                            day.month == postList[i].date.month &&
-                            day.day == postList[i].date.day) {
+                      for (int i = 0; i < calPostList.length; i++) {
+                        if (day.year == calPostList[i].date.year &&
+                            day.month == calPostList[i].date.month &&
+                            day.day == calPostList[i].date.day) {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
@@ -145,12 +170,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          DetailScreen(post: postList[i])));
+                                          DetailScreen(post: calPostList[i])));
                             },
                             child: Stack(
                               children: [
                                 CachedNetworkImage(
-                                  imageUrl: postList[i].images[0].toString(),
+                                  imageUrl: calPostList[i].images[0].toString(),
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
@@ -170,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 // 사진 여러개인 것 개수 표시
-                                postList[i].images.length > 1
+                                calPostList[i].images.length > 1
                                     ? Align(
                                         alignment: Alignment.bottomRight,
                                         child: Container(
@@ -182,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                postList[i]
+                                                calPostList[i]
                                                     .images
                                                     .length
                                                     .toString(),
@@ -319,6 +344,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   },
                   onPageChanged: (focusedDay) {
+                    calPosts.getCalPosts(focusedDay).then((posts) {
+                      calPostList = posts;
+                      setState(() {});
+                    }).catchError((error) {
+                      // 오류 처리
+                    });
                     _focusedDay = focusedDay;
                   },
                   startingDayOfWeek: startingDayofWeekSetting[0] == true

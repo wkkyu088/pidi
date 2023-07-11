@@ -6,7 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:pidi/constants.dart';
 import 'package:pidi/models/item.dart';
 
-class DBConnection with ChangeNotifier {
+List<String> getImages(List images) {
+  List<String> imgList = [];
+  for (int i = 0; i < images.length; i++) {
+    imgList.add(images[i].toString());
+  }
+  return imgList;
+}
+
+class Posts with ChangeNotifier {
   late final CollectionReference<Map<String, dynamic>> collections;
 
   late DocumentSnapshot lastDocument;
@@ -15,14 +23,6 @@ class DBConnection with ChangeNotifier {
   bool isFirstLoadRunning = false;
   bool hasNextPage = true;
   bool isLoadMoreRunning = false;
-
-  List<String> getImages(List images) {
-    List<String> imgList = [];
-    for (int i = 0; i < images.length; i++) {
-      imgList.add(images[i].toString());
-    }
-    return imgList;
-  }
 
   void loadMore(ScrollController controller) async {
     debugPrint('-- loadMore');
