@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
 import 'package:pidi/constants.dart';
-import 'package:pidi/models/item.dart';
 import 'package:pidi/models/posts.dart';
 import 'package:pidi/screens/detail_screen.dart';
-import 'package:provider/provider.dart';
-import '../widgets/custom_appbar.dart';
+import 'package:pidi/widgets/custom_appbar.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({Key? key}) : super(key: key);

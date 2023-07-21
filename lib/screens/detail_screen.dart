@@ -1,12 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
+import 'package:pidi/constants.dart';
 import 'package:pidi/models/item.dart';
 import 'package:pidi/widgets/dropdown_button.dart';
-
-import '../constants.dart';
 
 class DetailScreen extends StatefulWidget {
   final Item post;
