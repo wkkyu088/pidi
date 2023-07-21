@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
         'fontFamily': fontFamily,
       });
 
-      context.read<DBConnection>().firstLoad();
+      context.read<Posts>().firstLoad();
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (BuildContext context) => const MainPage()));

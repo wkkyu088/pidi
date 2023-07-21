@@ -24,7 +24,7 @@ Future<void> main() async {
   );
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => DBConnection()),
+      ChangeNotifierProvider(create: (_) => Posts()),
     ],
     child: const MyApp(),
   ));

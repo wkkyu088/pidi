@@ -360,7 +360,7 @@ class _CreateModalState extends State<CreateModal> {
                                   Fluttertoast.showToast(
                                       msg: "내용은 반드시 입력해야합니다.");
                                 } else {
-                                  context.read<DBConnection>().createPost(
+                                  context.read<Posts>().createPost(
                                         _pickedImages,
                                         titleValue,
                                         contentValue,

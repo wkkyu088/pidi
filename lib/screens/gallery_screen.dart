@@ -40,7 +40,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     super.initState();
     _scrollController = ScrollController()
       ..addListener(() {
-        context.read<DBConnection>().loadMore(_scrollController);
+        context.read<Posts>().loadMore(_scrollController);
       });
     getGalleryList();
   }

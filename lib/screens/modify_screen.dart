@@ -91,7 +91,7 @@ class _ModifyScreenState extends State<ModifyScreen> {
                 "저장",
                 "수정사항을 저장하시겠습니까?",
                 () {
-                  context.read<DBConnection>().updatePost(
+                  context.read<Posts>().updatePost(
                         widget.post.id,
                         titleController.text,
                         contentsController.text,

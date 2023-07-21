@@ -241,7 +241,7 @@ class _ListScreenState extends State<ListScreen> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-      context.read<DBConnection>().loadMore(_scrollController);
+      context.read<Posts>().loadMore(_scrollController);
     });
   }
 
@@ -271,7 +271,7 @@ class _ListScreenState extends State<ListScreen> {
     if (postList.isEmpty) {
       return const Center(child: Text("기록이 없습니다."));
     }
-    return context.watch<DBConnection>().isFirstLoadRunning
+    return context.watch<Posts>().isFirstLoadRunning
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -296,14 +296,14 @@ class _ListScreenState extends State<ListScreen> {
                   return item(i);
                 },
               )),
-              if (context.watch<DBConnection>().isLoadMoreRunning == true)
+              if (context.watch<Posts>().isLoadMoreRunning == true)
                 const Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 40),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
-              if (context.watch<DBConnection>().hasNextPage == false)
+              if (context.watch<Posts>().hasNextPage == false)
                 Container(
                   padding: const EdgeInsets.only(top: 30, bottom: 40),
                   color: Colors.amber,
